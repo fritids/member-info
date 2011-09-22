@@ -250,6 +250,14 @@ function deleteImage(img){
 
 }
 
+function deleteDocument(doc, name){
+
+	jQuery('#upload_document').val(jQuery('#upload_document').val().replace(doc + '=' + name + '~', '').replace( '~' + doc + '=' + name, '').replace( doc + '=' + name, ''));
+
+	jQuery('div[title="' + doc + '"]').html('<img class="mi_document" src="' + settings.MI_url + '/img/file.png" />').attr('title', '');
+
+}
+
 function check_other(){
 
 	jQuery('.custom_select').each(function(){

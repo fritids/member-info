@@ -289,7 +289,7 @@ class member_info_registration extends member_info_meta_boxes {
 						
 						foreach($extra_meta as $metakey => $metavalue){
 						
-							do_action( 'registration_save_custom_fields', $metavalue['type'], $metavalue['value']  );
+							do_action( 'registration_save_custom_fields', $metavalue['type'], $metavalue['value'], $new_user );
 						
 							//echo $metakey . ' ' . $metavalue['value'];
 						
@@ -407,16 +407,20 @@ class member_info_registration extends member_info_meta_boxes {
 						break;	
 						
 						case 'invalid_username';
-						echo "<strong>ERROR</strong>: Invalid username. <a href=\"\">Lost your password?</a>";
+						echo "<strong>ERROR</strong>: Invalid username. <a href=\"" . get_permalink(get_option('login_page_id')) . "?action=lostpassword\">Lost your password?</a>";
 						break;		
 						
 						case 'incorrect_password';
-						echo "<strong>ERROR</strong>: The password you entered is incorrect. <a href=\"\">Lost your password?</a>";
+						echo "<strong>ERROR</strong>: The password you entered is incorrect. <a href=\"" . get_permalink(get_option('login_page_id')) . "?action=lostpassword\">Lost your password?</a>";
 						break;	
 						
 						case 'empty';
 						echo "<strong>ERROR</strong>: Nothing was submitted.";
-						break;											
+						break;	
+						
+						case 'registerdisabled';
+						echo "<strong>ERROR</strong>: User registration is currently not allowed.";
+						break;																	
 					
 					}
 					
@@ -462,11 +466,12 @@ class member_info_registration extends member_info_meta_boxes {
 		
 			$error_message = '';
 			
-	/*
+/*
 			echo '<pre>';
 			print_r($errors);
 			echo '</pre>';
-	*/
+			exit;
+*/
 			
 			if($errors){
 			
@@ -482,7 +487,7 @@ class member_info_registration extends member_info_meta_boxes {
 			if($_GET['action'] != 'rp' && $_GET['action'] != 'resetpass' ){
 			
 				if($error_message != '' || ($_POST['pwd'] && $_POST['pwd'] == '' && $_POST['log'] && $_POST['log'] == '' ) ){
-					if($_POST['pwd'] == '' && $_POST['log'] == ''){
+					if($_POST['pwd'] == '' && $_POST['log'] == '' & $error_message != 'registerdisabled'){
 						if($_GET['action'] != 'lostpassword'){
 							$error_message = 'empty';
 						}
@@ -503,6 +508,21 @@ class member_info_registration extends member_info_meta_boxes {
 	}
 	
 	function redirect(){
+	
+		global $pagenow;
+	
+		if(is_admin() && $pagenow !='media-upload.php' && $pagenow != 'async-upload.php' ){
+	
+			global $current_user;
+	      	get_currentuserinfo();
+	      	
+	      	foreach($current_user->roles as $role ){
+	      		if($role == 'basic_member'){
+	      			wp_redirect( get_bloginfo('url') );
+	      		}
+	      	}
+      	
+		}
 	
 		if( ($_SERVER['REQUEST_URI'] == '/' . get_option( 'login_page_slug' ) . '/' || $_SERVER['REQUEST_URI'] == '/' . get_option( 'register_page_slug' ) . '/' ) && is_user_logged_in() ){
 		

@@ -353,9 +353,10 @@ class member_info_meta_boxes {
 			$i = 0;
 			while($i <= $document_limit -1){
 				if($documents[$i] != ''){
-					echo '<div><img class="mi_document" src="' . MI_url . '/img/file.png" /><br>' . $documents[$i] . '<br><img style="cursor:pointer;" onClick="deletedocument(\'' . $documents[$i] . '\');" src="' . MI_url . '/img/delete.png" class="delete_document" /></div>';
+					$document = explode( '=', $documents[$i] );
+					echo '<div class="single_row" title="' . $document[0] . '"><div class="mi_uploaded_doc" >' . $document[1] . '</div><img style="cursor:pointer;" onClick="deleteDocument(\'' . $document[0] . '\', \'' . $document[1] . '\');" src="' . MI_url . '/img/delete.png" class="delete_document" /></div>';
 				}else{
-					echo '<div><img class="mi_document" src="' . MI_url . '/img/file.png" /></div>';
+					echo '<div class="single_row"><img class="mi_document" src="' . MI_url . '/img/file.png" /></div>';
 				}
 				$i++;
 			}

@@ -21,7 +21,8 @@ class member_info_roles_capabilities {
 		    'edit_posts' => false,
 		    'delete_posts' => true,
 		    'upload_files' => true,
-		    'edit_posts' => true
+		    'edit_posts' => true,
+		    'access_backend' => false
 		));	
 		
 		update_option( 'default_role', 'basic_member' ); //update default role to be a basic member

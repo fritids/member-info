@@ -18,15 +18,31 @@
 	margin: 5px;
 }
 
+.mi_uploaded_doc{
+    float: left;
+    margin-right: 10px;
+}
+
 .delete_image{
 	width:16px;
 	margin: 0 auto;
 	display:block;
 }
 
-#mi_images div{
+#mi_images div {
     float: left;
     height: 180px;
+}
+
+#mi_documents{
+
+}
+
+.single_row{
+	width:100%;
+    border-left: 3px solid #CCCCCC;
+    margin-top: 10px;
+    padding-left: 10px;
 }
 
 /* ACCOUNT PAGE */

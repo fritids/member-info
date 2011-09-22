@@ -242,6 +242,7 @@ class member_info_settings_page {
 		
 		$required_fields = explode( '~', get_option('required_fields') );
 		$reg_fields = explode( '~', get_option('reg_fields') );
+		$frontend_fields = explode( '~', get_option('frontend_fields') );
 	
 		?>
 		
@@ -255,6 +256,11 @@ class member_info_settings_page {
 				<td><strong>Description</strong></td>
 				<td align="center"><strong>Required?</strong></td>
 				<td align="center"><strong>Show on registration form?</strong></td>
+				<?php if( get_option('member-info-public-profile-installed') == 'yup'){ ?>	
+					<td align="center">
+						<strong>Display on user's (public) profile?</strong>
+					</td>
+				<?php } ?>					
 				<td align="center">     </td>
 				<td align="center"></td>
 			</thead>
@@ -371,8 +377,15 @@ class member_info_settings_page {
 								echo 'name="reg_fields[]" value="' . 'custom_field_' . strtolower( str_replace(' ', '_', $field_name ) ) . '"';
 								if($fields_type[$i] == 'image'){ echo 'disabled="disabled"'; };
 								echo ' />
-							</td>														
-							<td align="center">
+							</td>';
+							if( get_option('member-info-public-profile-installed') == 'yup'){	
+								echo '<td align="center">
+									<input type="checkbox"';
+									if (in_array( 'custom_field_' . strtolower( str_replace(' ', '_', $field_name ) ), $frontend_fields)) { echo ' checked="checked" '; }; 
+									echo 'name="frontend_fields[]" value="' . 'custom_field_' . strtolower( str_replace(' ', '_', $field_name ) ) . '" />
+								</td>';
+							}	
+							echo '<td align="center">
 								<a style="cursor:pointer;" onClick="jQuery(\'#mi_fields_row' . $i . '\').remove();"><img src="' . MI_url . '/img/delete.png" style="cursor: pointer; margin-left: 20px;" /></a>
 							</td>
 							<td class="dragHandle" align="center">
@@ -401,6 +414,7 @@ class member_info_settings_page {
 														?>
 														<option value="text">Text</option>\
 														<option value="textarea">Text Area</option>\
+														<option value="address">Address</option>\
 														<option value="address_map">Address (including google map)</option>\
 														<option value="image">Image</option>\
 														<option value="document">Document</option>\

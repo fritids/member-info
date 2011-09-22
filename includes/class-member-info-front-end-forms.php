@@ -27,9 +27,11 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 	
 		global $current_user, $wp_roles, $wpdb;
 		get_currentuserinfo();
-		//echo '<pre>';
-		//print_r($current_user);
-		//echo '</pre>';
+/*
+		echo '<pre>';
+		print_r($current_user);
+		echo '</pre>';
+*/
 	 
 		require_once( ABSPATH . WPINC . '/registration.php' );
 		require_once( ABSPATH . 'wp-admin/includes' . '/template.php' ); 
