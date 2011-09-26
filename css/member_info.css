@@ -273,3 +273,30 @@ input.button-primary:hover, button.button-primary:hover, a.button-primary:hover,
 .checkbox input{
 	margin-right: 5px;
 }
+
+.updated,
+.error {
+	border-width: 1px;
+	border-style: solid;
+	padding: 0 0.6em;
+	margin: 5px 15px 2px;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.updated p,
+.error p {
+	margin: 0.5em 0;
+	padding: 2px;
+}
+
+.error {
+	background-color: #ffebe8;
+	border-color: #c00;
+}
+
+.error a {
+	color: #c00;
+}

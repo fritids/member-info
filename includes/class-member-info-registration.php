@@ -95,6 +95,8 @@ class member_info_registration extends member_info_meta_boxes {
 		
 		add_action('init', array( &$this, 'redirect' ));
 		
+		add_action('wp_head', array( &$this, 'redirect' ));
+		
 		add_shortcode( SHORTCODE_register , array( &$this, 'register_form' ) );
 		
 		add_filter('shake_error_codes', array( &$this, 'redirect_login' ));
@@ -462,16 +464,9 @@ class member_info_registration extends member_info_meta_boxes {
 	
 		if(get_option( 'login_page_id' ) != '' ){
 		
-			global $errors;
+			global $errors, $pagenow;
 		
 			$error_message = '';
-			
-/*
-			echo '<pre>';
-			print_r($errors);
-			echo '</pre>';
-			exit;
-*/
 			
 			if($errors){
 			
@@ -484,7 +479,7 @@ class member_info_registration extends member_info_meta_boxes {
 			}
 	
 		
-			if($_GET['action'] != 'rp' && $_GET['action'] != 'resetpass' ){
+			if($_GET['action'] != 'rp' && $_GET['action'] != 'resetpass'){
 			
 				if($error_message != '' || ($_POST['pwd'] && $_POST['pwd'] == '' && $_POST['log'] && $_POST['log'] == '' ) ){
 					if($_POST['pwd'] == '' && $_POST['log'] == '' & $error_message != 'registerdisabled'){
@@ -510,11 +505,15 @@ class member_info_registration extends member_info_meta_boxes {
 	function redirect(){
 	
 		global $pagenow;
+		
+		global $current_user;
+	    get_currentuserinfo();	
+	    
+	    $required_fields = explode( '~', get_option('required_fields') );	
+	    
+	    $redirect = false;
 	
 		if(is_admin() && $pagenow !='media-upload.php' && $pagenow != 'async-upload.php' ){
-	
-			global $current_user;
-	      	get_currentuserinfo();
 	      	
 	      	foreach($current_user->roles as $role ){
 	      		if($role == 'basic_member'){
@@ -526,10 +525,23 @@ class member_info_registration extends member_info_meta_boxes {
 	
 		if( ($_SERVER['REQUEST_URI'] == '/' . get_option( 'login_page_slug' ) . '/' || $_SERVER['REQUEST_URI'] == '/' . get_option( 'register_page_slug' ) . '/' ) && is_user_logged_in() ){
 		
-			wp_redirect( get_permalink( get_option( 'profile_page_id' ) ) );
+			$redirect = true;
 		
 		}
+		
+		if($_SERVER['REQUEST_URI'] != '/' . get_option( 'profile_page_slug' ) . '/' && !is_admin()  && is_user_logged_in()){
+			foreach($required_fields as $field){
+			
+				$field1 = str_replace('custom_field_', '', $field );
+				
+				if( !isset($current_user->$field1) && $field1 != '' ){
+					wp_redirect( get_permalink( get_option( 'profile_page_id' ) ) . '?error=required_empty&field=' . $field1 );
+					break;
+				}
 	
+			}
+		}
+		
 	}
 
 

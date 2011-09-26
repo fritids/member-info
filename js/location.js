@@ -85,7 +85,7 @@ function codeAddress(update) {
 	geocoder.geocode( { 'address': address}, function(results, status) {
 	  	if (status == google.maps.GeocoderStatus.OK) {
 	  		jQuery('#didyoumean').html('');
-	  		//console.log(results);
+	  		console.log(results);
 	  		if(results.length > 1){
 	  			jQuery('#didyoumean').html('<strong>Did you mean:</strong><br>');
 	  			for (i=0;i<results.length;i++){
@@ -111,6 +111,12 @@ function codeAddress(update) {
 		    	jQuery('#member_info_location').val(results[0].formatted_address);
 		    	jQuery('#lat').val(results[0].geometry.location.lat());
 		    	jQuery('#lng').val(results[0].geometry.location.lng());
+		    	
+				if(results[0].address_components[1].long_name == results[0].address_components[2].long_name){
+					jQuery('#general_location').val( results[0].address_components[1].long_name );
+				}else{
+					jQuery('#general_location').val( results[0].address_components[1].long_name+', '+results[0].address_components[2].long_name );
+				}		    	
 		    	
 		    	jQuery('#member_info_address').html('');
 		    	for (i=0;i<results[0].address_components.length;i++){
@@ -155,6 +161,12 @@ function codeLatLng(lat, lng) {
     	jQuery('#lat').val(results[0].geometry.location.lat());
     	jQuery('#lng').val(results[0].geometry.location.lng());
     	
+		if(results[0].address_components[1].long_name == results[0].address_components[2].long_name){
+			jQuery('#general_location').val( results[0].address_components[1].long_name );
+		}else{
+			jQuery('#general_location').val( results[0].address_components[1].long_name+', '+results[0].address_components[2].long_name );
+		}		    	
+
     	jQuery('#member_info_address').html('');
     	for (i=0;i<results[0].address_components.length;i++){
     		jQuery('#member_info_address').html( jQuery('#member_info_address').html() + results[0].address_components[i].long_name + '\n' );

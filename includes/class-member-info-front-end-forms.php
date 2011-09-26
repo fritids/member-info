@@ -18,20 +18,8 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 	
 	function account_page(){
 	
-/*
-		wp_admin_css( 'global' );
-		wp_admin_css();
-		wp_admin_css( 'colors' );
-		wp_admin_css( 'ie' );
-*/
-	
 		global $current_user, $wp_roles, $wpdb;
 		get_currentuserinfo();
-/*
-		echo '<pre>';
-		print_r($current_user);
-		echo '</pre>';
-*/
 	 
 		require_once( ABSPATH . WPINC . '/registration.php' );
 		require_once( ABSPATH . 'wp-admin/includes' . '/template.php' ); 
@@ -115,6 +103,18 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 			</p>
 
 		<?php else : ?>
+		
+			<?php if(isset( $_REQUEST['error'] ) ){
+
+				switch($_REQUEST['error']){
+					case 'required_empty':
+						$error = 'Required fields are empty. Please fill in those fields to continue using the site.';
+					break;
+				} 
+				
+				do_action( 'profile_errors', $_GET['error']); 
+			
+			} ?>		
 
 			<?php if ( $error ) echo '<p class="error">' . $error . '</p>'; ?>
 			

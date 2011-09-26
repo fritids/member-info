@@ -37,6 +37,7 @@ class member_info_meta_boxes {
 															
 		$mi_meta['lng'] =  $_POST['lng'] ;
 		$mi_meta['lat'] =  $_POST['lat'] ;
+		$mi_meta['general_location'] =  $_POST['general_location'] ;
 		$mi_meta['show_map'] =  $_POST['show_map'] ;
 		$mi_meta['map_width'] =  $_POST['map_width'] ;
 		$mi_meta['map_height'] =  $_POST['map_height'] ;
@@ -83,7 +84,7 @@ class member_info_meta_boxes {
 		print_r($user_info);
 		echo '</pre>';
 */
-		
+
 		$fields_name = explode( ',', get_option('mi_field_name') );
 		$fields_type = explode( ',', get_option('mi_field_type') );
 		$fields_desc = explode( ',', get_option('mi_field_desc') );
@@ -291,6 +292,7 @@ class member_info_meta_boxes {
 		<br style="clear:both;">
 		<input type="hidden" name="lng" id="lng" value="<?php echo $user_info->lng; ?>" />
 		<input type="hidden" name="lat" id="lat" value="<?php echo $user_info->lat; ?>" />
+		<input type="hidden" name="general_location" id="general_location" value="<?php echo $user_info->general_location; ?>" />
 <!--
 		<span class="member_info_label">Show Map?</span>
 		<select name="show_map" onChange="show_hide_map_sizes()" id="mi_show_map">
