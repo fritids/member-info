@@ -198,10 +198,12 @@ class member_info_registration extends member_info_meta_boxes {
 		do_action( 'login_init' );
 		do_action( 'login_form_register' );
 
-		if ( is_user_logged_in() ){ ?>
+		if ( is_user_logged_in() ){ 
+		
+			$message = 'You are already signed in. You can <a href="' . get_permalink( get_option( 'profile_page_id' ) ) . '">edit your profile</a> or <a href="' . wp_logout_url( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) . '">sign out</a>.'; ?>
 		
 			<p id="login_error">
-				<?php _e('You are already signed in. You can <a href="' . get_permalink( get_option( 'profile_page_id' ) ) . '">edit your profile</a> or <a href="' . wp_logout_url( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) . '">sign out</a>.', ' member-info'); ?>
+				<?php echo apply_filters( 'logged_in_error', $message, $message );  ?>
 			</p>
 		
 		<?php }else{
