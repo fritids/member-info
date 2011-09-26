@@ -4,7 +4,7 @@ new member_info_registration;
 
 class member_info_registration extends member_info_meta_boxes {
 
-		public $default_fields = array(
+	public $default_fields = array(
 		array(
 			'Personal Options', '', ''
 		),
@@ -79,7 +79,7 @@ class member_info_registration extends member_info_meta_boxes {
 		),
 		array(
 			'New Password', 'Give the user the ability to change their password.', 'password'
-		),
+		)
 								
 	);
 
@@ -197,263 +197,265 @@ class member_info_registration extends member_info_meta_boxes {
 		do_action( 'login_head' );
 		do_action( 'login_init' );
 		do_action( 'login_form_register' );
-			
-		if(is_page(get_option('register_page_id'))){
-	
-			if ( is_user_logged_in() ){ ?>
-			
-				<p id="login_error">
-					<?php _e('You are already signed in. Please <a href="' . wp_logout_url( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) . '">sign out</a> to register a new profile.', ' member-info'); ?>
-				</p>
-			
-			<?php }else{
+
+		if ( is_user_logged_in() ){ ?>
 		
-				$fields_name = explode( ',', get_option('mi_field_name') );
-				$fields_type = explode( ',', get_option('mi_field_type') );
-				$fields_desc = explode( ',', get_option('mi_field_desc') );
-				$custom_select = explode( ',', get_option('mi_custom_select_option') );
-				
-				$required_fields = explode( '~', get_option('required_fields') );			
-				$reg_fields = explode( '~', get_option('reg_fields') );
-				
-				$registration = get_option( 'users_can_register' );
-		 
-				if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'adduser' ) {
-					$user_pass = wp_generate_password();
-					$userdata = array(
-						'user_pass' => $user_pass,
-						'user_login' => esc_attr( $_POST['username'] ),
-						'user_email' => esc_attr( $_POST['email'] ),
-						'role' =>'basic_member',
-					);
+			<p id="login_error">
+				<?php _e('You are already signed in. You can <a href="' . get_permalink( get_option( 'profile_page_id' ) ) . '">edit your profile</a> or <a href="' . wp_logout_url( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) . '">sign out</a>.', ' member-info'); ?>
+			</p>
+		
+		<?php }else{
+
+			if(is_page(get_option('register_page_id'))){
+			
+					$fields_name = explode( ',', get_option('mi_field_name') );
+					$fields_type = explode( ',', get_option('mi_field_type') );
+					$fields_desc = explode( ',', get_option('mi_field_desc') );
+					$custom_select = explode( ',', get_option('mi_custom_select_option') );
 					
-					foreach($this->default_fields as $field){
+					$required_fields = explode( '~', get_option('required_fields') );			
+					$reg_fields = explode( '~', get_option('reg_fields') );
 					
-						if($field[2] != '' && in_array($field[2], $reg_fields)){
-							
-							$userdata[$field[2]] = $_POST[$field[2]];			
+					$registration = get_option( 'users_can_register' );
+			 
+					if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'adduser' ) {
+						$user_pass = wp_generate_password();
+						$userdata = array(
+							'user_pass' => $user_pass,
+							'user_login' => esc_attr( $_POST['username'] ),
+							'user_email' => esc_attr( $_POST['email'] ),
+							'role' =>'basic_member',
+						);
 						
-					}
-					
-					}					
-				 
-					if ( !$userdata['user_login'] ){
-						$error = __('A username is required for registration.', 'member-info');
-					}elseif ( username_exists($userdata['user_login']) ){
-						$error = __('Sorry, that username already exists!', 'member-info');
-				 	}elseif ( !is_email($userdata['user_email'], true) ){
-						$error = __('You must enter a valid email address.', 'member-info');
-					}elseif ( email_exists($userdata['user_email']) ){
-						$error = __('Sorry, that email address is already used!', 'member-info');
-				 	}
-				 	
-				 	if($required_fields != ''){
-				 	
-				 		$extra_meta = array();
-				 		
-				 		$i = 0;
-				 	
-						foreach($fields_name as $field){
-							if(in_array('custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), $required_fields) && in_array('custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), $reg_fields)){
-				 			
-					 			$post_name = 'custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) );
+						foreach($this->default_fields as $field){
+						
+							if($field[2] != '' && in_array($field[2], $reg_fields)){
+								
+								$userdata[$field[2]] = $_POST[$field[2]];			
+							
+						}
+						
+						}					
+					 
+						if ( !$userdata['user_login'] ){
+							$error = __('A username is required for registration.', 'member-info');
+						}elseif ( username_exists($userdata['user_login']) ){
+							$error = __('Sorry, that username already exists!', 'member-info');
+					 	}elseif ( !is_email($userdata['user_email'], true) ){
+							$error = __('You must enter a valid email address.', 'member-info');
+						}elseif ( email_exists($userdata['user_email']) ){
+							$error = __('Sorry, that email address is already used!', 'member-info');
+					 	}
+					 	
+					 	if($required_fields != ''){
+					 	
+					 		$extra_meta = array();
+					 		
+					 		$i = 0;
+					 	
+							foreach($fields_name as $field){
+								if(in_array('custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), $required_fields) && in_array('custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), $reg_fields)){
 					 			
-					 			//echo $post_name . ' = ' . $_POST[$post_name] . '<br>';
-					 					 			
-					 			if ( $_POST[$post_name] == '' ){
-					 			
-					 				$error = __($fields_name[$i] . '  is required for registration.', 'member-info'); 
-					 			
-					 			}else{
-					 			
-					 				//add checks for extra field type. e.g.. If it is a map/address we need to save the lat and lng as well.
-					 			
-					 				$extra_meta[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )]['value'] =  $_POST[$post_name]; // make an array of all the user data to be saved.
-					 				
-					 				$extra_meta[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )]['type'] =  $fields_type[$i];
+						 			$post_name = 'custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) );
+						 			
+						 			//echo $post_name . ' = ' . $_POST[$post_name] . '<br>';
+						 					 			
+						 			if ( $_POST[$post_name] == '' ){
+						 			
+						 				$error = __($fields_name[$i] . '  is required for registration.', 'member-info'); 
+						 			
+						 			}else{
+						 			
+						 				//add checks for extra field type. e.g.. If it is a map/address we need to save the lat and lng as well.
+						 			
+						 				$extra_meta[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )]['value'] =  $_POST[$post_name]; // make an array of all the user data to be saved.
+						 				
+						 				$extra_meta[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )]['type'] =  $fields_type[$i];
+						 			
+						 			}
 					 			
 					 			}
-				 			
-				 			}
-				 			
-				 			$i++;
-				 	
-				 		}
-				 	
-				 	}
-				 	
-					if(!$error){
-						//print_r($userdata);
+					 			
+					 			$i++;
+					 	
+					 		}
+					 	
+					 	}
+					 	
+						if(!$error){
+							//print_r($userdata);
+							
+							$new_user = wp_insert_user( $userdata );
+	
+							//save user meta from $extra_meta array
+							
+							foreach($extra_meta as $metakey => $metavalue){
+							
+								do_action( 'registration_save_custom_fields', $metavalue['type'], $metavalue['value'], $new_user );
+							
+								//echo $metakey . ' ' . $metavalue['value'];
+							
+								update_usermeta( $new_user, $metakey, $metavalue['value'] );
+							
+							}
+							
+							wp_new_user_notification($new_user, $user_pass);
+							
+						}
 						
-						$new_user = wp_insert_user( $userdata );
-
-						//save user meta from $extra_meta array
+						if ( $error ) { ?>
+							<div id="login_error">
+								<?php echo $error; ?>
+							</div>
+						<?php }else{ ?>
+							<p class="message">	
+								Registration complete. Please check your e-mail.<br>
+							</p>
+						<?php }
+					 
+					} 
+					
+					?>
+					
+					<form method="post" action="http://<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>" id="registerform" name="registerform">
+					
+						<?php foreach($this->default_fields as $field){
 						
-						foreach($extra_meta as $metakey => $metavalue){
+							if($field[2] != '' && in_array($field[2], $reg_fields)){ ?>
+			
+								<p>
+									<label><?php echo $field[0]; ?><br>
+									<input type="text" tabindex="10" size="20" value="<?php if ( $error ) echo esc_html( $_POST[$field[2]], 1 ); ?>" class="input" id="<?php echo $field[2]; ?>" name="<?php echo $field[2]; ?>"></label>
+								</p>						
+							
+							<?php }
 						
-							do_action( 'registration_save_custom_fields', $metavalue['type'], $metavalue['value'], $new_user );
+						} ?>
 						
-							//echo $metakey . ' ' . $metavalue['value'];
+						<?php do_action('register_form'); ?>
 						
-							update_usermeta( $new_user, $metakey, $metavalue['value'] );
+	<!-- 					<p id="reg_passmail">A password will be e-mailed to you.</p> -->
+	<!-- 					<br class="clear"> -->
+						<input type="hidden" value="" name="redirect_to">
+						
+						<?php wp_nonce_field( 'add-user' ) ?>
+						
+						<input name="action" type="hidden" id="action" value="adduser" />
+						<p class="submit"><input type="submit" tabindex="100" value="<?php if ( current_user_can( 'create_users' ) ) echo'Add User'; else echo 'Register'; ?>" class="button-primary" id="wp-submit" name="wp-submit"></p>
+					</form>
+					
+				<?php }elseif($_GET['action'] == 'lostpassword'){
+						
+				if ( $_REQUEST['error'] != '' ) { ?>
+					<div id="login_error">
+						<?php
+						
+						switch($_REQUEST['error']){
+						
+							case 'invalidcombo';
+							echo "<strong>ERROR</strong>: Invalid username or e-mail.";
+							break;
+							
+							case 'empty_username';
+							echo "<strong>ERROR</strong>: Enter a username or e-mail address.";
+							break;
 						
 						}
 						
-						wp_new_user_notification($new_user, $user_pass);
-						
-					}
-					
-					if ( $error ) { ?>
-						<div id="login_error">
-							<?php echo $error; ?>
-						</div>
-					<?php }else{ ?>
-						<p class="message">	
-							Registration complete. Please check your e-mail.<br>
-						</p>
-					<?php }
-				 
-				} 
+						?>
+					</div>
+				<?php }elseif($_REQUEST['reset'] == 'true'){ ?>
 				
-				?>
+					<p class="message">	Check your e-mail for the confirmation link.<br></p>
+					
+					<?php $this->retrieve_password(); ?>
 				
-				<form method="post" action="http://<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>" id="registerform" name="registerform">
+				<?php }else{ ?>
 				
-					<?php foreach($this->default_fields as $field){
+					<p class="message">Please enter your username or email address. You will receive a link to create a new password via email.</p>
 					
-						if($field[2] != '' && in_array($field[2], $reg_fields)){ ?>
-		
-							<p>
-								<label><?php echo $field[0]; ?><br>
-								<input type="text" tabindex="10" size="20" value="<?php if ( $error ) echo esc_html( $_POST[$field[2]], 1 ); ?>" class="input" id="<?php echo $field[2]; ?>" name="<?php echo $field[2]; ?>"></label>
-							</p>						
-						
-						<?php }
-					
-					} ?>
-					
-					<?php do_action('register_form'); ?>
-					
-<!-- 					<p id="reg_passmail">A password will be e-mailed to you.</p> -->
-<!-- 					<br class="clear"> -->
-					<input type="hidden" value="" name="redirect_to">
-					
-					<?php wp_nonce_field( 'add-user' ) ?>
-					
-					<input name="action" type="hidden" id="action" value="adduser" />
-					<p class="submit"><input type="submit" tabindex="100" value="<?php if ( current_user_can( 'create_users' ) ) echo'Add User'; else echo 'Register'; ?>" class="button-primary" id="wp-submit" name="wp-submit"></p>
-				</form>
+				<?php } ?>
 				
-			<?php }
-			
-		}elseif($_GET['action'] == 'lostpassword'){
-					
-			if ( $_REQUEST['error'] != '' ) { ?>
-				<div id="login_error">
-					<?php
-					
-					switch($_REQUEST['error']){
-					
-						case 'invalidcombo';
-						echo "<strong>ERROR</strong>: Invalid username or e-mail.";
-						break;
-						
-						case 'empty_username';
-						echo "<strong>ERROR</strong>: Enter a username or e-mail address.";
-						break;
-					
-					}
-					
-					?>
-				</div>
-			<?php }elseif($_REQUEST['reset'] == 'true'){ ?>
-			
-				<p class="message">	Check your e-mail for the confirmation link.<br></p>
-			
-			<?php }else{ ?>
-			
-				<p class="message">Please enter your username or email address. You will receive a link to create a new password via email.</p>
+				<form method="post" action="<?php echo site_url() ?>/wp-login.php?action=lostpassword" id="registerform" name="registerform">
+					<p>
+						<label for="user_login" class="hide"><?php _e('Username or Email'); ?>: </label>
+						<input type="text" name="user_login" value="" size="20" id="user_login" tabindex="1001" />
+					</p>
+					<p class="submit">
+						<?php do_action('login_form', 'resetpass'); ?>
+						<input type="submit" value="<?php _e('Reset my password'); ?>" class="button-primary" id="wp-submit" name="wp-submit" />
+						<?php $reset = $_GET['reset']; if($reset == true) { echo '<p>A message will be sent to your email address.</p>'; } ?>
+						<input type="hidden" name="redirect_to" value="<?php echo get_permalink(get_option('login_page_id')); ?>?action=lostpassword&reset=true" />
+						<input type="hidden" name="user-cookie" value="1" />
+					</p>
+				</form>			
 				
-			<?php } ?>
-			
-			<form method="post" action="<?php echo site_url() ?>/wp-login.php?action=lostpassword" id="registerform" name="registerform">
-				<p>
-					<label for="user_login" class="hide"><?php _e('Username or Email'); ?>: </label>
-					<input type="text" name="user_login" value="" size="20" id="user_login" tabindex="1001" />
-				</p>
-				<p class="submit">
-					<?php do_action('login_form', 'resetpass'); ?>
-					<input type="submit" value="<?php _e('Reset my password'); ?>" class="button-primary" id="wp-submit" name="wp-submit" />
-					<?php $reset = $_GET['reset']; if($reset == true) { echo '<p>A message will be sent to your email address.</p>'; } ?>
-					<input type="hidden" name="redirect_to" value="<?php echo get_permalink(get_option('login_page_id')); ?>?action=lostpassword&reset=true" />
-					<input type="hidden" name="user-cookie" value="1" />
-				</p>
-			</form>			
-			
-			<?php
-			
-		}else{
-
-			if ( $_REQUEST['error'] != '' ) { ?>
-				<div id="login_error">
-					<?php
-					
-					switch($_REQUEST['error']){
-					
-						case 'empty_password';
-						echo "<strong>ERROR</strong>: The  password field is empty.";
-						break;
-						
-						case 'empty_username';
-						echo "<strong>ERROR</strong>: The username field is empty.";
-						break;	
-						
-						case 'invalid_username';
-						echo "<strong>ERROR</strong>: Invalid username. <a href=\"" . get_permalink(get_option('login_page_id')) . "?action=lostpassword\">Lost your password?</a>";
-						break;		
-						
-						case 'incorrect_password';
-						echo "<strong>ERROR</strong>: The password you entered is incorrect. <a href=\"" . get_permalink(get_option('login_page_id')) . "?action=lostpassword\">Lost your password?</a>";
-						break;	
-						
-						case 'empty';
-						echo "<strong>ERROR</strong>: Nothing was submitted.";
-						break;	
-						
-						case 'registerdisabled';
-						echo "<strong>ERROR</strong>: User registration is currently not allowed.";
-						break;																	
-					
-					}
-					
-					?>
-				</div>
-			<?php } ?>
-			
-			<form action="<?php bloginfo('url'); ?>/wp-login.php" method="post" name="loginform" id="registerform" >
-				<p>
-					<label>Username<br>
-					<input type="text" name="log" id="user_login" class="input" value="" size="20" tabindex="10"></label>
-				</p>
-				<p>
-					<label>Password<br>
-					<input type="password" name="pwd" id="user_pass" class="input" value="" size="20" tabindex="20"></label>
-				</p>
+				<?php
 				
-				<?php do_action('login_form'); ?>
+			}else{
+	
+				if ( $_REQUEST['error'] != '' ) { ?>
+					<div id="login_error">
+						<?php
+						
+						switch($_REQUEST['error']){
+						
+							case 'empty_password';
+							echo "<strong>ERROR</strong>: The  password field is empty.";
+							break;
+							
+							case 'empty_username';
+							echo "<strong>ERROR</strong>: The username field is empty.";
+							break;	
+							
+							case 'invalid_username';
+							echo "<strong>ERROR</strong>: Invalid username. <a href=\"" . get_permalink(get_option('login_page_id')) . "?action=lostpassword\">Lost your password?</a>";
+							break;		
+							
+							case 'incorrect_password';
+							echo "<strong>ERROR</strong>: The password you entered is incorrect. <a href=\"" . get_permalink(get_option('login_page_id')) . "?action=lostpassword\">Lost your password?</a>";
+							break;	
+							
+							case 'empty';
+							echo "<strong>ERROR</strong>: Nothing was submitted.";
+							break;	
+							
+							case 'registerdisabled';
+							echo "<strong>ERROR</strong>: User registration is currently not allowed.";
+							break;																	
+						
+						}
+						
+						?>
+					</div>
+				<?php } ?>
 				
-				<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90"> Remember Me</label></p>
-				<p class="submit">
-					<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="100">
-					<input name="action" type="hidden" id="action" value="login" />
-					<input type="hidden" name="redirect_to" value="<?php echo get_permalink( get_option('profile_page_id') ); ?>" />
-				</p>
-				<p>
-					<a href="<?php echo get_permalink(get_option('login_page_id')); ?>?action=lostpassword">Forgotten password?</a>
-				</p>				
-			</form>	
-			
-			<?php }
+				<form action="<?php bloginfo('url'); ?>/wp-login.php" method="post" name="loginform" id="registerform" >
+					<p>
+						<label>Username<br>
+						<input type="text" name="log" id="user_login" class="input" value="" size="20" tabindex="10"></label>
+					</p>
+					<p>
+						<label>Password<br>
+						<input type="password" name="pwd" id="user_pass" class="input" value="" size="20" tabindex="20"></label>
+					</p>
+					
+					<?php do_action('login_form'); ?>
+					
+					<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90"> Remember Me</label></p>
+					<p class="submit">
+						<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="100">
+						<input name="action" type="hidden" id="action" value="login" />
+						<input type="hidden" name="redirect_to" value="<?php echo get_permalink( get_option('profile_page_id') ); ?>" />
+					</p>
+					<p>
+						<a href="<?php echo get_permalink(get_option('login_page_id')); ?>?action=lostpassword">Forgotten password?</a>
+					</p>				
+				</form>	
+				
+				<?php }
+				
+			}		
 		
 		do_action('login_footer');
 		
@@ -528,11 +530,15 @@ class member_info_registration extends member_info_meta_boxes {
 			$redirect = true;
 		
 		}
-		
+
 		if($_SERVER['REQUEST_URI'] != '/' . get_option( 'profile_page_slug' ) . '/' && !is_admin()  && is_user_logged_in()){
 			foreach($required_fields as $field){
 			
 				$field1 = str_replace('custom_field_', '', $field );
+				
+				if($field1 = 'email'){
+					$field1 = 'user_email';
+				}
 				
 				if( !isset($current_user->$field1) && $field1 != '' ){
 					wp_redirect( get_permalink( get_option( 'profile_page_id' ) ) . '?error=required_empty&field=' . $field1 );
@@ -580,6 +586,80 @@ class member_info_registration extends member_info_meta_boxes {
 	
 	}	
 */
+
+	function retrieve_password() {
+		global $wpdb, $current_site;
+	
+		$errors = new WP_Error();
+	
+		if ( empty( $_POST['user_login'] ) && empty( $_POST['user_email'] ) )
+			$errors->add('empty_username', __('<strong>ERROR</strong>: Enter a username or e-mail address.'));
+	
+		if ( strpos($_POST['user_login'], '@') ) {
+			$user_data = get_user_by_email(trim($_POST['user_login']));
+			if ( empty($user_data) )
+				$errors->add('invalid_email', __('<strong>ERROR</strong>: There is no user registered with that email address.'));
+		} else {
+			$login = trim($_POST['user_login']);
+			$user_data = get_userdatabylogin($login);
+		}
+	
+		do_action('lostpassword_post');
+	
+		if ( $errors->get_error_code() )
+			return $errors;
+	
+		if ( !$user_data ) {
+			$errors->add('invalidcombo', __('<strong>ERROR</strong>: Invalid username or e-mail.'));
+			return $errors;
+		}
+	
+		// redefining user_login ensures we return the right case in the email
+		$user_login = $user_data->user_login;
+		$user_email = $user_data->user_email;
+	
+		do_action('retreive_password', $user_login);  // Misspelled and deprecated
+		do_action('retrieve_password', $user_login);
+	
+		$allow = apply_filters('allow_password_reset', true, $user_data->ID);
+	
+		if ( ! $allow )
+			return new WP_Error('no_password_reset', __('Password reset is not allowed for this user'));
+		else if ( is_wp_error($allow) )
+			return $allow;
+	
+		$key = $wpdb->get_var($wpdb->prepare("SELECT user_activation_key FROM $wpdb->users WHERE user_login = %s", $user_login));
+		if ( empty($key) ) {
+			// Generate something random for a key...
+			$key = wp_generate_password(20, false);
+			do_action('retrieve_password_key', $user_login, $key);
+			// Now insert the new md5 key into the db
+			$wpdb->update($wpdb->users, array('user_activation_key' => $key), array('user_login' => $user_login));
+		}
+		$message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
+		$message .= network_site_url() . "\r\n\r\n";
+		$message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
+		$message .= __('If this was a mistake, just ignore this email and nothing will happen.') . "\r\n\r\n";
+		$message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
+		$message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . ">\r\n";
+	
+		if ( is_multisite() )
+			$blogname = $GLOBALS['current_site']->site_name;
+		else
+			// The blogname option is escaped with esc_html on the way into the database in sanitize_option
+			// we want to reverse this for the plain text arena of emails.
+			$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+	
+		$title = sprintf( __('[%s] Password Reset'), $blogname );
+	
+		$title = apply_filters('retrieve_password_title', $title);
+		$message = apply_filters('retrieve_password_message', $message, $key);
+	
+		if ( $message && !wp_mail($user_email, $title, $message) )
+			wp_die( __('The e-mail could not be sent.') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function...') );
+	
+		return true;
+	}
 	
 }
 

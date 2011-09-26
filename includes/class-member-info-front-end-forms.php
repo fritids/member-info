@@ -108,7 +108,7 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 
 				switch($_REQUEST['error']){
 					case 'required_empty':
-						$error = 'Required fields are empty. Please fill in those fields to continue using the site.';
+						$error = 'Required fields are empty. Please fill in ' . $_REQUEST['field'] . ' continue using the site.';
 					break;
 				} 
 				
