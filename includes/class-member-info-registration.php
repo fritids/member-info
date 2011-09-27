@@ -96,7 +96,7 @@ class member_info_registration extends member_info_meta_boxes {
 		add_action('init', array( &$this, 'redirect' ));
 		
 		add_action('wp_head', array( &$this, 'redirect' ));
-		
+				
 		add_shortcode( SHORTCODE_register , array( &$this, 'register_form' ) );
 		
 		add_filter('shake_error_codes', array( &$this, 'redirect_login' ));
@@ -221,9 +221,12 @@ class member_info_registration extends member_info_meta_boxes {
 					$registration = get_option( 'users_can_register' );
 			 
 					if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'adduser' ) {
-						$user_pass = wp_generate_password();
+						if($_POST['pass1'] != '' ){
+							$user_pass = $_POST['pass1'];
+						}else{
+							$user_pass = wp_generate_password();
+						}
 						$userdata = array(
-							'user_pass' => $user_pass,
 							'user_login' => esc_attr( $_POST['username'] ),
 							'user_email' => esc_attr( $_POST['email'] ),
 							'role' =>'basic_member',
@@ -321,17 +324,33 @@ class member_info_registration extends member_info_meta_boxes {
 					
 					<form method="post" action="http://<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>" id="registerform" name="registerform">
 					
-						<?php foreach($this->default_fields as $field){
+						<?php $i = 0; 
+						foreach($this->default_fields as $field){
 						
-							if($field[2] != '' && in_array($field[2], $reg_fields)){ ?>
-			
-								<p>
-									<label><?php echo $field[0]; ?><br>
-									<input type="text" tabindex="10" size="20" value="<?php if ( $error ) echo esc_html( $_POST[$field[2]], 1 ); ?>" class="input" id="<?php echo $field[2]; ?>" name="<?php echo $field[2]; ?>"></label>
-								</p>						
+							if($field[2] != '' && in_array($field[2], $reg_fields)){ 
+
+								if($field[2] == 'password'){ ?>
+									<label>Create a password<br>
+									<div id="password">
+										<input class="input" type="password" name="pass1" id="pass1" size="16" value="" autocomplete="off"> <span class="description">If you would like to change the password type a new one. Otherwise leave this blank.</span><br>
+										<input class="input" type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off"> <span class="description">Type your new password again.</span><br>
+										<div id="pass-strength-result" style="display: block; ">Strength indicator</div>
+										<p class="description indicator-hint">Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).</p>							
+									</div>	
+								<?php }elseif($field[2] == 'username'){ ?>
+									<p>
+										<label><?php echo $field[0]; ?><br>
+										<input type="text" tabindex="10" size="20" value="<?php if ( $error ) echo esc_html( $_POST[$field[2]], 1 ); ?>" class="input" id="user_login" name="<?php echo $field[2]; ?>"></label>
+									</p>
+								<?php }else{ ?>
+									<p>
+										<label><?php echo $field[0]; ?><br>
+										<input type="text" tabindex="10" size="20" value="<?php if ( $error ) echo esc_html( $_POST[$field[2]], 1 ); ?>" class="input" id="<?php echo $field[2]; ?>" name="<?php echo $field[2]; ?>"></label>
+									</p>
+								<?php }						
 							
-							<?php }
-						
+							}
+							$i++;
 						} ?>
 						
 						<?php do_action('register_form'); ?>
@@ -448,7 +467,7 @@ class member_info_registration extends member_info_meta_boxes {
 					<p class="submit">
 						<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="100">
 						<input name="action" type="hidden" id="action" value="login" />
-						<input type="hidden" name="redirect_to" value="<?php echo get_permalink( get_option('profile_page_id') ); ?>" />
+						<input type="hidden" name="redirect_to" value="<?php echo get_bloginfo('url'); ?>" />
 					</p>
 					<p>
 						<a href="<?php echo get_permalink(get_option('login_page_id')); ?>?action=lostpassword">Forgotten password?</a>
@@ -526,33 +545,44 @@ class member_info_registration extends member_info_meta_boxes {
 	      	}
       	
 		}
-	
-		if( ($_SERVER['REQUEST_URI'] == '/' . get_option( 'login_page_slug' ) . '/' || $_SERVER['REQUEST_URI'] == '/' . get_option( 'register_page_slug' ) . '/' ) && is_user_logged_in() ){
-		
-			$redirect = true;
-		
-		}
 
-		if($_SERVER['REQUEST_URI'] != '/' . get_option( 'profile_page_slug' ) . '/' && !is_admin()  && is_user_logged_in()){
+		if(preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']) != '/' . basename(get_permalink(get_option( 'profile_page_id' ))) . '/' && !is_admin()  && is_user_logged_in()){
 			foreach($required_fields as $field){
-			
+
 				$field1 = str_replace('custom_field_', '', $field );
 				
-				if($field1 = 'email'){
-					$field1 = 'user_email';
+				$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 _]", "", $field1) ) );
+				//echo $sanitized_field . ', ';
+				switch($sanitized_field){
+					case 'email':
+						$sanitized_field = 'user_email';
+						break;
+					case 'username':
+						$sanitized_field = 'user_login';
+						break;
+					case 'firstname':
+						$sanitized_field = 'first_name';
+						break;
+					case 'lastname':
+						$sanitized_field = 'last_name';
+						break;
 				}
 				
-				if( !isset($current_user->$field1) && $field1 != '' ){
-					wp_redirect( get_permalink( get_option( 'profile_page_id' ) ) . '?error=required_empty&field=' . $field1 );
+				if( !isset($current_user->$sanitized_field) && $sanitized_field != '' ){
+					wp_redirect( get_permalink( get_option( 'profile_page_id' ) ) . '?error=required_empty&field=' . str_replace( '_', '%20', $field ) );
 					break;
 				}
 	
 			}
 		}
+
+/*
+				echo '<pre>';
+				print_r($current_user);
+				echo '</pre>';	
+*/	
 		
-	}
-
-
+	} // function
 
 	function login_url( $url ) {
     	return get_bloginfo( 'siteurl' );
@@ -568,26 +598,6 @@ class member_info_registration extends member_info_meta_boxes {
 	        .register{ display:none; }
 	    </style>';	
 	} // function
-	
-/*
-	function welcome_email_header($message){
-	
-		return 'header' . $message;
-	
-	}
-	
-	function welcome_email_content($message){
-	
-		return $message . 'Content';
-	
-	}	
-	
-	function welcome_email_footer($message){
-	
-		return $message . 'footer';
-	
-	}	
-*/
 
 	function retrieve_password() {
 		global $wpdb, $current_site;
@@ -669,6 +679,7 @@ class member_info_registration extends member_info_meta_boxes {
 
 if ( !function_exists('wp_new_user_notification') ) {  
     function wp_new_user_notification( $user_id, $plaintext_pass = '' ) {  
+    	wp_set_password($plaintext_pass, $user_id);
         $user = new WP_User($user_id);  
   
         $user_login = stripslashes($user->user_login);  

@@ -1,4 +1,5 @@
-function change_parent_url(url){
-	$.fancybox.close();
-	document.location=url;
+var isInIFrame = (window.location != window.parent.location) ? true : false;
+
+if(isInIFrame){
+	parent.document.location=settings.home;
 }

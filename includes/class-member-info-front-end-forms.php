@@ -108,7 +108,7 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 
 				switch($_REQUEST['error']){
 					case 'required_empty':
-						$error = 'Required fields are empty. Please fill in ' . $_REQUEST['field'] . ' continue using the site.';
+						$error = 'Required fields are empty. Please fill in ' . $_REQUEST['field'] . ' to continue using the site.';
 					break;
 				} 
 				
@@ -117,23 +117,6 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 			} ?>		
 
 			<?php if ( $error ) echo '<p class="error">' . $error . '</p>'; ?>
-			
-			<script type="text/javascript">
-			
-
-			var isInIFrame = (window.location != window.parent.location) ? true : false;
-			
-			if(isInIFrame){
-				parent.document.location=settings.account;
-			}
-
-			
-			function change_parent_url(url){
-				$.fancybox.close();
-				document.location=url;
-			}
-
-			</script>
 
 			<form method="post" id="edituser" class="user-forms" action="<?php the_permalink(); ?>">
 

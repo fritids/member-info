@@ -133,8 +133,11 @@ jQuery(document).ready(function () {
 			
 		jQuery.each(extra_fields, function(index1, value1) { 
 			if(value1 != ''){
-				if('custom_field_' + value1.toLowerCase().replace(" ","_") == value){
-					jQuery('#custom_field_' + value1.toLowerCase().replace(" ","_") + ', .custom_field_' + value1.toLowerCase().replace(" ","_")).addClass('required').parent().parent().find('th label').append('<span class="description">  (required)</span>');
+				var val = value1.toLowerCase().replace(/ /g,"_").replace(/[^a-zA-Z 0-9 _ ?]+/g, '');
+				
+				if('custom_field_' + val == value){
+					//alert(val + ' - ' + value);
+					jQuery('#custom_field_' + value1.toLowerCase().replace(/ /g,"_").replace(/[^a-zA-Z 0-9 _]+/g, '') + ', .custom_field_' + value1.toLowerCase().replace(/ /g,"_").replace(/[^a-zA-Z 0-9 _]+/g, '') + ':first').addClass('required').parent().parent().find('th label').append('<span class="description">  (required)</span>');
 				}	
 			}		
 		});

@@ -20,6 +20,8 @@ class member_info_setup {
 		
 		add_action("wp_enqueue_scripts", array( &$this, 'js_libs_front_end' ));
 		
+		add_action("login_enqueue_scripts", array( &$this, 'js_libs_front_end' ));
+		
 		add_action("wp_print_styles", array( &$this, 'style_libs_front_end' ));
 		
 		add_action('save_post', array( &$this, 'catch_shortcodes' ));
@@ -76,7 +78,7 @@ class member_info_setup {
 	
 		global $pagenow;
 	
-		if(is_page(get_option('profile_page_id'), get_option('register_page_id'))){
+		if(is_page(get_option('profile_page_id')) || is_page(get_option('register_page_id'))){
 		
 			wp_enqueue_script('jquery');
 			wp_enqueue_script('jquery-ui-core', array('jquery'));
@@ -92,7 +94,7 @@ class member_info_setup {
 			wp_enqueue_script('show_hide_profile_fields', MI_url.'/js/show_hide_profile_fields.js', '', 1.0 );
 			
 			$data = array( 'MI_url' => MI_url, 'account' => get_permalink(get_option('profile_page_id')) );
-			wp_localize_script( 'member_info_functions_js', 'settings', $data );	
+			wp_localize_script( 'member_info_functions_js', 'settings', $data );				
 			
 			$data = array( 'show_defaults' => get_option('show_defaults'), 'required' => get_option('required_fields'), 'extra_fields' => get_option('mi_field_name') );
 			wp_localize_script( 'show_hide_profile_fields', 'mi_options', $data );	
@@ -113,6 +115,15 @@ class member_info_setup {
 				'l10n_print_after' => 'try{convertEntities(pwsL10n);}catch(e){};'
 			);
 			wp_localize_script( 'mi-password-strength-meter', 'pwsL10n', $data );
+		
+		}
+		
+		if(!is_page(get_option('login_page_id') && !is_page(get_option('register_page_id')))){
+		
+			wp_enqueue_script('member_info_iframe_check', MI_url.'/js/iframe_check.js', '', 1.0 );
+		
+			$data = array( 'MI_url' => MI_url, 'account' => get_permalink(get_option('profile_page_id')), 'home' => get_bloginfo('url') );
+			wp_localize_script( 'member_info_iframe_check', 'settings', $data );
 		
 		}
 
