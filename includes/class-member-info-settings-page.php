@@ -75,7 +75,7 @@ class member_info_settings_page {
 			'About Yourself', '', ''
 		),
 		array(
-			'Biographical Info', 'The option for the user to add a brief bio about themselves.', 'biographical_info'
+			'Biographical Info', 'The option for the user to add a brief bio about themselves.', 'user_description'
 		),
 		array(
 			'New Password', 'Give the user the ability to change their password.', 'password'

@@ -18,6 +18,8 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 	
 	function account_page(){
 	
+		do_action( 'account_page_head'); 
+	
 		global $current_user, $wp_roles, $wpdb;
 		get_currentuserinfo();
 	 

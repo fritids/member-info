@@ -527,12 +527,15 @@ class member_info_registration extends member_info_meta_boxes {
 	
 	function redirect(){
 	
+		$fields_type = explode( ',', get_option('mi_field_type') );
+		$fields_name = explode( ',', get_option('mi_field_name') );
+		$required_fields = explode( '~', get_option('required_fields') );
+		
+		//echo '<br>' . get_option('required_fields').'<br>';
 		global $pagenow;
 		
 		global $current_user;
-	    get_currentuserinfo();	
-	    
-	    $required_fields = explode( '~', get_option('required_fields') );	
+	    get_currentuserinfo();		
 	    
 	    $redirect = false;
 	
@@ -545,42 +548,79 @@ class member_info_registration extends member_info_meta_boxes {
 	      	}
       	
 		}
+		
+		$required = array();
+		
+		$i = 0;
 
-		if(preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']) != '/' . basename(get_permalink(get_option( 'profile_page_id' ))) . '/' && !is_admin()  && is_user_logged_in()){
-			foreach($required_fields as $field){
+		if(preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']) != '/' . basename(get_permalink(get_option( 'profile_page_id' ))) . '/' && !is_admin()  && is_user_logged_in() ){
+		
+			if(defined("MIPP_url") && get_bloginfo('url')  . $_SERVER['REQUEST_URI'] == MIPP_url . '/functions/check_url.php'){
+				return;
+			}
+				
+			$ii=0;
+			
+			foreach($fields_name as $field){
 
 				$field1 = str_replace('custom_field_', '', $field );
 				
 				$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 _]", "", $field1) ) );
-				//echo $sanitized_field . ', ';
-				switch($sanitized_field){
-					case 'email':
-						$sanitized_field = 'user_email';
-						break;
-					case 'username':
-						$sanitized_field = 'user_login';
-						break;
-					case 'firstname':
-						$sanitized_field = 'first_name';
-						break;
-					case 'lastname':
-						$sanitized_field = 'last_name';
-						break;
-				}
 				
-				if( !isset($current_user->$sanitized_field) && $sanitized_field != '' ){
-					wp_redirect( get_permalink( get_option( 'profile_page_id' ) ) . '?error=required_empty&field=' . str_replace( '_', '%20', $field ) );
-					break;
-				}
-	
+				if( in_array('custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), $required_fields) ){
+					$required[$i]['name'] = $field;
+					$required[$i]['key'] = $ii;
+					$i++;
+				}	
+				
+				$ii++;
+				
 			}
+			
+			foreach($this->default_fields as $field){
+			
+				$check_field = $field[2];
+				
+				if( in_array($check_field, $required_fields) ){
+					switch($check_field){
+						case 'email':
+							$check_field = 'user_email';
+							break;
+						case 'username':
+							$check_field = 'user_login';
+							break;
+						case 'firstname':
+							$check_field = 'first_name';
+							break;
+						case 'lastname':
+							$check_field = 'last_name';
+							break;
+					}						
+					$required[$i]['name']  = $check_field;
+					$i++; 
+				}										
+				
+			}
+			
+			foreach($required as $field){
+			
+				$field1 = str_replace('custom_field_', '', $field['name']  );
+				
+				$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 _]", "", $field1) ) );	
+				
+				do_action( 'check_required_fields', $sanitized_field, $fields_type[$field['key']] );		
+			
+				if( !isset($current_user->$sanitized_field) && $sanitized_field != '' ){
+					
+					wp_redirect( get_permalink( get_option( 'profile_page_id' ) ) . '?error=required_empty&field=' . str_replace( '_', '%20', $field['name']  ) );
+					break;
+					
+				}			
+			
+			}
+			
 		}
 
-/*
-				echo '<pre>';
-				print_r($current_user);
-				echo '</pre>';	
-*/	
 		
 	} // function
 

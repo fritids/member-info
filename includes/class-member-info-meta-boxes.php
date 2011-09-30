@@ -33,7 +33,7 @@ class member_info_meta_boxes {
 		if ( !current_user_can( 'edit_user', $user_id ) ) { return false; }
     	
     	$fields_name = explode( ',', get_option('mi_field_name') );
-		
+		$fields_type = explode( ',', get_option('mi_field_type') );
 															
 		$mi_meta['lng'] =  $_POST['lng'] ;
 		$mi_meta['lat'] =  $_POST['lat'] ;
@@ -43,47 +43,29 @@ class member_info_meta_boxes {
 		$mi_meta['map_height'] =  $_POST['map_height'] ;
 		$mi_meta['mi_location'] =  $_POST['mi_location'] ;
 		
+		$i=0;
 		foreach($fields_name as $field){
 		
 			$mi_meta[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )] =  $_POST[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )] ;
+			do_action( 'pre_member_info_save_member_data', $fields_type[$i], $_POST[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )], $user_id );
+			$i++;
+			
+		} 
 		
-		}
-		
-	    foreach ($mi_meta as $key => $value) { // Cycle through the $mi_meta array!
-	        $value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
+	    foreach ($mi_meta as $key => $value) { 
+	    	
+	        $value = implode(',', (array)$value); 
 	       	update_usermeta( $user_id, $key, $value );
-	        //echo $key." - " . $value."<br>";
     			        
 	    }
-	    //exit;
 	    //echo "Refreshing your profile...";
 	    
 	
 	} //function	
 	
-/*
-	function member_info_custom_meta_boxes() {
-	
-	    add_meta_box( 
-	        'member_info_location_meta_box',
-	        __( 'Member Details', 'member_info' ),
-	        array(&$this,'member_info_location_inner'),
-	        'members',
-	        'normal'
-	    );   
-	    
-	} //function
-*/
-	
 	function member_info_location_inner($user){
 	
 		$user_info = get_userdata($user->ID);
-		
-/*
-		echo '<pre>';
-		print_r($user_info);
-		echo '</pre>';
-*/
 
 		$fields_name = explode( ',', get_option('mi_field_name') );
 		$fields_type = explode( ',', get_option('mi_field_type') );
@@ -96,17 +78,13 @@ class member_info_meta_boxes {
 		
 		echo '<h3>Other Info</h3>';
 		
-/*
-		echo '<pre>';
-		print_r($user_info);
-		echo '</pre>';
-*/
-		
 		echo '<table class="form-table">';
 		
 			foreach($fields_name as $field){
 			
 				$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) );
+				
+				do_action( 'front_end_display_fields', $fields_type[$i], $field, $sanitized_field, $fields_desc[$i]); 
 			
 				switch ($fields_type[$i]){
 					case 'text':
