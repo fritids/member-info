@@ -92,6 +92,7 @@ class member_info_setup {
 			wp_enqueue_script('mi_upload', MI_url . '/js/upload.js', array('thickbox'));
 			wp_enqueue_script('member_info_front_end_js', MI_url.'/js/member_info_front_end.js', array('thickbox'), 1.0 );
 			wp_enqueue_script('show_hide_profile_fields', MI_url.'/js/show_hide_profile_fields.js', '', 1.0 );
+			wp_enqueue_script('wysiwyg', MI_url.'/js/wysiwyg/jquery.wysiwyg.js', '', 1.0 );
 			
 			$data = array( 'MI_url' => MI_url, 'account' => get_permalink(get_option('profile_page_id')) );
 			wp_localize_script( 'member_info_functions_js', 'settings', $data );				
@@ -140,6 +141,8 @@ class member_info_setup {
 			wp_enqueue_style('mi-colors-fresh', get_bloginfo('url') . '/wp-admin/css/colors-fresh.css');
 		
 			wp_enqueue_style('ui_lightness', MI_url . '/js/ui-lightness/jquery-ui-1.8.16.custom.css');
+			
+			wp_enqueue_style('wysiwyg', MI_url . '/js/wysiwyg/jquery.wysiwyg.css');
 		
 		}
 	

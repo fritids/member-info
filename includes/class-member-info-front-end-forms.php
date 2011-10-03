@@ -27,6 +27,8 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 		require_once( ABSPATH . 'wp-admin/includes' . '/template.php' ); 
 		
 		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'update-user' ) {
+		
+			do_action( 'member_info_save_member_details', $current_user->id);
 	 
 			/* Update user password. */
 			if ( !empty($_POST['pass1'] ) && !empty( $_POST['pass2'] ) ) {
@@ -73,7 +75,7 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 	 
 			update_usermeta( $current_user->id, 'jabber', esc_attr( $_POST['jabber'] ) );
 	 
-			update_usermeta( $current_user->id, 'description', esc_attr( $_POST['description'] ) );
+			update_usermeta( $current_user->id, 'description', addslashes( $_POST['description'] ) );
 	 	 
 			update_usermeta( $current_user->id, 'twitter_url', esc_attr( $_POST['twitter_url'] ) );	
 	 
@@ -119,6 +121,43 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 			} ?>		
 
 			<?php if ( $error ) echo '<p class="error">' . $error . '</p>'; ?>
+			
+			<script type="text/javascript">
+			jQuery(function() {
+				jQuery('.wysiwyg').wysiwyg({
+					css: '<?php echo MI_url; ?>/js/wysiwyg/custom.css',
+				    controls: {
+				        strikeThrough: { visible: false },
+				        underline: { visible: false },
+				        subscript: { visible: false },
+				        superscript: { visible: false },
+				        insertHorizontalRule: { visible: false },
+				        insertImage: { visible: false },
+				        h1: { visible: false },
+				        h2: { visible: false },
+				        h3: { visible: false },
+				        decreaseFontSize: { visible: false },
+				        html: { visible: false },
+				        insertTable: { visible: false },
+				        code: { visible: false },
+				        bold: { visible: false },
+				        italic: { visible: false },
+				        justifyLeft: { visible: false },
+				        justifyCenter: { visible: false },
+				        justifyRight: { visible: false },
+				        justifyFull: { visible: false },
+				        indent: { visible: false },
+				        outdent: { visible: false },
+				        insertOrderedList: { visible: false },
+				        insertUnorderedList: { visible: false },
+				        createLink: { visible: false },
+				        redo: { visible: false },
+				        undo: { visible: false },
+				        removeFormat: { visible: false }
+				    }
+				});
+			});
+			</script>			
 
 			<form method="post" id="edituser" class="user-forms" action="<?php the_permalink(); ?>">
 
@@ -293,7 +332,7 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 				<table class="form-table">
 				<tbody><tr>
 					<th><label for="description">Biographical Info</label></th>
-					<td><textarea name="description" id="description" rows="5" cols="30"><?php the_author_meta( 'description', $current_user->id ); ?></textarea><br>
+					<td><textarea name="description" class="wysiwyg" id="description" rows="5" cols="30"><?php echo stripslashes( get_the_author_meta( 'description', $current_user->id ) ) ; ?></textarea><br>
 					<span class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</span></td>
 				</tr>
 				

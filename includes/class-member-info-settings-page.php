@@ -136,8 +136,16 @@ class member_info_settings_page {
 		    <div id="poststuff">
 		    
 		    	<form method="POST" action="options-general.php?page=mi_settings">
-		    	
-					<?php $meta_boxes = do_meta_boxes('Settings', 'normal', null); ?>
+		    		
+		    		<br><br>
+		    		
+		    		<input type="submit" value="Update Settings" name="submit_member_info" class="button-primary" onClick="submitSettings();"/>
+		    		
+		    		<br><br>
+		    		
+					<?php $meta_boxes = do_meta_boxes('Settings', 'normal', null); 
+					
+					echo do_action( 'member_info_settings', 'var'); ?>
 					
 					<input type="submit" value="Update Settings" name="submit_member_info" class="button-primary" onClick="submitSettings();"/>
 					
@@ -396,6 +404,7 @@ class member_info_settings_page {
 				$i++;
 			
 			}
+			
 			?>
 		
 		</table>	
@@ -695,13 +704,15 @@ class member_info_settings_page {
 		
 		if(update_option('frontend_fields', $fe)){
 			$updated = TRUE;
-		}						
+		}	
+		
+		do_action('save_member_info_settings', $updated);					
 		
 		if($updated){
 			echo '<div id="message" class="updated">Settings Updated!</div>';
 		}
 				
-	}
+	} // function
 	
 	function member_info_display_method(){
 	

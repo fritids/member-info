@@ -104,7 +104,7 @@ class member_info_meta_boxes {
 								<th><label for="' .$field. '">' .$field. '</label</th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>
-									<textarea class="input" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '">
+									<textarea class="input wysiwyg" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '">
 										' . $user_info->$sanitized_field . '
 									</textarea>
 									<span class="description">

@@ -50,6 +50,11 @@
 textarea, input, select {
 	margin: 1px;
 	padding: 3px;
+/* 	width: 97%; */
+}
+
+textarea{
+	width: 97%;
 }
 
 input, select {
@@ -90,7 +95,7 @@ p.help, p.description, span.description, .form-wrap p {
 	font-family: sans-serif;
 }
 
-textarea, input[type="text"], input[type="password"], input[type="file"], input[type="button"], input[type="submit"], input[type="reset"], select {
+textarea, input[type="text"], input[type="password"], input[type="file"], input[type="button"], input[type="submit"], input[type="reset"], select, iframe {
 	border-width: 1px;
 	border-style: solid;
 	-moz-border-radius: 3px;
@@ -156,7 +161,7 @@ input.button-primary:hover, button.button-primary:hover, a.button-primary:hover,
 	border-color: #DDD!important;
 }
 
-#edituser .input {
+#edituser .input, #edituser iframe {
     background: none repeat scroll 0 0 #FBFBFB;
     border: 1px solid #E5E5E5;
     box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
