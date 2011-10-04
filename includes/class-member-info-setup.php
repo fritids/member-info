@@ -56,6 +56,7 @@ class member_info_setup {
 				wp_enqueue_script('thickbox');
 				wp_enqueue_script('mi_upload', MI_url . '/js/upload.js', array('jquery','media-upload','thickbox'));
 				wp_enqueue_script('show_hide_profile_fields', MI_url.'/js/show_hide_profile_fields.js', '', 1.0 );
+				wp_enqueue_script('wysiwyg', MI_url.'/js/wysiwyg/jquery.wysiwyg.js', '', 1.0 );
 				
 				$data = array( 'show_defaults' => get_option('show_defaults'), 'required' => get_option('required_fields'), 'extra_fields' => get_option('mi_field_name') );
 				wp_localize_script( 'show_hide_profile_fields', 'mi_options', $data );

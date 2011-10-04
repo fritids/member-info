@@ -19,6 +19,12 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 	function account_page(){
 	
 		do_action( 'account_page_head'); 
+		
+		if($_GET['message'] != ''){
+		
+			echo '<div class="profile_message">' . $_GET['message'] . '</div>';
+		
+		}
 	
 		global $current_user, $wp_roles, $wpdb;
 		get_currentuserinfo();
@@ -126,6 +132,7 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 			jQuery(function() {
 				jQuery('.wysiwyg').wysiwyg({
 					css: '<?php echo MI_url; ?>/js/wysiwyg/custom.css',
+					initialContent: "",
 				    controls: {
 				        strikeThrough: { visible: false },
 				        underline: { visible: false },

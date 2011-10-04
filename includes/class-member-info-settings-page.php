@@ -118,6 +118,7 @@ class member_info_settings_page {
 		
 		?>
 		
+<!--
 		<script type="text/javascript" charset="utf-8">
 			//<![CDATA[
 			jQuery(document).ready( function($) {
@@ -125,7 +126,8 @@ class member_info_settings_page {
 				postboxes.add_postbox_toggles('Settings');
 			});			
 			//]]>
-		</script>		
+		</script>
+-->		
 	
 		<div class="wrap">
 			
