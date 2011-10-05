@@ -146,7 +146,7 @@ class member_info_registration extends member_info_meta_boxes {
 					<label>
 						<?php echo $field; ?>
 						<br>
-						<?php do_action( 'registration_profile_url', $fields_type[$i], $field ); ?>
+						<?php do_action( 'registration_display_fields', $fields_type[$i], $field ); ?>
 						<?php
 						if($fields_type[$i] == 'custom_select'){
 						
@@ -178,7 +178,6 @@ class member_info_registration extends member_info_meta_boxes {
 						
 						}						
 						?>
-<!-- 						<input id="<?php echo 'custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ); ?>" class="input" type="text" tabindex="20" size="25" value="<?php echo $_POST['skillclip_url']; ?>" name="skillclip_url"> -->
 						<p class="description">
 							<?php echo $fields_desc[$i]; ?>
 						</p>
@@ -312,6 +311,8 @@ class member_info_registration extends member_info_meta_boxes {
 					 	
 						if(!$error){
 							//print_r($userdata);
+							
+							do_action('mi_pre_add_user', $userdata);
 							
 							$new_user = wp_insert_user( $userdata );
 	
