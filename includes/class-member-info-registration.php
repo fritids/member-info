@@ -187,6 +187,18 @@ class member_info_registration extends member_info_meta_boxes {
 				<?php			
 			}
 			$i++;
+		}
+		
+		if(get_option('mi_reg_recaptcha') == 'yes'){
+		
+			echo '<p><label>';
+		
+				require_once(MI_dir . '/includes/recaptchalib.php');
+				$publickey = "6LenzcgSAAAAAFF74Cw8M4rKXwy8k1bg6hS830Iv";
+				echo recaptcha_get_html($publickey);
+			
+			echo '</label></p>';
+		
 		}		
 	
 	} // function
@@ -219,6 +231,17 @@ class member_info_registration extends member_info_meta_boxes {
 					$reg_fields = explode( '~', get_option('reg_fields') );
 					
 					$registration = get_option( 'users_can_register' );
+					
+					if(get_option('mi_reg_recaptcha') == 'yes'){
+					
+						require_once(MI_dir . '/includes/recaptchalib.php');
+						$privatekey = "6LenzcgSAAAAAB6gQ-YdobQ1ZddIq1kxIR8XDuSF";
+						$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+							if (!$resp->is_valid) {
+								$error = __('The reCaptcha you entered does not match! Please try again.', 'member-info');
+							}
+					
+					}
 			 
 					if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'adduser' ) {
 						if($_POST['pass1'] != '' ){
@@ -314,7 +337,7 @@ class member_info_registration extends member_info_meta_boxes {
 							</div>
 						<?php }else{ ?>
 							<p class="message">	
-								Registration complete. Please check your e-mail.<br>
+								Registration complete. Please check your e-mail and <a href="<?php echo get_permalink(get_option('login_page_id')); ?>">login</a>.<br>
 							</p>
 						<?php }
 					 

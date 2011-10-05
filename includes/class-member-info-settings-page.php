@@ -111,7 +111,7 @@ class member_info_settings_page {
 			
 		add_meta_box(	'member_info_extra_fields', __('Custom Fields'), array( &$this, 'member_info_extra_fields' ), 'Settings', 'normal', 'core');
 		
-		add_meta_box(	'member_info_display_method', __('Display Method'), array( &$this, 'member_info_display_method' ), 'Settings', 'normal', 'core');
+		add_meta_box(	'member_info_other_options', __('Other options'), array( &$this, 'member_info_other_options' ), 'Settings', 'normal', 'core');
 				
 		wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
 		wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );					
@@ -706,7 +706,15 @@ class member_info_settings_page {
 		
 		if(update_option('frontend_fields', $fe)){
 			$updated = TRUE;
-		}	
+		}
+		
+		if($_POST['mi_reg_recaptcha']){
+		
+			if(update_option('mi_reg_recaptcha', $_POST['mi_reg_recaptcha'])){
+				$updated = TRUE;
+			}
+		
+		}			
 		
 		do_action('save_member_info_settings', $updated);					
 		
@@ -716,7 +724,7 @@ class member_info_settings_page {
 				
 	} // function
 	
-	function member_info_display_method(){
+	function member_info_other_options(){
 	
 		?>
 		<table class="form-table">
@@ -725,10 +733,10 @@ class member_info_settings_page {
 			
 				<td>
 		
-					<span class="member_info_label">Display method:</span>
-					<select name="mi_display_method">
-						<option value="manual" <?php if(get_option('mi_display_method') == 'manual'){ echo 'selected'; } ?>>Manual</option>
-						<option value="auto" <?php if(get_option('mi_display_method') == 'auto'){ echo 'selected'; } ?>>Automatic</option>
+					<span class="member_info_label">Display reCaptcha on registration form?</span>
+					<select name="mi_reg_recaptcha">
+						<option value="yes" <?php if(get_option('mi_reg_recaptcha') == 'yes'){ echo 'selected'; } ?>>Yes</option>
+						<option value="no" <?php if(get_option('mi_reg_recaptcha') == 'no'){ echo 'selected'; } ?>>No</option>
 					</select>
 					
 				</td>
@@ -740,24 +748,6 @@ class member_info_settings_page {
 				<td>
 				
 					<span class="description">
-						<strong>Manual: </strong>You edit your theme files to include calls to custom meta data according to the fields you have set up.
-						<br>
-						For example to reference a field you have created called "Map", you would use this code within your loop-
-						<br>
-						<br>
-						<pre>&lt;?php echo get_post_meta($post->ID, 'map', true) ?&gt;</pre>
-						<br>
-						<a href="http://codex.wordpress.org/Function_Reference/get_post_meta" target="_blank">See here for more info</a>.
-						<br>
-						<br>
-						<strong>Automatic: </strong>The content for each member is generated automatically. Your content will be generated with each field as a &lt;p&gt; with a class of member_info and an id of the name of the field. There will also be a label for the field surrounded by a &lt;span&gt; with a class of member_info_label.
-						<br>
-						For example a field named "Name" would be displayed as follows-
-						<br>
-						<br>
-						<pre>&lt;p class="member_info" id="Name"&gt;&lt;span class="member_info_label"&gt;Name: &lt;/span&gt;John Smith&lt;/p&gt;</pre>
-						<br>
-						This allows you to style the elements with CSS.
 					</span>
 					
 				</td>
