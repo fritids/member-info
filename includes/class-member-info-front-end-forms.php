@@ -166,7 +166,7 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 			});
 			</script>	
 			
-			<?php do_action( 'profile_page_pre_form');		
+			<?php do_action( 'profile_page_pre_form'); ?>
 
 			<form method="post" id="edituser" class="user-forms" action="<?php the_permalink(); ?>">
 
