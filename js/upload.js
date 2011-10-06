@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
 			tb_remove(); 
 		}
 	 
-		tb_show('', MI.WPURL + 'media-upload.php?type=image&amp;TB_iframe=true');
+		tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&amp;TB_iframe=true');
 		return false;
 	});
 	

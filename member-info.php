@@ -52,4 +52,6 @@ include_once('includes/class-member-info-registration.php'); //Registration
 
 include_once('includes/member-info-theme-functions.php'); //Presents functions for use within a theme
 
+include_once('includes/class-media-upload-edit.php'); //Edit media manager screen
+
 ?>
