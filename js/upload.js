@@ -14,10 +14,6 @@ jQuery(document).ready(function() {
  			jQuery('.mi_image:first').remove();
 			tb_remove(); 
 		}
-<<<<<<< HEAD
-	 
-		tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&amp;TB_iframe=true');
-=======
 		var current_images  = jQuery('#upload_image').val();
 		var images_array = current_images.split('~');
 		var i = 1;
@@ -30,7 +26,6 @@ jQuery(document).ready(function() {
 		}else{
 			alert('You can not add any more images.');
 		}
->>>>>>> Media Uploader now works.
 		return false;
 	});
 	
