@@ -48,12 +48,15 @@ jQuery(document).ready(function() {
 		var current_documents  = jQuery('#upload_document').val();
 		var documents_array = current_documents.split('~');
 		var i = 1;
-		jQuery.each(documents_array, function() { 
-			i++;
-		});
+		if(current_documents != ''){
+			jQuery.each(documents_array, function() { 
+				i++;
+			});
+		}
 		var document_limit = jQuery('#document_limit').val();
 		if(i <= document_limit){	 
-			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&TB_iframe=true');	
+			doc_types = jQuery(this).attr('rel');
+			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&file_types=' + doc_types + '&TB_iframe=true');	
 		}else{
 			alert('You can not add any more documents.');
 		}		

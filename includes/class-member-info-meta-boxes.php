@@ -72,6 +72,7 @@ class member_info_meta_boxes {
 		$fields_desc = explode( ',', get_option('mi_field_desc') );
 		$image_limit = explode( ',', get_option('mi_fields_image_limit') );
 		$document_limit = explode( ',', get_option('mi_fields_document_limit') );
+		$document_type = explode( ',', get_option('mi_fields_document_type') );
 		$custom_select = explode( ',', get_option('mi_custom_select_option') );
 		
 		$i = 0;
@@ -154,7 +155,7 @@ class member_info_meta_boxes {
 								<th><label for="' .$field. '">' .$field. '</label</th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>';
-									$this->member_document($sanitized_field, $user->ID, $document_limit[$i]);
+									$this->member_document($sanitized_field, $user->ID, $document_limit[$i], $document_type[$i]);
 									echo '<span class="description">
 										' . $fields_desc[$i] . '
 									</span>
@@ -318,14 +319,15 @@ class member_info_meta_boxes {
 	
 	}
 	
-	function member_document($name, $id, $document_limit){
+	function member_document($name, $id, $document_limit, $document_type){
 	
 		$user_info = get_userdata($id);
 	
 		?>
 		<input type="hidden" id="document_limit" value="<?php echo $document_limit; ?>"/>
+		<input type="hidden" id="document_type" value="<?php echo $document_type; ?>"/>
 		<input type="hidden" id="upload_document" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
-		<input type="button" id="mi_upload_document_button" value="Upload a document" class="button" />
+		<input type="button" id="mi_upload_document_button" value="Upload a document" class="button" rel="<?php echo $document_type; ?>"/>
 		<br><!-- <span class="member_info_label"> Current document: </span> -->
 		<div id="mi_documents">
 			<?php

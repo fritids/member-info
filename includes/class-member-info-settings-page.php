@@ -247,6 +247,7 @@ class member_info_settings_page {
 		$fields_desc = explode( ',', get_option('mi_field_desc') );
 		$image_limit = explode( ',', get_option('mi_fields_image_limit') );
 		$document_limit = explode( ',', get_option('mi_fields_document_limit') );
+		$document_type = explode( ',', get_option('mi_fields_document_type') );
 		$custom_select = explode( ',', get_option('mi_custom_select_option') );
 		$custom_checkbox = explode( ',', get_option('mi_custom_checkbox_checkboxes') );
 		
@@ -339,11 +340,15 @@ class member_info_settings_page {
 								}else{
 									echo '<span class="image_limit"><input type="hidden" name="mi_fields_image_limit[]" value="0" /></span>';
 								}
+								
 								if($fields_type[$i] == 'document'){
-								 	echo '<span class="document_limit"><br>Limit number of documents to: <input type="text" size="3" name="mi_fields_document_limit[]" value="' . $document_limit[$i] . '" /></span>';
+								 	echo '<span class="document_limit"><br>Limit number of documents to: <input type="text" size="3" name="mi_fields_document_limit[]" value="' . $document_limit[$i] . '" /></span>
+								 	<span class="document_type"><br>Limit type of documents to (separate with a comma with no fullstops. e.g. doc,pdf,docx ): <input type="text" size="3" name="mi_fields_document_type[]" value="'. $document_type[$i] . '"/></span>';
 								}else{
-									echo '<span class="document_limit"><input type="hidden" name="mi_fields_document_limit[]" value="0" /></span>';
-								}								
+									echo '<span class="document_limit"><input type="hidden" name="mi_fields_document_limit[]" value="0" /></span>
+									<span class="document_type"><input type="hidden" name="mi_fields_document_type[]" value="0" /></span>';
+								}	
+															
 								if($fields_type[$i] == 'custom_select'){
 									$custom_options = explode( ',', get_option('custom_select_option_' . $custom_select[$i]) );
 								 	echo '<span class="add_option_button"><br><a style="cursor:pointer;" onClick="add_custom_select(\'mi_fields_row' . $i . '\')"><img src="' . MI_url . '/img/plus.png" width="12" height="12"/>Add an option.</a> <br>(Hint: Type "Other" as an option name and if selected a new text box will appear for the user to type an alternative option.)</span><input type="hidden" name="mi_custom_select_option[]" value="' . $custom_select[$i] . '" class="select_option_identifier"/>';
@@ -638,7 +643,27 @@ class member_info_settings_page {
 				$updated = TRUE;
 			}
 		
-		}		
+		}
+		
+		$document_types = '';
+		
+		if(!empty($_POST['mi_fields_document_type'])){
+		
+			foreach($_POST['mi_fields_document_type'] as $document_type){
+			
+				if($document_types == ""){
+					$document_types .= $document_type;
+				}else{
+					$document_types .= ',' . $document_type;
+				}
+			
+			}
+			
+			if(update_option('mi_fields_document_type', $document_types)){
+				$updated = TRUE;
+			}
+		
+		}				
 		
 		if(update_option('mi_display_method', $_POST['mi_display_method'])){
 			$updated = TRUE;

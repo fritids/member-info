@@ -48,7 +48,9 @@ function type_select_change(val, row){
 		remove_image_limit(row);
 		add_image_limit(row);
 		remove_document_limit(row);
+		remove_document_type(row);
 		add_empty_document_limit(row);
+		add_empty_document_type(row);
 		remove_custom_select(row);
 		add_empty_custom_select(row);
 		remove_custom_checkbox(row);
@@ -57,7 +59,9 @@ function type_select_change(val, row){
 		remove_image_limit(row);
 		add_empty_image_limit(row);	
 		remove_document_limit(row);
+		remove_document_type(row);
 		add_document_limit(row);
+		add_document_type(row);
 		remove_custom_select(row);
 		add_empty_custom_select(row);
 		remove_custom_checkbox(row);
@@ -66,7 +70,9 @@ function type_select_change(val, row){
 		remove_image_limit(row);
 		add_empty_image_limit(row);
 		remove_document_limit(row);
+		remove_document_type(row);
 		add_empty_document_limit(row);
+		add_empty_document_type(row);
 		remove_custom_select(row);
 		add_add_option_button(row);
 		add_custom_select(row);
@@ -76,7 +82,9 @@ function type_select_change(val, row){
 		remove_image_limit(row);
 		add_empty_image_limit(row);
 		remove_document_limit(row);
+		remove_document_type(row);
 		add_empty_document_limit(row);
+		add_empty_document_type(row);
 		remove_custom_select(row);
 		add_empty_custom_select(row);
 		remove_custom_checkbox(row);
@@ -86,7 +94,9 @@ function type_select_change(val, row){
 		remove_image_limit(row);
 		add_empty_image_limit(row);
 		remove_document_limit(row);
+		remove_document_type(row);
 		add_empty_document_limit(row);
+		add_empty_document_type(row);
 		remove_custom_select(row);
 		add_empty_custom_select(row);
 		remove_custom_checkbox(row);
@@ -114,15 +124,31 @@ function remove_document_limit(row){
 	jQuery('#' + row + ' .document_limit').remove();
 }
 
+function remove_document_type(row){
+	jQuery('#' + row + ' .document_type').remove();
+}
+
 function add_document_limit(row){
 	jQuery('#' + row + ' .select_type').parent().append('\
 		<span class="document_limit"><br>Limit number of documents to: <input type="text" size="3" name="mi_fields_document_limit[]" /></span>\
 	');
 }
 
+function add_document_type(row){
+	jQuery('#' + row + ' .select_type').parent().append('\
+		<span class="document_type"><br>Limit type of documents to (separate with a comma with no fullstops. e.g. doc,pdf,docx ): <input type="text" size="3" name="mi_fields_document_type[]" /></span>\
+	');
+}
+
 function add_empty_document_limit(row){
 	jQuery('#' + row + ' .select_type').parent().append('\
 		<span class="document_limit"><input type="hidden" name="mi_fields_document_limit[]" value="0" /></span>\
+	');
+}
+
+function add_empty_document_type(row){
+	jQuery('#' + row + ' .select_type').parent().append('\
+		<span class="document_type"><input type="hidden" name="mi_fields_document_type[]" value="0" /></span>\
 	');
 }
 
