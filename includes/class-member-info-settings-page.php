@@ -714,7 +714,15 @@ class member_info_settings_page {
 				$updated = TRUE;
 			}
 		
-		}			
+		}
+		
+		if($_POST['required_redirect']){
+		
+			if(update_option('required_redirect', $_POST['required_redirect'])){
+				$updated = TRUE;
+			}
+		
+		}					
 		
 		do_action('save_member_info_settings', $updated);					
 		
@@ -753,6 +761,32 @@ class member_info_settings_page {
 				</td>
 		
 			</tr>
+			
+			<tr>
+			
+				<td>
+		
+					<span class="member_info_label">Redirect on required fields?</span>
+					<select name="required_redirect">
+						<option value="yes" <?php if(get_option('required_redirect') == 'yes'){ echo 'selected'; } ?>>Yes</option>
+						<option value="no" <?php if(get_option('required_redirect') == 'no'){ echo 'selected'; } ?>>No</option>
+					</select>
+					
+				</td>
+		
+			</tr>					
+					
+			<tr>
+			
+				<td>
+				
+					<span class="description">
+						Redirect a logged in member back to their profile edit page if any required fields are not filled in?<br>This will mean the member can not access any other part of the site while logged in as they will be redirected back to their profile if they have any required fields missing.
+					</span>
+					
+				</td>
+		
+			</tr>			
 		
 		</table>
 		
