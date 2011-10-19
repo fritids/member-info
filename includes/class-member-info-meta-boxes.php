@@ -326,6 +326,16 @@ class member_info_meta_boxes {
 		?>
 		<input type="hidden" id="document_limit" value="<?php echo $document_limit; ?>"/>
 		<input type="hidden" id="document_type" value="<?php echo $document_type; ?>"/>
+		<?php
+			$limit_docs = explode( '~', $user_info->$name );
+			$ii = 0;
+			$user_info->$name = '';
+			while($ii <= $document_limit -1){
+				$user_info->$name .= $limit_docs[$ii]  . '~';
+				$ii++;
+			}
+			
+		?>
 		<input type="hidden" id="upload_document" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
 		<input type="button" id="mi_upload_document_button" value="Upload a document" class="button" rel="<?php echo $document_type; ?>"/>
 		<br><!-- <span class="member_info_label"> Current document: </span> -->
