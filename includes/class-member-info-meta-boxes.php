@@ -45,20 +45,19 @@ class member_info_meta_boxes {
 		
 		$i=0;
 		foreach($fields_name as $field){
-		
 			$mi_meta[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )] =  $_POST[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )] ;
 			do_action( 'pre_member_info_save_member_data', $fields_type[$i], $_POST[strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )], $user_id );
 			$i++;
 			
 		} 
 		
-	    foreach ($mi_meta as $key => $value) { 
-	    	
-	        $value = implode(',', (array)$value); 
-	       	update_usermeta( $user_id, $key, $value );
-    			        
-	    }
-	    //echo "Refreshing your profile...";
+       	foreach ($mi_meta as $key => $value) { 
+            
+            $value = implode(',', (array)$value); 
+               update_usermeta( $user_id, $key, $value );
+                        
+        }
+        //echo "Refreshing your profile...";
 	    
 	
 	} //function	
