@@ -71,7 +71,7 @@ class media_upload_edit{
 			 
 			 	echo 	'<script type="text/javascript">
 			 				jQuery(\'.buttons\').remove();
-			 				jQuery(\'#media-head-' . $post->ID . '\').parent().html(\'<div class="error" style="margin:0;"><strong>Upload of ' . $post->post_title . ' failed-</strong><br><br>You can not upload this file type. Please upload one of the following-<br><br><em>' . $types_list . '</em></div>\');
+			 				jQuery(\'#media-head-' . $post->ID . '\').parent().parent().html(\'<div class="error" style="margin:0;"><strong>Upload of ' . $post->post_title . ' failed-</strong><br><br>You can not upload this file type. Please upload one of the following-<br><br><em>' . $types_list . '</em></div>\');
 			 			</script>';
 			 			
 			 	wp_delete_post( $post->ID, true );
