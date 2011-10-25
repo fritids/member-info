@@ -84,7 +84,7 @@ class member_info_meta_boxes {
 			
 				$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) );
 				
-				do_action( 'front_end_display_fields', $fields_type[$i], $field, $sanitized_field, $fields_desc[$i]); 
+				do_action( 'front_end_display_fields', $fields_type[$i], $field, $sanitized_field, $fields_desc[$i], $user->ID); 
 			
 				switch ($fields_type[$i]){
 					case 'text':

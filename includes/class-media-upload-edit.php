@@ -52,10 +52,13 @@ class media_upload_edit{
 			$queries = explode('&', $referer);
 			
 			$allowed_types = array();
+			
+			$filter = false;
 	
 			foreach($queries as $query){
 				$q = explode('=', $query);
 				if($q[0] == 'file_types'){
+					$filter = true;
 					$types = explode(',', $q[1]);
 					$types_list = $q[1];
 					foreach($types as $type){
@@ -66,7 +69,7 @@ class media_upload_edit{
 
 			}			 
 			 
-			 if(!in_array(strtolower( $file_type ), $allowed_types)){
+			 if($filter && !in_array(strtolower( $file_type ), $allowed_types)){
 			 
 			 
 			 	echo 	'<script type="text/javascript">
