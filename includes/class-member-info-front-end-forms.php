@@ -81,7 +81,7 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 	 
 			update_usermeta( $current_user->id, 'jabber', esc_attr( $_POST['jabber'] ) );
 	 
-			update_usermeta( $current_user->id, 'description', addslashes( $_POST['description'] ) );
+			update_usermeta( $current_user->id, 'user_description', addslashes( $_POST['user_description'] ) );
 	 	 
 			update_usermeta( $current_user->id, 'twitter_url', esc_attr( $_POST['twitter_url'] ) );	
 	 

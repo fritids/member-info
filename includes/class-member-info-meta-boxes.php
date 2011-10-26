@@ -29,7 +29,7 @@ class member_info_meta_boxes {
 	}
 	
 	function member_info_save_member_data($user_id){
-	
+		
 		if ( !current_user_can( 'edit_user', $user_id ) ) { return false; }
     	
     	$fields_name = explode( ',', get_option('mi_field_name') );
