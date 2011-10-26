@@ -51,6 +51,10 @@ class member_info_meta_boxes {
 			
 		} 
 		
+		echo '<pre>';
+		print_r($mi_meta);
+		echo '</pre>';
+		
        	foreach ($mi_meta as $key => $value) { 
             
             $value = implode(',', (array)$value); 
@@ -345,7 +349,7 @@ class member_info_meta_boxes {
 			while($i <= $document_limit -1){
 				if($documents[$i] != ''){
 					$document = explode( '=', $documents[$i] );
-					echo '<div class="single_row" title="' . $document[0] . '"><div class="mi_uploaded_doc" >' . $document[1] . '</div><img style="cursor:pointer;" onClick="deleteDocument(\'' . $document[0] . '\', \'' . $document[1] . '\');" src="' . MI_url . '/img/delete.png" class="delete_document" /></div>';
+					echo '<div class="single_row" title="' . $document[0] . '"><div class="mi_uploaded_doc" >' . $document[1] . '</div><img style="cursor:pointer;" onClick="deleteVideo(\'' . $document[0] . '\', \'' . $document[1] . '\');" src="' . MI_url . '/img/delete.png" class="delete_document" /></div>';
 				}else{
 					echo '<div class="single_row"><img class="mi_document" src="' . MI_url . '/img/file.png" /></div>';
 				}

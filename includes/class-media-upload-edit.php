@@ -63,6 +63,7 @@ class media_upload_edit{
 					$types_list = $q[1];
 					foreach($types as $type){
 						$allowed_types[] = strtolower( $type );
+						$allowed_types[] = 'x-' . strtolower( $type );
 					}
 					
 				}
@@ -71,7 +72,7 @@ class media_upload_edit{
 			 
 			 if($filter && !in_array(strtolower( $file_type ), $allowed_types)){
 			 
-			 
+			echo $file_type; print_r($allowed_types);
 			 	echo 	'<script type="text/javascript">
 			 				jQuery(\'.buttons\').remove();
 			 				jQuery(\'#media-head-' . $post->ID . '\').parent().parent().html(\'<div class="error" style="margin:0;"><strong>Upload of ' . $post->post_title . ' failed-</strong><br><br>You can not upload this file type. Please upload one of the following-<br><br><em>' . $types_list . '</em></div>\');
