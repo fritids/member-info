@@ -10,7 +10,7 @@ class member_info_search_functions{
 	
 	function __construct(){ 
 			
-		if(!is_admin() && is_search()){
+		if(!is_admin()){
 	
 			add_filter( 'request', array( &$this, 'fix_blank_search_string' ) );
 		
