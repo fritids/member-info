@@ -104,26 +104,12 @@ class member_info_registration extends member_info_meta_boxes {
 		add_filter('shake_error_codes', array( &$this, 'redirect_login' ));
 		
 		add_shortcode( SHORTCODE_login , array( &$this, 'register_form' ) );
-		
-		//add_action('register_post', array( &$this, 'check_fields' ),10,3);
-		
-		//add_action('user_register', array( &$this, 'register_member' ));
-		
+						
 		add_filter('login_headerurl', array( &$this, 'login_url' )); 
 		
 		add_filter('login_headertitle', array( &$this, 'login_title' ));
 		
 		add_action('login_head', array( &$this, 'login_image' ));
-		
-		/*
-		
-		add_filter('new_member_email_head', array( &$this, 'welcome_email_header' )); 
-		
-		add_filter('new_member_email_content', array( &$this, 'welcome_email_content' )); 
-		
-		add_filter('new_member_email_footer', array( &$this, 'welcome_email_footer' )); 
-
-		*/	
 
 	
 	} // function
