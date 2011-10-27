@@ -42,10 +42,6 @@ include_once('includes/class-member-info-settings-page.php'); //Settings Page
 
 include_once('includes/class-member-info-meta-boxes.php'); //Meta Boxes
 
-//include_once('includes/class-member-info-shortcodes.php'); //Shortcodes
-
-//include_once('includes/class-member-info-widget.php'); //Widget
-
 include_once('includes/class-member-info-front-end-forms.php'); //Front end registration, log in and profile
 
 include_once('includes/class-member-info-registration.php'); //Registration
@@ -53,5 +49,11 @@ include_once('includes/class-member-info-registration.php'); //Registration
 include_once('includes/member-info-theme-functions.php'); //Presents functions for use within a theme
 
 include_once('includes/class-media-upload-edit.php'); //Edit media manager screen
+
+include_once('includes/class-member-info-search-functions.php'); //Search functionality fixes
+
+if(get_option('mi_use_tantan_s3') == 'yes'){
+	include_once('tantan-s3/wordpress-s3.php'); //Search functionality fixes
+}
 
 ?>

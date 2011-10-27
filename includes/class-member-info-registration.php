@@ -90,6 +90,8 @@ class member_info_registration extends member_info_meta_boxes {
 	} // function
 	
 	function __construct(){
+	
+		//add_action('init', array( &$this, 'update_all_members' )); //uncomment this to update all users in one fell swoop! Make sure you comment it out again though!
 		
 		add_action('register_form', array( &$this, 'add_fields_to_reg_form' ));
 		
@@ -103,7 +105,6 @@ class member_info_registration extends member_info_meta_boxes {
 		
 		add_shortcode( SHORTCODE_login , array( &$this, 'register_form' ) );
 		
-
 		//add_action('register_post', array( &$this, 'check_fields' ),10,3);
 		
 		//add_action('user_register', array( &$this, 'register_member' ));
@@ -122,10 +123,32 @@ class member_info_registration extends member_info_meta_boxes {
 		
 		add_filter('new_member_email_footer', array( &$this, 'welcome_email_footer' )); 
 
-		*/
+		*/	
 
 	
 	} // function
+	
+	function update_all_members(){
+	
+		global $wpdb;
+		$query = "SELECT ID, user_nicename from $wpdb->users ORDER BY user_nicename";
+		$author_ids = $wpdb->get_results($query);
+	
+		$member_info_public_profile = new member_info_public_profile;	
+		
+		foreach($author_ids as $author){	
+	
+			$user = get_userdata($author->ID);
+				
+			$current_post = get_post( $user->post_id, 'ARRAY_A' );
+			$current_post['post_content'] = $member_info_public_profile->get_all_data($user->ID); 
+			wp_update_post($current_post);		
+		
+			flush_rewrite_rules( false );
+		
+		}	
+	
+	}
 	
 	function add_fields_to_reg_form(){
 	
@@ -620,7 +643,9 @@ class member_info_registration extends member_info_meta_boxes {
 			
 			$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 _]", "", $field1) ) );	
 			
-			do_action( 'check_required_fields', $sanitized_field, $fields_type[$field['key']] );		
+			do_action( 'check_required_fields', $sanitized_field, $fields_type[$field['key']] );
+			
+			$member_info_public_profile = new member_info_public_profile;		
 		
 			if( !isset($user->$sanitized_field) && $sanitized_field != '' ){	
 			
@@ -630,6 +655,7 @@ class member_info_registration extends member_info_meta_boxes {
 					
 					$current_post = get_post( $user->post_id, 'ARRAY_A' );
 					$current_post['post_status'] = 'draft';
+					$current_post['post_content'] = $member_info_public_profile->get_all_data($user->ID); 
 					wp_update_post($current_post);		
 					
 					flush_rewrite_rules( false );	
@@ -645,6 +671,7 @@ class member_info_registration extends member_info_meta_boxes {
 			
 					$current_post = get_post( $user->post_id, 'ARRAY_A' );
 					$current_post['post_status'] = 'publish';
+					$current_post['post_content'] = $member_info_public_profile->get_all_data($user->ID); 
 					wp_update_post($current_post);	
 				
 				}				

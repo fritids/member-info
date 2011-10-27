@@ -733,6 +733,15 @@ class member_info_settings_page {
 			$updated = TRUE;
 		}
 		
+		if($_POST['mi_use_tantan_s3']){
+		
+			if(update_option('mi_use_tantan_s3', $_POST['mi_use_tantan_s3'])){
+				$updated = TRUE;
+			}
+		
+		}
+		
+		
 		if($_POST['mi_reg_recaptcha']){
 		
 			if(update_option('mi_reg_recaptcha', $_POST['mi_reg_recaptcha'])){
@@ -762,6 +771,32 @@ class member_info_settings_page {
 		?>
 		<table class="form-table">
 		
+			<tr>
+			
+				<td>
+		
+					<span class="member_info_label">Use Amazon s3 to store all uploaded media?</span>
+					<select name="mi_use_tantan_s3">
+						<option value="yes" <?php if(get_option('mi_use_tantan_s3') == 'yes'){ echo 'selected'; } ?>>Yes</option>
+						<option value="no" <?php if(get_option('mi_use_tantan_s3') == 'no'){ echo 'selected'; } ?>>No</option>
+					</select>
+					
+				</td>
+		
+			</tr>					
+					
+			<tr>
+			
+				<td>
+				
+					<span class="description">
+						This functionality is provided by an updated version of the plugin called "Amazon S3 for WordPress" which can be found <a href="http://wordpress.org/extend/plugins/tantan-s3/" target="_blank">here</a>. 
+					</span>
+					
+				</td>
+		
+			</tr>	
+
 			<tr>
 			
 				<td>

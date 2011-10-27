@@ -121,7 +121,8 @@ if(! isset($ALLOWED_SITES)){
 			'photobucket.com',
 			'imgur.com',
 			'imageshack.us',
-			'tinypic.com'
+			'tinypic.com',
+			's3.amazonaws.com'
 	);
 }
 // -------------------------------------------------------------
