@@ -91,139 +91,7 @@ class member_info_settings_page {
 	
 	function __construct(){
 	
-		add_action( 'extra_fields_options_js', array( &$this, 'add_options_js' ), 10, 1 ); 
-		
-		add_action( 'extra_fields_options', array( &$this, 'add_options' ), 10, 1 ); 
-		
-		add_action( 'front_end_display_fields', array( &$this, 'front_end_display_fields' ), 10, 5 ); 
-	
 		add_action ('admin_menu', array(&$this, 'add_settings_page_menu' ));
-	
-	} // function
-	
-	function add_options_js(){
-	
-		foreach($this->default_fields as $field){
-		
-			if($field[1] != ''){
-			
-				echo '<option value="' . $field[2] . '">' . $field[0] . '</option>';
-			
-			}
-		
-		}
-	
-	} // function
-	
-	function add_options($field1){
-	
-		foreach($this->default_fields as $field){
-		
-			if($field[1] != ''){
-			
-				echo '<option ';
-				if($field1 == $field[2]){
-					echo "selected";
-				}
-				echo ' value="' . $field[2] . '">' . $field[0] . '</option>';
-		
-			}
-		
-		}
-	
-	} // function
-	
-	function front_end_display_fields($type, $field, $sanitized_field, $fields_desc, $user_id){
-	
-		$default_fields = new member_info_default_fields;
-		
-		switch($type){
-		
-			case 'visual_editor':
-				$default_fields->visual_editor($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-			
-			case 'keyboard_shortcuts':
-				$default_fields->keyboard_shortcuts($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'admin_color_scheme':
-				$default_fields->admin_color_scheme($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'show_admin_bar':
-				$default_fields->show_admin_bar($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'username':
-				$default_fields->username($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'first_name':
-				$default_fields->first_name($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'last_name':
-				$default_fields->last_name($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'nickname':
-				$default_fields->nickname($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'display_name_publicly':
-				$default_fields->display_name_publicly($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'email':
-				$default_fields->email($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'website':
-				$default_fields->website($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'aim':
-				$default_fields->aim($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'yahoo_im':
-				$default_fields->yahoo_im($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'jabber_google_talk':
-				$default_fields->jabber_google_talk($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'twitter':
-				$default_fields->twitter($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'facebook':
-				$default_fields->facebook($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'youtube':
-				$default_fields->youtube($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'linkedin':
-				$default_fields->linkedin($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'sound_cloud':
-				$default_fields->sound_cloud($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'user_description':
-				$default_fields->user_description($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'password':
-				$default_fields->password($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-		
-		}
 	
 	} // function
 	
@@ -238,8 +106,10 @@ class member_info_settings_page {
 		if(isset($_POST['submit_member_info'])){
 			$this->process_settings_post();
 		}
+		
+		add_meta_box(	'member_info_show_hide_defaults', __('Default Fields'), array( &$this, 'member_info_show_hide_defaults' ), 'Settings', 'normal', 'core');	
 			
-		add_meta_box(	'member_info_extra_fields', __('Fields'), array( &$this, 'member_info_extra_fields' ), 'Settings', 'normal', 'core');
+		add_meta_box(	'member_info_extra_fields', __('Custom Fields'), array( &$this, 'member_info_extra_fields' ), 'Settings', 'normal', 'core');
 		
 		add_meta_box(	'member_info_other_options', __('Other options'), array( &$this, 'member_info_other_options' ), 'Settings', 'normal', 'core');
 				
@@ -292,6 +162,82 @@ class member_info_settings_page {
 		</div>
 		    
 		
+	<?php }
+	
+	function member_info_show_hide_defaults(){ 
+	
+		$show_defaults = explode( '~', get_option('show_defaults') );
+		$required_fields = explode( '~', get_option('required_fields') );
+		$reg_fields = explode( '~', get_option('reg_fields') );
+		$frontend_fields = explode( '~', get_option('frontend_fields') );
+			
+		?>
+	
+		<table id="mi_field_defaults" class="form-table">
+		
+			<thead>
+				<td colspan="2"><!-- Select the default fields on the profile pages to <em>hide</em>. --></td>
+				<td align="center"><strong>Hide?</strong></td>
+				<td align="center"><strong>Required?</strong></td>
+				<td align="center"><strong>Show on registration form?</strong></td>	
+				<?php if( get_option('member-info-public-profile-installed') == 'yup'){ ?>
+					<td align="center"><strong>Display on user's (public) profile?</strong></td>
+				<?php } ?>
+			</thead>	
+			
+			<?php foreach($this->default_fields as $field){ ?>
+			
+				<tr>
+				
+					<?php if($field[1] == ''){ ?>
+						<td colspan="5">
+							<?php echo '<strong>' . $field[0] . '</strong>'; ?>
+						</td>
+					<?php }else{ ?>
+						<td>
+							<?php echo $field[0]; ?>
+						</td>
+						
+						<td>
+							<?php echo $field[1]; ?>
+						</td>
+						
+						<td align="center">
+							<input type="checkbox" <?php if (in_array($field[2], $show_defaults)) { echo ' checked="checked" '; } ?> name="showdefault[]" value="<?php echo $field[2]; ?>" />
+						</td>
+						
+						<td align="center">
+							<?php if($field[2] == 'nickname' || $field[2] == 'email'){ ?>
+								<input type="hidden" name="required_fields[]" value="<?php echo $field[2]; ?>" />
+							<?php }else{?>
+								<input type="checkbox" <?php if (in_array($field[2], $required_fields)) { echo ' checked="checked" '; } ?> name="required_fields[]" value="<?php echo $field[2]; ?>" />
+							<?php } ?>
+						</td>	
+						
+						<td align="center">
+							<?php if($field[2] == 'username' || $field[2] == 'email'){ ?>
+								<input type="hidden" name="reg_fields[]" value="<?php echo $field[2]; ?>" />
+							<?php }else{?>
+								<input type="checkbox" <?php if (in_array($field[2], $reg_fields)) { echo ' checked="checked" '; } ?> name="reg_fields[]" value="<?php echo $field[2]; ?>" />
+							<?php } ?>						
+						</td>	
+						
+						<?php if( get_option('member-info-public-profile-installed') == 'yup'){ ?>	
+						
+							<td align="center">
+								<input type="checkbox" <?php if (in_array($field[2], $frontend_fields)) { echo ' checked="checked" '; } ?> name="frontend_fields[]" value="<?php echo $field[2]; ?>" />
+							</td>	
+						
+						<?php } ?>															
+						
+					<?php } ?>
+													
+				</tr>	
+				
+			<?php } ?>																																																		
+			
+		</table>
+	
 	<?php }
 	
 	function member_info_extra_fields(){

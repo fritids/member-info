@@ -40,6 +40,8 @@ include_once('includes/class-member-info-roles-capabilities.php'); //Custom role
 
 include_once('includes/class-member-info-settings-page.php'); //Settings Page
 
+include_once('includes/class-member-info-default-fields.php'); //default fields front end display on account page
+
 include_once('includes/class-member-info-meta-boxes.php'); //Meta Boxes
 
 include_once('includes/class-member-info-front-end-forms.php'); //Front end registration, log in and profile
