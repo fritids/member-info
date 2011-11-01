@@ -22,7 +22,7 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 		
 		if($_GET['message'] != ''){
 		
-			echo '<div class="profile_message">' . $_GET['message'] . '</div>';
+			echo '<p class="message">' . $_GET['message'] . '</p>';
 		
 		}
 	
@@ -297,6 +297,15 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 						</td>
 				</tr>
 				
+				<tr id="password">
+					<th><label for="pass1">New Password</label></th>
+					<td><input class="input" type="password" name="pass1" id="pass1" size="16" value="" autocomplete="off"> <span class="description">If you would like to change the password type a new one. Otherwise leave this blank.</span><br>
+						<input class="input" type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off"> <span class="description">Type your new password again.</span><br>
+						<div id="pass-strength-result" style="display: block; ">Strength indicator</div>
+						<p class="description indicator-hint">Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).</p>
+					</td>
+				</tr>
+				
 				<tr>
 					<th><label for="url">Website</label></th>
 					<td><input class="input" type="text" name="url" id="url" value="<?php the_author_meta( 'url', $current_user->id ); ?>" class="regular-text code"></td>
@@ -340,19 +349,11 @@ class member_info_front_end_forms extends member_info_meta_boxes{
 				
 				<table class="form-table">
 				<tbody><tr>
-					<th><label for="description">Biographical Info</label></th>
+					<th><label for="description">Skills Summary</label></th>
 					<td><textarea name="description" class="wysiwyg" id="description" rows="5" cols="30"><?php echo stripslashes( get_the_author_meta( 'description', $current_user->id ) ) ; ?></textarea><br>
 					<span class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</span></td>
 				</tr>
 				
-				<tr id="password">
-					<th><label for="pass1">New Password</label></th>
-					<td><input class="input" type="password" name="pass1" id="pass1" size="16" value="" autocomplete="off"> <span class="description">If you would like to change the password type a new one. Otherwise leave this blank.</span><br>
-						<input class="input" type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off"> <span class="description">Type your new password again.</span><br>
-						<div id="pass-strength-result" style="display: block; ">Strength indicator</div>
-						<p class="description indicator-hint">Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).</p>
-					</td>
-				</tr>
 				</tbody></table>
 			
 				<?php $this->member_info_location_inner($current_user); ?>

@@ -127,7 +127,7 @@ function codeAddress(update) {
 		    	
 	  	} else {
 	  		if(status == 'ZERO_RESULTS'){
-	  			alert("We could not find your location… Please be a little more specific with your search. \n\nAlternatively you can simply type your address in the text box. \n\n:-)");
+	  			alert("We could not find your location. Please be a little more specific with your search. \n\nAlternatively you can simply type your address in the text box.");
 	  		}
 	  	}
 	});

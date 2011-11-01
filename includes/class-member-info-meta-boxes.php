@@ -80,7 +80,7 @@ class member_info_meta_boxes {
 		
 		$i = 0;
 		
-		echo '<h3>Other Info</h3>';
+		echo '<h3>About Yourself</h3>';
 		
 		echo '<table class="form-table">';
 		

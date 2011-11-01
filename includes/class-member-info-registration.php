@@ -347,12 +347,19 @@ class member_info_registration extends member_info_meta_boxes {
 							</div>
 						<?php }else{ ?>
 							<p class="message">	
-								Registration complete. Please check your e-mail and <a href="<?php echo get_permalink(get_option('login_page_id')); ?>">login</a>.<br>
+								<?php if(get_option('registration_complete_message') != ''){ 
+									$custom_message = str_replace('%LOGIN%', get_bloginfo('url') . '/wp-admin', get_option('registration_complete_message'));
+									echo $custom_message;
+								}else{ ?>
+								
+									Registration complete. Please check your e-mail and <a href="<?php echo get_permalink(get_option('login_page_id')); ?>">login</a>.<br>
+								
+								<?php } ?>
 							</p>
 						<?php }
 					 
 					} 
-					
+				
 					?>
 					
 					<form method="post" action="http://<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>" id="registerform" name="registerform">

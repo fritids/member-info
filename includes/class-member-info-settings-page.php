@@ -756,6 +756,14 @@ class member_info_settings_page {
 				$updated = TRUE;
 			}
 		
+		}
+		
+		if($_POST['registration_complete_message']){
+		
+			if(update_option('registration_complete_message', $_POST['registration_complete_message'])){
+				$updated = TRUE;
+			}
+		
 		}					
 		
 		do_action('save_member_info_settings', $updated);					
@@ -846,7 +854,29 @@ class member_info_settings_page {
 					
 				</td>
 		
-			</tr>			
+			</tr>		
+			
+			<tr>
+			
+				<td>
+		
+					<span class="member_info_label">Custom message upon registration completion</span>
+					<textarea name="registration_complete_message"><?php echo stripslashes( get_option('registration_complete_message') ); ?></textarea>
+				</td>
+		
+			</tr>					
+					
+			<tr>
+			
+				<td>
+				
+					<span class="description">
+						
+					</span>
+					
+				</td>
+		
+			</tr>					
 		
 		</table>
 		
