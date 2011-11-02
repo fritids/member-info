@@ -155,41 +155,129 @@ class member_info_registration extends member_info_meta_boxes {
 					<label>
 						<?php echo $field; ?>
 						<br>
-						<?php do_action( 'registration_display_fields', $fields_type[$i], $field ); ?>
 						<?php
-						if($fields_type[$i] == 'custom_select'){
 						
-							$custom_options = explode( ',', get_option('custom_select_option_' . $custom_select[$i]) );
-						 	echo '<select class="input" id="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '" name="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '" >';
-						 	foreach($custom_options as $option){
-						 		$timestamp = mktime() . $ii;
-						 		if($option != ''){
-						 			echo '<option value="' . strtolower( str_replace( ' ', '_', $option ) ) . '">' . $option . '</option>';
-						 		}
-						 	}
-						 	echo '</select>';
-						 	
-						}elseif($fields_type[$i] == 'address_map'){
+						$default_fields = new member_info_default_fields_for_reg_form;
+
+						switch($fields_type[$i] ){
 						
-							$this->show_map(strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ));
+							case 'custom_select':
+								$custom_options = explode( ',', get_option('custom_select_option_' . $custom_select[$i]) );
+							 	echo '<select class="input" id="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '" name="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '" >';
+							 	foreach($custom_options as $option){
+							 		$timestamp = mktime() . $ii;
+							 		if($option != ''){
+							 			echo '<option value="' . strtolower( str_replace( ' ', '_', $option ) ) . '">' . $option . '</option>';
+							 		}
+							 	}
+							 	echo '</select>';
+								break;
+								
+							case 'address_map':
+								$this->show_map(strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ));
+								break;
+								
+							case 'address':
+								$this->show_map('custom_field_'. strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), '', 'no');
+								break;
+								
+							case 'text':
+								echo '<input id="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '" class="input" type="text" tabindex="20" size="25" value="' . $_POST['custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )] . '" name="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '">';
+								break;
+								
+							case 'textarea':
+								echo '<textarea rows="9" cols="30" id="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '" class="input" name="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '">' . $_POST['custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )] . '</textarea>';
+								break;
 						
-						}elseif($fields_type[$i] == 'address'){
-						
-							$this->show_map('custom_field_'. strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), '', 'no');
-						
-						}elseif($fields_type[$i] == 'text'){
-						
-							echo '<input id="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '" class="input" type="text" tabindex="20" size="25" value="' . $_POST['custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )] . '" name="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '">';
-						
-						}elseif($fields_type[$i] == 'textarea'){
-						
-							echo '<textarea rows="9" cols="30" id="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '" class="input" name="custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ) . '">' . $_POST['custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) )] . '</textarea>';
+							case 'visual_editor':
+								$default_fields->visual_editor( $field );
+								break;
+							
+							case 'keyboard_shortcuts':
+								$default_fields->keyboard_shortcuts( $field );
+								break;
+								
+							case 'admin_color_scheme':
+								$default_fields->admin_color_scheme( $field );
+								break;
+								
+							case 'show_admin_bar':
+								$default_fields->show_admin_bar( $field );
+								break;
+								
+							case 'username':
+								$default_fields->username( $field );
+								break;
+								
+							case 'first_name':
+								$default_fields->first_name( $field );
+								break;
+								
+							case 'last_name':
+								$default_fields->last_name( $field );
+								break;
+								
+							case 'nickname':
+								$default_fields->nickname( $field );
+								break;
+								
+							case 'display_name_publicly':
+								$default_fields->display_name_publicly( $field );
+								break;
+								
+							case 'email':
+								$default_fields->email( $field );
+								break;
+								
+							case 'website':
+								$default_fields->website( $field );
+								break;
+								
+							case 'aim':
+								$default_fields->aim( $field );
+								break;
+								
+							case 'yahoo_im':
+								$default_fields->yahoo_im( $field );
+								break;
+								
+							case 'jabber_google_talk':
+								$default_fields->jabber_google_talk( $field );
+								break;
+								
+							case 'twitter':
+								$default_fields->twitter( $field );
+								break;
+								
+							case 'facebook':
+								$default_fields->facebook( $field );
+								break;
+								
+							case 'youtube':
+								$default_fields->youtube( $field );
+								break;
+								
+							case 'linkedin':
+								$default_fields->linkedin( $field );
+								break;
+								
+							case 'sound_cloud':
+								$default_fields->sound_cloud( $field );
+								break;
+								
+							case 'user_description':
+								$default_fields->user_description( $field );
+								break;
+								
+							case 'password':
+								$default_fields->password( $field );
+								break;
 						
 						}						
 						?>
-						<p class="description">
-							<?php echo $fields_desc[$i]; ?>
-						</p>
+						
+						<?php do_action( 'registration_display_fields', $fields_type[$i], $field ); ?>
+						
 					</label>
 				</p>	
 				<?php			

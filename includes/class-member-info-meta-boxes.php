@@ -101,9 +101,17 @@ class member_info_meta_boxes {
 								</td>
 							</tr>';
 					break;
+					case 'title':
+						echo '<tr>
+								<th><h2>' .$field. '</h2></th>
+								<td>
+										
+								</td>
+							</tr>';
+					break;
 					case 'textarea':
 						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label</th>
+								<th><label for="' .$field. '">' .$field. '</label></th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>
 									<textarea class="input wysiwyg" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '">
@@ -117,7 +125,7 @@ class member_info_meta_boxes {
 					break;
 					case 'address':
 						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label</th>
+								<th><label for="' .$field. '">' .$field. '</label></th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>';
 									$this->show_map($sanitized_field, $user->ID, 'no');
@@ -129,7 +137,7 @@ class member_info_meta_boxes {
 					break;	
 					case 'address_map':
 						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label</th>
+								<th><label for="' .$field. '">' .$field. '</label></th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>';
 									$this->show_map($sanitized_field , $user->ID);
@@ -141,7 +149,7 @@ class member_info_meta_boxes {
 					break;						
 					case 'image':
 						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label</th>
+								<th><label for="' .$field. '">' .$field. '</label></th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>';
 									$this->member_image($sanitized_field, $user->ID, $image_limit[$i]);
@@ -153,7 +161,7 @@ class member_info_meta_boxes {
 					break;	
 					case 'document':
 						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label</th>
+								<th><label for="' .$field. '">' .$field. '</label></th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>';
 									$this->member_document($sanitized_field, $user->ID, $document_limit[$i], $document_type[$i]);
@@ -165,7 +173,7 @@ class member_info_meta_boxes {
 					break;	
 					case 'custom_select';
 						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label</th>
+								<th><label for="' .$field. '">' .$field. '</label></th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>';					
 									$custom_options = explode( ',', get_option('custom_select_option_' . $custom_select[$i]) );
@@ -195,7 +203,7 @@ class member_info_meta_boxes {
 					break;	
 					case 'custom_checkbox';
 						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label</th>
+								<th><label for="' .$field. '">' .$field. '</label></th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>';					
 									$custom_checkboxes = explode( ',', get_option('custom_checkbox_checkboxes_' . $custom_checkbox[$i]) );
@@ -221,7 +229,7 @@ class member_info_meta_boxes {
 					break;
 					case 'dob':
 						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label</th>
+								<th><label for="' .$field. '">' .$field. '</label></th>
 								<a name="custom_field_' . $sanitized_field . '"></a>
 								<td>
 									<input class="input dob" type="text" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '" value="' . $user_info->$sanitized_field . '"/>

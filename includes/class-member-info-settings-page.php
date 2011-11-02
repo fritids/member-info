@@ -349,6 +349,11 @@ class member_info_settings_page {
 									}
 									echo ' value="text">Text</option>
 									<option ';
+									if($fields_type[$i] == 'title'){
+										echo "selected";
+									}
+									echo ' value="title">Title</option>
+									<option ';
 									if($fields_type[$i] == 'textarea'){
 										echo "selected";
 									}
@@ -483,6 +488,7 @@ class member_info_settings_page {
 														do_action( 'extra_fields_options_js' );
 														?>
 														<option value="text">Text</option>\
+														<option value="title">Title</option>\
 														<option value="textarea">Text Area</option>\
 														<option value="address">Address</option>\
 														<option value="address_map">Address (including google map)</option>\
