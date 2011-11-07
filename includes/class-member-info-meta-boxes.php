@@ -51,9 +51,11 @@ class member_info_meta_boxes {
 			
 		} 
 		
+/*
 		echo '<pre>';
 		print_r($mi_meta);
 		echo '</pre>';
+*/
 		
        	foreach ($mi_meta as $key => $value) { 
             

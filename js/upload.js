@@ -1,6 +1,8 @@
 jQuery(document).ready(function() {
 
-	jQuery('#mi_upload_image_button').click(function() {
+	jQuery('#mi_upload_image_button').each(function(){
+	
+	jQuery(this).click(function() {
 		window.send_to_editor = function(html) {
 			imgurl = jQuery('img',html).attr('src');
 			
@@ -27,6 +29,8 @@ jQuery(document).ready(function() {
 			alert('You can not add any more images.');
 		}
 		return false;
+	});
+	
 	});
 	
 	jQuery('#mi_upload_document_button').click(function() {

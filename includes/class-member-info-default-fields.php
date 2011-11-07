@@ -509,7 +509,7 @@ class member_info_default_fields_for_reg_form{
 		global $current_user;
 	
 		?>			 
-		<input class="input" type="text" name="user_login" id="user_login" value="<?php the_author_meta( 'user_login', $current_user->id ); ?>" class="regular-text">
+		<input class="input" type="text" name="username" id="user_login" value="<?php the_author_meta( 'user_login', $current_user->id ); ?>" class="regular-text">
 
 		<?php
 	

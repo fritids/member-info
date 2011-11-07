@@ -305,6 +305,8 @@ class member_info_registration extends member_info_meta_boxes {
 		do_action( 'login_head' );
 		do_action( 'login_init' );
 		do_action( 'login_form_register' );
+		
+		$show_form = true;
 
 		if ( is_user_logged_in() ){ 
 		
@@ -436,7 +438,7 @@ class member_info_registration extends member_info_meta_boxes {
 						<?php }else{ ?>
 							<p class="message">	
 								<?php if(get_option('registration_complete_message') != ''){ 
-									$custom_message = str_replace('%LOGIN%', get_bloginfo('url') . '/wp-admin', get_option('registration_complete_message'));
+									$custom_message = str_replace('%LOGIN%', get_permalink(get_option('login_page_id')), stripslashes(get_option('registration_complete_message')));
 									echo $custom_message;
 								}else{ ?>
 								
@@ -444,42 +446,18 @@ class member_info_registration extends member_info_meta_boxes {
 								
 								<?php } ?>
 							</p>
-						<?php }
+							<?php
+							
+							$show_form = false; 
+						
+						}
 					 
 					} 
 				
-					?>
+					
+					if($show_form){ ?>
 					
 					<form method="post" action="http://<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>" id="registerform" name="registerform">
-					
-						<?php $i = 0; 
-						foreach($this->default_fields as $field){
-						
-							if($field[2] != '' && in_array($field[2], $reg_fields)){ 
-
-								if($field[2] == 'password'){ ?>
-									<label>Create a password<br>
-									<div id="password">
-										<input class="input" type="password" name="pass1" id="pass1" size="16" value="" autocomplete="off"> <span class="description">If you would like to change the password type a new one. Otherwise leave this blank.</span><br>
-										<input class="input" type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off"> <span class="description">Type your new password again.</span><br>
-										<div id="pass-strength-result" style="display: block; ">Strength indicator</div>
-										<p class="description indicator-hint">Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).</p>							
-									</div>	
-								<?php }elseif($field[2] == 'username'){ ?>
-									<p>
-										<label><?php echo $field[0]; ?><br>
-										<input type="text" tabindex="10" size="20" value="<?php if ( $error ) echo esc_html( $_POST[$field[2]], 1 ); ?>" class="input" id="user_login" name="<?php echo $field[2]; ?>"></label>
-									</p>
-								<?php }else{ ?>
-									<p>
-										<label><?php echo $field[0]; ?><br>
-										<input type="text" tabindex="10" size="20" value="<?php if ( $error ) echo esc_html( $_POST[$field[2]], 1 ); ?>" class="input" id="<?php echo $field[2]; ?>" name="<?php echo $field[2]; ?>"></label>
-									</p>
-								<?php }						
-							
-							}
-							$i++;
-						} ?>
 						
 						<?php do_action('register_form'); ?>
 						
@@ -493,7 +471,9 @@ class member_info_registration extends member_info_meta_boxes {
 						<p class="submit"><input type="submit" tabindex="100" value="<?php if ( current_user_can( 'create_users' ) ) echo'Add User'; else echo 'Register'; ?>" class="button-primary" id="wp-submit" name="wp-submit"></p>
 					</form>
 					
-				<?php }elseif($_GET['action'] == 'lostpassword'){
+					<?php }
+						
+				}elseif($_GET['action'] == 'lostpassword'){
 						
 				if ( $_REQUEST['error'] != '' ) { ?>
 					<div id="login_error">
