@@ -18,13 +18,13 @@ jQuery(document).ready(function() {
 		}
 		var current_images  = jQuery('#upload_image').val();
 		var images_array = current_images.split('~');
-		var i = 1;
+		var i = 0;
 		jQuery.each(images_array, function() { 
 			i++;
 		});		
 		var image_limit = jQuery('#image_limit').val();
 		if(i <= image_limit){
-			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&TB_iframe=true');
+			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&height=400&width=600');
 		}else{
 			alert('You can not add any more images.');
 		}
@@ -51,7 +51,7 @@ jQuery(document).ready(function() {
 	 
 		var current_documents  = jQuery('#upload_document').val();
 		var documents_array = current_documents.split('~');
-		var i = 1;
+		var i = 0;
 		if(current_documents != ''){
 			jQuery.each(documents_array, function() { 
 				i++;
@@ -60,7 +60,7 @@ jQuery(document).ready(function() {
 		var document_limit = jQuery('#document_limit').val();
 		if(i <= document_limit){	 
 			doc_types = jQuery(this).attr('rel');
-			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&file_types=' + doc_types + '&TB_iframe=true');	
+			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&file_types=' + doc_types + '&height=400&width=600');	
 		}else{
 			alert('You can not add any more documents.');
 		}		
