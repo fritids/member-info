@@ -24,7 +24,7 @@ jQuery(document).ready(function() {
 		});		
 		var image_limit = jQuery('#image_limit').val();
 		if(i <= image_limit){
-			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&height=400&width=600');
+			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&height=400&width=600&TB_iframe=true');
 		}else{
 			alert('You can not add any more images.');
 		}
@@ -60,13 +60,13 @@ jQuery(document).ready(function() {
 		var document_limit = jQuery('#document_limit').val();
 		if(i <= document_limit){	 
 			doc_types = jQuery(this).attr('rel');
-			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&file_types=' + doc_types + '&height=400&width=600');	
+			tb_show('', MI.WPURL + 'media-upload.php?type=image&member_info_type=image&file_types=' + doc_types + '&height=400&width=600&TB_iframe=true');	
 		}else{
 			alert('You can not add any more documents.');
 		}		
 		return false;
 	});	
  
-	tb_position();
+	//tb_position();
 
 });

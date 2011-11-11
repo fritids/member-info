@@ -16,13 +16,13 @@ class member_info_default_fields{
 	
 	function visual_editor($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th scope="row"><label for="visual_editor"><?php echo $field; ?></label></th>
-			<td><label for="rich_editing"><input class="input" name="rich_editing" type="checkbox" id="rich_editing" value="false" <?php if(get_the_author_meta( 'rich_editing', $current_user->id ) == 'false'){ echo " checked=\checked\" "; }; ?>> Disable the visual editor when writing</label></td>
+			<td><label for="rich_editing"><input class="input" name="rich_editing" type="checkbox" id="rich_editing" value="false" <?php if($current_user->rich_editing == 'false'){ echo " checked=\checked\" "; }; ?>> Disable the visual editor when writing</label></td>
 		</tr>		
 		
 		<?php
@@ -31,7 +31,7 @@ class member_info_default_fields{
 	
 	function keyboard_shortcuts($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
@@ -40,7 +40,7 @@ class member_info_default_fields{
 		
 			<td>
 				<label for="comment_shortcuts">
-				<input class="input" type="checkbox" name="comment_shortcuts" id="comment_shortcuts" value="true" <?php if(get_the_author_meta( 'comment_shortcuts', $current_user->id ) == 'true'){ echo " checked=\"checked\" "; }; ?>> Enable keyboard shortcuts for comment moderation.</label> <a href="http://codex.wordpress.org/Keyboard_Shortcuts" target="_blank">More information</a>
+				<input class="input" type="checkbox" name="comment_shortcuts" id="comment_shortcuts" value="true" <?php if($current_user->comment_shortcuts == 'true'){ echo " checked=\"checked\" "; }; ?>> Enable keyboard shortcuts for comment moderation.</label> <a href="http://codex.wordpress.org/Keyboard_Shortcuts" target="_blank">More information</a>
 			</td>
 		
 		</tr>
@@ -51,7 +51,7 @@ class member_info_default_fields{
 	
 	function admin_color_scheme($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
@@ -61,7 +61,7 @@ class member_info_default_fields{
 			<fieldset>
 				<legend class="screen-reader-text"><span><?php echo $field; ?></span></legend>
 				<div class="color-option">
-					<input class="input" name="admin_color" id="admin_color_classic" type="radio" value="classic" class="tog" <?php if(get_the_author_meta( 'admin_color', $current_user->id ) == 'classic'){ echo " checked=\"checked\" "; }; ?>>
+					<input class="input" name="admin_color" id="admin_color_classic" type="radio" value="classic" class="tog" <?php if($current_user->admin_color == 'classic'){ echo " checked=\"checked\" "; }; ?>>
 					<table class="color-palette">
 					<tbody><tr>
 						<td style="background-color: #5589aa" title="classic">&nbsp;</td>
@@ -74,7 +74,7 @@ class member_info_default_fields{
 					<label for="admin_color_classic">Blue</label>
 				</div>
 				<div class="color-option">
-					<input class="input" name="admin_color" id="admin_color_fresh" type="radio" value="fresh" class="tog" <?php if(get_the_author_meta( 'admin_color', $current_user->id ) == 'fresh'){ echo " checked=\"checked\" "; }; ?>>
+					<input class="input" name="admin_color" id="admin_color_fresh" type="radio" value="fresh" class="tog" <?php if($current_user->admin_color == 'fresh'){ echo " checked=\"checked\" "; }; ?>>
 					<table class="color-palette">
 					<tbody><tr>
 						<td style="background-color: #7c7976" title="fresh">&nbsp;</td>
@@ -96,7 +96,7 @@ class member_info_default_fields{
 				
 	function show_admin_bar($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
@@ -121,13 +121,13 @@ class member_info_default_fields{
 				
 	function username($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="user_login"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="user_login" id="user_login" value="<?php the_author_meta( 'user_login', $current_user->id ); ?>" disabled="disabled" class="regular-text"> <span class="description">Usernames cannot be changed.</span></td>
+			<td><input class="input" type="text" name="user_login" id="user_login" value="<?php echo $current_user->user_login; ?>" disabled="disabled" class="regular-text"> <span class="description">Usernames cannot be changed.</span></td>
 		</tr>		
 
 		<?php
@@ -136,13 +136,13 @@ class member_info_default_fields{
 				
 	function first_name($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="first_name"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="first_name" id="first_name" value="<?php the_author_meta( 'first_name', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="first_name" id="first_name" value="<?php echo $current_user->first_name; ?>" class="regular-text"></td>
 		</tr>		
 		
 		<?php
@@ -151,13 +151,13 @@ class member_info_default_fields{
 				
 	function last_name($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="last_name"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="last_name" id="last_name" value="<?php the_author_meta( 'last_name', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="last_name" id="last_name" value="<?php echo $current_user->last_name; ?>" class="regular-text"></td>
 		</tr>		
 		
 		<?php
@@ -166,13 +166,13 @@ class member_info_default_fields{
 				
 	function nickname($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="nickname"><?php echo $field; ?> <span class="description">(required)</span></label></th>
-			<td><input class="input" type="text" name="nickname" id="nickname" value="<?php the_author_meta( 'nickname', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="nickname" id="nickname" value="<?php echo $current_user->nickname; ?>" class="regular-text"></td>
 		</tr>		
 		
 		<?php
@@ -181,7 +181,7 @@ class member_info_default_fields{
 				
 	function display_name_publicly($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
@@ -220,13 +220,13 @@ class member_info_default_fields{
 				
 	function email($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="email"><?php echo $field; ?> <span class="description">(required)</span></label></th>
-			<td><input class="input" type="text" name="email" id="email" value="<?php the_author_meta( 'email', $current_user->id ); ?>" class="regular-text">
+			<td><input class="input" type="text" name="email" id="email" value="<?php echo $current_user->user_email; ?>" class="regular-text">
 				</td>
 		</tr>		
 		
@@ -236,13 +236,13 @@ class member_info_default_fields{
 				
 	function website($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="url"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="url" id="url" value="<?php the_author_meta( 'url', $current_user->id ); ?>" class="regular-text code"></td>
+			<td><input class="input" type="text" name="url" id="url" value="<?php echo $current_user->url; ?>" class="regular-text code"></td>
 		</tr>		
 		
 		<?php
@@ -251,13 +251,13 @@ class member_info_default_fields{
 				
 	function aim($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="aim"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="aim" id="aim" value="<?php the_author_meta( 'aim', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="aim" id="aim" value="<?php echo $current_user->aim; ?>" class="regular-text"></td>
 		</tr>		
 		
 		<?php
@@ -266,13 +266,13 @@ class member_info_default_fields{
 				
 	function yahoo_im($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="yim">Yahoo IM</label></th>
-			<td><input class="input" type="text" name="yim" id="yim" value="<?php the_author_meta( 'yim', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="yim" id="yim" value="<?php echo $current_user->yim; ?>" class="regular-text"></td>
 		</tr>		
 		
 		<?php
@@ -281,13 +281,13 @@ class member_info_default_fields{
 				
 	function jabber_google_talk($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="jabber"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="jabber" id="jabber" value="<?php the_author_meta( 'jabber', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="jabber" id="jabber" value="<?php echo $current_user->jabber; ?>" class="regular-text"></td>
 		</tr>		
 		
 		<?php
@@ -296,13 +296,13 @@ class member_info_default_fields{
 				
 	function twitter($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="twitter_url"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="twitter_url" id="twitter_url" value="<?php the_author_meta( 'twitter_url', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="twitter_url" id="twitter_url" value="<?php echo $current_user->twitter_url; ?>" class="regular-text"></td>
 		</tr>		
 		
 		<?php
@@ -311,13 +311,13 @@ class member_info_default_fields{
 				
 	function facebook($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="facebook_url"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="facebook_url" id="facebook_url" value="<?php the_author_meta( 'facebook_url', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="facebook_url" id="facebook_url" value="<?php echo $current_user->facebook_url; ?>" class="regular-text"></td>
 		</tr>		
 		
 		<?php
@@ -326,13 +326,13 @@ class member_info_default_fields{
 				
 	function youtube($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 	
 		<tr>
 			<th><label for="youtube_url"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="youtube_url" id="youtube_url" value="<?php the_author_meta( 'youtube_url', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="youtube_url" id="youtube_url" value="<?php echo $current_user->youtube_url; ?>" class="regular-text"></td>
 		</tr>
 				
 		<?php
@@ -341,13 +341,13 @@ class member_info_default_fields{
 				
 	function linkedin($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="linkedin_url"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="linkedin_url" id="linkedin_url" value="<?php the_author_meta( 'linkedin_url', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="linkedin_url" id="linkedin_url" value="<?php echo $current_user->linkedin_url; ?>" class="regular-text"></td>
 		</tr>	
 		
 		<?php
@@ -356,13 +356,13 @@ class member_info_default_fields{
 				
 	function sound_cloud($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="soundcloud_url"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="soundcloud_url" id="soundcloud_url" value="<?php the_author_meta( 'soundcloud_url', $current_user->id ); ?>" class="regular-text"></td>
+			<td><input class="input" type="text" name="soundcloud_url" id="soundcloud_url" value="<?php echo $current_user->soundcloud_url; ?>" class="regular-text"></td>
 		</tr>		
 		
 		<?php
@@ -371,13 +371,13 @@ class member_info_default_fields{
 				
 	function user_description($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
 		<tr>
 			<th><label for="description"><?php echo $field; ?></label></th>
-			<td><textarea name="description" class="wysiwyg" id="description" rows="5" cols="30"><?php echo stripslashes( get_the_author_meta( 'description', $current_user->id ) ) ; ?></textarea><br>
+			<td><textarea name="description" class="wysiwyg" id="description" rows="5" cols="30"><?php echo stripslashes( $current_user->description ) ; ?></textarea><br>
 			<span class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</span></td>
 		</tr>		
 		
@@ -387,7 +387,7 @@ class member_info_default_fields{
 				
 	function password($type, $field, $sanitized_field, $fields_desc, $user_id){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 		
 		?>
 		
@@ -423,11 +423,11 @@ class member_info_default_fields_for_reg_form{
 	
 	function visual_editor( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
-		<input class="input" name="rich_editing" type="checkbox" id="rich_editing" value="false" <?php if(get_the_author_meta( 'rich_editing', $current_user->id ) == 'false'){ echo " checked=\checked\" "; }; ?>>
+		<input class="input" name="rich_editing" type="checkbox" id="rich_editing" value="false" <?php if($current_user->rich_editing == 'false'){ echo " checked=\checked\" "; }; ?>>
 		
 		<?php
 	
@@ -435,11 +435,11 @@ class member_info_default_fields_for_reg_form{
 	
 	function keyboard_shortcuts( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
-		<input class="input" type="checkbox" name="comment_shortcuts" id="comment_shortcuts" value="true" <?php if(get_the_author_meta( 'comment_shortcuts', $current_user->id ) == 'true'){ echo " checked=\"checked\" "; }; ?>>
+		<input class="input" type="checkbox" name="comment_shortcuts" id="comment_shortcuts" value="true" <?php if($current_user->comment_shortcuts == 'true'){ echo " checked=\"checked\" "; }; ?>>
 			 
 		
 		<?php
@@ -448,13 +448,13 @@ class member_info_default_fields_for_reg_form{
 	
 	function admin_color_scheme( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 			<fieldset>
 				<legend class="screen-reader-text"><span><?php echo $field; ?></span></legend>
 				<div class="color-option">
-					<input class="input" name="admin_color" id="admin_color_classic" type="radio" value="classic" class="tog" <?php if(get_the_author_meta( 'admin_color', $current_user->id ) == 'classic'){ echo " checked=\"checked\" "; }; ?>>
+					<input class="input" name="admin_color" id="admin_color_classic" type="radio" value="classic" class="tog" <?php if($current_user->admin_color == 'classic'){ echo " checked=\"checked\" "; }; ?>>
 					<table class="color-palette">
 					<tbody> 
 						<td style="background-color: #5589aa" title="classic">&nbsp; 
@@ -467,7 +467,7 @@ class member_info_default_fields_for_reg_form{
 					 Blue</label>
 				</div>
 				<div class="color-option">
-					<input class="input" name="admin_color" id="admin_color_fresh" type="radio" value="fresh" class="tog" <?php if(get_the_author_meta( 'admin_color', $current_user->id ) == 'fresh'){ echo " checked=\"checked\" "; }; ?>>
+					<input class="input" name="admin_color" id="admin_color_fresh" type="radio" value="fresh" class="tog" <?php if($current_user->admin_color == 'fresh'){ echo " checked=\"checked\" "; }; ?>>
 					<table class="color-palette">
 					<tbody> 
 						<td style="background-color: #7c7976" title="fresh">&nbsp; 
@@ -487,7 +487,7 @@ class member_info_default_fields_for_reg_form{
 				
 	function show_admin_bar( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 				<fieldset>
@@ -506,10 +506,10 @@ class member_info_default_fields_for_reg_form{
 				
 	function username( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>			 
-		<input class="input" type="text" name="username" id="user_login" value="<?php the_author_meta( 'user_login', $current_user->id ); ?>" class="regular-text">
+		<input class="input" type="text" name="username" id="user_login" value="<?php echo $current_user->user_login; ?>" class="regular-text">
 
 		<?php
 	
@@ -517,11 +517,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function first_name( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 			 
-		<input class="input" type="text" name="first_name" id="first_name" value="<?php the_author_meta( 'first_name', $current_user->id ); ?>" class="regular-text">		
+		<input class="input" type="text" name="first_name" id="first_name" value="<?php echo $current_user->first_name; ?>" class="regular-text">		
 		
 		<?php
 	
@@ -529,11 +529,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function last_name( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 				 
-		<input class="input" type="text" name="last_name" id="last_name" value="<?php the_author_meta( 'last_name', $current_user->id ); ?>" class="regular-text">
+		<input class="input" type="text" name="last_name" id="last_name" value="<?php echo $current_user->last_name; ?>" class="regular-text">
 		
 		<?php
 	
@@ -541,11 +541,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function nickname( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 			 
-			 <input class="input" type="text" name="nickname" id="nickname" value="<?php the_author_meta( 'nickname', $current_user->id ); ?>" class="regular-text"> 
+			 <input class="input" type="text" name="nickname" id="nickname" value="<?php echo $current_user->nickname; ?>" class="regular-text"> 
 		 		
 		<?php
 	
@@ -553,7 +553,7 @@ class member_info_default_fields_for_reg_form{
 				
 	function display_name_publicly( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 					 
@@ -589,11 +589,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function email( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 					 
-			 <input class="input" type="text" name="email" id="email" value="<?php the_author_meta( 'email', $current_user->id ); ?>" class="regular-text">
+			 <input class="input" type="text" name="email" id="email" value="<?php echo $current_user->email; ?>" class="regular-text">
 				 
 		<?php
 	
@@ -601,11 +601,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function website( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
-			 <input class="input" type="text" name="url" id="url" value="<?php the_author_meta( 'url', $current_user->id ); ?>" class="regular-text code"> 	
+			 <input class="input" type="text" name="url" id="url" value="<?php echo $current_user->url; ?>" class="regular-text code"> 	
 		
 		<?php
 	
@@ -613,11 +613,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function aim( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
-			 <input class="input" type="text" name="aim" id="aim" value="<?php the_author_meta( 'aim', $current_user->id ); ?>" class="regular-text"> 
+			 <input class="input" type="text" name="aim" id="aim" value="<?php echo $current_user->aim; ?>" class="regular-text"> 
 		 		
 		
 		<?php
@@ -626,11 +626,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function yahoo_im( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 		
-			<input class="input" type="text" name="yim" id="yim" value="<?php the_author_meta( 'yim', $current_user->id ); ?>" class="regular-text">
+			<input class="input" type="text" name="yim" id="yim" value="<?php echo $current_user->yim; ?>" class="regular-text">
 		
 		<?php
 	
@@ -638,11 +638,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function jabber_google_talk( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 			 
-			<input class="input" type="text" name="jabber" id="jabber" value="<?php the_author_meta( 'jabber', $current_user->id ); ?>" class="regular-text"></td>
+			<input class="input" type="text" name="jabber" id="jabber" value="<?php echo $current_user->jabber; ?>" class="regular-text"></td>
 		
 		<?php
 	
@@ -650,11 +650,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function twitter( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 			 
-			<input class="input" type="text" name="twitter_url" id="twitter_url" value="<?php the_author_meta( 'twitter_url', $current_user->id ); ?>" class="regular-text">
+			<input class="input" type="text" name="twitter_url" id="twitter_url" value="<?php echo $current_user->twitter_url; ?>" class="regular-text">
 		
 		<?php
 	
@@ -662,11 +662,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function facebook( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 					 
-			<input class="input" type="text" name="facebook_url" id="facebook_url" value="<?php the_author_meta( 'facebook_url', $current_user->id ); ?>" class="regular-text">
+			<input class="input" type="text" name="facebook_url" id="facebook_url" value="<?php echo $current_user->facebook_url; ?>" class="regular-text">
 		
 		<?php
 	
@@ -674,11 +674,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function youtube( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 				 
-			<input class="input" type="text" name="youtube_url" id="youtube_url" value="<?php the_author_meta( 'youtube_url', $current_user->id ); ?>" class="regular-text">
+			<input class="input" type="text" name="youtube_url" id="youtube_url" value="<?php echo $current_user->youtube_url; ?>" class="regular-text">
 				
 		<?php
 	
@@ -686,11 +686,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function linkedin( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 					 
-			<input class="input" type="text" name="linkedin_url" id="linkedin_url" value="<?php the_author_meta( 'linkedin_url', $current_user->id ); ?>" class="regular-text">
+			<input class="input" type="text" name="linkedin_url" id="linkedin_url" value="<?php echo $current_user->linkedin_url; ?>" class="regular-text">
 		
 		<?php
 	
@@ -698,11 +698,11 @@ class member_info_default_fields_for_reg_form{
 				
 	function sound_cloud( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>
 					 
-			<input class="input" type="text" name="soundcloud_url" id="soundcloud_url" value="<?php the_author_meta( 'soundcloud_url', $current_user->id ); ?>" class="regular-text">
+			<input class="input" type="text" name="soundcloud_url" id="soundcloud_url" value="<?php echo $current_user->soundcloud_url; ?>" class="regular-text">
 		
 		<?php
 	
@@ -710,10 +710,10 @@ class member_info_default_fields_for_reg_form{
 				
 	function user_description( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 	
 		?>			 
-				<textarea name="description" class="wysiwyg" id="description" rows="5" cols="30"><?php echo stripslashes( get_the_author_meta( 'description', $current_user->id ) ) ; ?></textarea>
+				<textarea name="description" class="wysiwyg" id="description" rows="5" cols="30"><?php echo stripslashes( $current_user->description ) ; ?></textarea>
 		
 		<?php
 	
@@ -721,7 +721,7 @@ class member_info_default_fields_for_reg_form{
 				
 	function password( $field ){
 	
-		global $current_user;
+		$current_user = get_userdata($user_id);
 		
 		?>
 			 

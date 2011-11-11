@@ -89,7 +89,7 @@ class member_info_setup {
 			wp_enqueue_script('google_maps_api', 'http://maps.google.com/maps/api/js?sensor=true', '', 1.0 );
 			wp_enqueue_script('member_info_location_js', MI_url.'/js/location.js', '', 1.0 );
 			wp_enqueue_script('media-upload');
-			//wp_enqueue_script('thickbox');
+			wp_enqueue_script('thickbox',null,array('jquery'));
 			wp_enqueue_script('mi_upload', MI_url . '/js/upload.js', array('thickbox'));
 			wp_enqueue_script('member_info_front_end_js', MI_url.'/js/member_info_front_end.js', array('thickbox'), 1.0 );
 			wp_enqueue_script('show_hide_profile_fields', MI_url.'/js/show_hide_profile_fields.js', '', 1.0 );

@@ -750,7 +750,9 @@ class member_info_registration extends member_info_meta_boxes {
 		global $pagenow;
 		
 		global $current_user;
-	    get_currentuserinfo();		
+	    get_currentuserinfo();
+	    
+	    //echo $pagenow;		
 	    
 	    $redirect = false;
 	
@@ -764,7 +766,7 @@ class member_info_registration extends member_info_meta_boxes {
       	
 		}
 		
-		if(preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']) != '/' . basename(get_permalink(get_option( 'profile_page_id' ))) . '/' && !is_admin()  && is_user_logged_in() ){
+		if(preg_replace('/\?.*/', '', $_SERVER['REQUEST_URI']) != '/' . basename(get_permalink(get_option( 'profile_page_id' ))) . '/' && !is_admin()  && is_user_logged_in() && !isset($_GET['status']) ){
 		
 			$check_required = $this->check_required_fields();
 				
