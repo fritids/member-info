@@ -714,9 +714,13 @@ class member_info_registration extends member_info_meta_boxes {
 			
 					update_usermeta( $user->ID, 'profile_status', 'Required fields are missing. Not live.' );
 					
-					$current_post = get_post( $user->post_id, 'ARRAY_A' );
+					$current_post = array();
+					//$current_post = get_post( $user->post_id, 'ARRAY_A' );
+					$current_post['ID'] = $user->post_id;
 					$current_post['post_status'] = 'draft';
 					$current_post['post_content'] = $member_info_public_profile->get_all_data($user->ID); 
+					
+					//echo '<pre>'; print_r($current_post); echo '</pre>'; exit;
 					wp_update_post($current_post);		
 					
 					flush_rewrite_rules( false );	
@@ -729,8 +733,10 @@ class member_info_registration extends member_info_meta_boxes {
 			}else{
 			
 				if(get_option('mi_private_until_required') == 'yes'){
-			
-					$current_post = get_post( $user->post_id, 'ARRAY_A' );
+					
+					$current_post = array();
+					//$current_post = get_post( $user->post_id, 'ARRAY_A' );
+					$current_post['ID'] = $user->post_id;
 					$current_post['post_status'] = 'publish';
 					$current_post['post_content'] = $member_info_public_profile->get_all_data($user->ID); 
 					wp_update_post($current_post);	
