@@ -793,6 +793,22 @@ class member_info_settings_page {
 			$updated = TRUE;
 		}
 		
+		if($_POST['member_email_new_message']){
+		
+			if(update_option('member_email_new_message', $_POST['member_email_new_message'])){
+				$updated = TRUE;
+			}
+		
+		}
+		
+		if($_POST['member_email_new_subject']){
+		
+			if(update_option('member_email_new_subject', $_POST['member_email_new_subject'])){
+				$updated = TRUE;
+			}
+		
+		}
+		
 		if($_POST['mi_use_tantan_s3']){
 		
 			if(update_option('mi_use_tantan_s3', $_POST['mi_use_tantan_s3'])){
@@ -818,6 +834,14 @@ class member_info_settings_page {
 		
 		}
 		
+		if($_POST['login_redirect']){
+		
+			if(update_option('login_redirect', $_POST['login_redirect'])){
+				$updated = TRUE;
+			}
+		
+		}
+		
 		if($_POST['registration_complete_message']){
 		
 			if(update_option('registration_complete_message', $_POST['registration_complete_message'])){
@@ -838,6 +862,66 @@ class member_info_settings_page {
 	
 		?>
 		<table class="form-table">
+		
+			<tr>
+			
+				<td>
+				
+					<h2>New Member Email</h2>
+					
+					<span class="description">
+						This is the email that is sent to the member they register.
+					</span>
+					
+				</td>
+		
+			</tr>				
+			
+			<tr>
+			
+				<td>
+		
+					<span class="member_info_label">Subject: </span>
+					<input type="text" name="member_email_new_subject" value="<?php echo get_option('member_email_new_subject'); ?>" />
+					
+				</td>
+		
+			</tr>					
+					
+			<tr>
+			
+				<td>
+		
+					<span class="member_info_label">Message: </span>
+					<textarea class="" style="width:80%;" rows="10" name="member_email_new_message"><?php echo get_option('member_email_new_message'); ?></textarea>
+					
+				</td>
+		
+			</tr>	
+			
+			<tr>
+			
+				<td>
+				
+					<span class="description">
+						You can use html in this text area.
+						<br><br>
+						You can use the following tags in the email subject and message-
+						<br><br>
+						%username% - The member's username.
+						<br>
+						%user_email% - The member's email address.
+						<br>
+						%password% - The member's generated password.
+						<br>
+						%login_url% - The login url for the site.
+						<br>
+						%admin_email% - The admin email address.
+					</span>
+					
+				</td>
+		
+			</tr>
 		
 			<tr>
 			
@@ -915,6 +999,41 @@ class member_info_settings_page {
 				</td>
 		
 			</tr>		
+
+			<tr>
+			
+				<td>
+		
+					<span class="member_info_label">Where to redirect users to when they log in?</span>
+					<select name="login_redirect">
+						<option <?php if(get_option('login_redirect') == ''){ echo 'selected'; } ?> value="">Site URL (<?php bloginfo('url'); ?>)</option>
+						<option value="">--- Pages ---</option>
+						<?php
+						$pages = get_pages();
+						foreach ($pages as $pagg) {
+							echo '<option value = "' . $pagg->ID . '"';
+							if(get_option('login_redirect') == $pagg->ID){
+								echo ' selected ';
+							}
+							echo '>' . $pagg -> post_title . '</option>';
+						}
+						?>
+						<option value="">--- Posts ---</option>
+						<?php
+						$pages = get_posts();
+						foreach ($pages as $pagg) {
+							echo '<option value = "' . $pagg->ID . '"';
+							if(get_option('login_redirect') == $pagg->ID){
+								echo ' selected ';
+							}
+							echo '>' . $pagg -> post_title . '</option>';
+						}
+						?>
+					</select>
+					
+				</td>
+		
+			</tr>	
 			
 			<tr>
 			

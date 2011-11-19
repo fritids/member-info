@@ -575,7 +575,20 @@ class member_info_registration extends member_info_meta_boxes {
 					<p class="submit">
 						<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="100">
 						<input name="action" type="hidden" id="action" value="login" />
-						<input type="hidden" name="redirect_to" value="<?php echo get_bloginfo('url'); ?>" />
+						
+						<?php
+						
+						$login_redirect = get_option('login_redirect'); 
+						
+						if($login_redirect == ''){
+							$login_to = get_bloginfo('url');
+						}else{
+							$login_to = get_page_link($login_redirect);
+						}
+						
+						?>
+						
+						<input type="hidden" name="redirect_to" value="<?php echo $login_to; ?>" />
 					</p>
 					<p>
 						<a href="<?php echo get_permalink(get_option('login_page_id')); ?>?action=lostpassword">Forgotten password?</a>
@@ -618,12 +631,20 @@ class member_info_registration extends member_info_meta_boxes {
 							$error_message = 'empty';
 						}
 					}
-					wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?error=' . $error_message . '&action=' . $_GET['action'] );	
+					if($error_message != ''){
+						wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?error=' . $error_message . '&action=' . $_GET['action'] );	
+					}else{
+						wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?action=' . $_GET['action'] );	
+					}
 				}else{
 					if($_GET['action'] == 'register' && get_option('register_page_id') != ''){
 						wp_redirect( get_permalink( get_option( 'register_page_id' ) ) );
 					}else{
-						wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?action=' . $_GET['action'] );	
+						if($_GET['action'] != ''){
+							wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?action=' . $_GET['action'] );	
+						}else{
+							wp_redirect( get_permalink( get_option( 'login_page_id' ) ) );
+						}
 					}
 				}
 				
@@ -635,117 +656,121 @@ class member_info_registration extends member_info_meta_boxes {
 	
 	function check_required_fields($user_id=''){
 	
-		$fields_type = explode( ',', get_option('mi_field_type') );
-		$fields_name = explode( ',', get_option('mi_field_name') );
-		$required_fields = explode( '~', get_option('required_fields') );
-		
-		if($user_id == ''){
-			global $current_user;
-		    get_currentuserinfo();
-		    $user = $current_user;	
-		}else{
-			$user = get_userdata($user_id);
-		}
-		
-		$required = array();
-		
-		$i = 0;		
-		
-		if(defined("MIPP_url") && get_bloginfo('url')  . $_SERVER['REQUEST_URI'] == MIPP_url . '/functions/check_url.php'){
-			return;
-		}
+		if ( !current_user_can('manage_options') ){
+	
+			$fields_type = explode( ',', get_option('mi_field_type') );
+			$fields_name = explode( ',', get_option('mi_field_name') );
+			$required_fields = explode( '~', get_option('required_fields') );
 			
-		$ii=0;
-		
-		foreach($fields_name as $field){
-
-			$field1 = str_replace('custom_field_', '', $field );
-			
-			$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 _]", "", $field1) ) );
-			
-			if( in_array('custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), $required_fields) ){
-				$required[$i]['name'] = $field;
-				$required[$i]['key'] = $ii;
-				$i++;
-			}	
-			
-			$ii++;
-			
-		}
-		
-		foreach($this->default_fields as $field){
-		
-			$check_field = $field[2];
-			
-			if( in_array($check_field, $required_fields) ){
-				switch($check_field){
-					case 'email':
-						$check_field = 'user_email';
-						break;
-					case 'username':
-						$check_field = 'user_login';
-						break;
-					case 'firstname':
-						$check_field = 'first_name';
-						break;
-					case 'lastname':
-						$check_field = 'last_name';
-						break;
-				}						
-				$required[$i]['name']  = $check_field;
-				$i++; 
-			}										
-			
-		}
-		
-		foreach($required as $field){
-		
-			$field1 = str_replace('custom_field_', '', $field['name']  );
-			
-			$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 _]", "", $field1) ) );	
-			
-			do_action( 'check_required_fields', $sanitized_field, $fields_type[$field['key']] );
-			
-			$member_info_public_profile = new member_info_public_profile;		
-		
-			if( !isset($user->$sanitized_field) && $sanitized_field != '' ){	
-			
-				if(get_option('mi_private_until_required') == 'yes'){	
-			
-					update_usermeta( $user->ID, 'profile_status', 'Required fields are missing. Not live.' );
-					
-					$current_post = array();
-					//$current_post = get_post( $user->post_id, 'ARRAY_A' );
-					$current_post['ID'] = $user->post_id;
-					$current_post['post_status'] = 'draft';
-					$current_post['post_content'] = $member_info_public_profile->get_all_data($user->ID); 
-					
-					//echo '<pre>'; print_r($current_post); echo '</pre>'; exit;
-					wp_update_post($current_post);		
-					
-					flush_rewrite_rules( false );	
-				
-				}		
-			
-				return $field['name'];
-				break;
-				
+			if($user_id == ''){
+				global $current_user;
+			    get_currentuserinfo();
+			    $user = $current_user;	
 			}else{
+				$user = get_userdata($user_id);
+			}
 			
-				if(get_option('mi_private_until_required') == 'yes'){
-					
-					$current_post = array();
-					//$current_post = get_post( $user->post_id, 'ARRAY_A' );
-					$current_post['ID'] = $user->post_id;
-					$current_post['post_status'] = 'publish';
-					$current_post['post_content'] = $member_info_public_profile->get_all_data($user->ID); 
-					wp_update_post($current_post);	
+			$required = array();
+			
+			$i = 0;		
+			
+			if(defined("MIPP_url") && get_bloginfo('url')  . $_SERVER['REQUEST_URI'] == MIPP_url . '/functions/check_url.php'){
+				return;
+			}
 				
-				}				
+			$ii=0;
 			
-				return '';					
+			foreach($fields_name as $field){
+	
+				$field1 = str_replace('custom_field_', '', $field );
+				
+				$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 _]", "", $field1) ) );
+				
+				if( in_array('custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), $required_fields) ){
+					$required[$i]['name'] = $field;
+					$required[$i]['key'] = $ii;
+					$i++;
+				}	
+				
+				$ii++;
+				
+			}
 			
-			}	
+			foreach($this->default_fields as $field){
+			
+				$check_field = $field[2];
+				
+				if( in_array($check_field, $required_fields) ){
+					switch($check_field){
+						case 'email':
+							$check_field = 'user_email';
+							break;
+						case 'username':
+							$check_field = 'user_login';
+							break;
+						case 'firstname':
+							$check_field = 'first_name';
+							break;
+						case 'lastname':
+							$check_field = 'last_name';
+							break;
+					}						
+					$required[$i]['name']  = $check_field;
+					$i++; 
+				}										
+				
+			}
+			
+			foreach($required as $field){
+			
+				$field1 = str_replace('custom_field_', '', $field['name']  );
+				
+				$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 _]", "", $field1) ) );	
+				
+				do_action( 'check_required_fields', $sanitized_field, $fields_type[$field['key']] );
+				
+				$member_info_public_profile = new member_info_public_profile;		
+			
+				if( !isset($user->$sanitized_field) && $sanitized_field != '' ){	
+				
+					if(get_option('mi_private_until_required') == 'yes'){	
+				
+						update_usermeta( $user->ID, 'profile_status', 'Required fields are missing. Not live.' );
+						
+						$current_post = array();
+						//$current_post = get_post( $user->post_id, 'ARRAY_A' );
+						$current_post['ID'] = $user->post_id;
+						$current_post['post_status'] = 'draft';
+						$current_post['post_content'] = $member_info_public_profile->get_all_data($user->ID); 
+						
+						//echo '<pre>'; print_r($current_post); echo '</pre>'; exit;
+						wp_update_post($current_post);		
+						
+						flush_rewrite_rules( false );	
+					
+					}		
+				
+					return $field['name'];
+					break;
+					
+				}else{
+				
+					if(get_option('mi_private_until_required') == 'yes'){
+						
+						$current_post = array();
+						//$current_post = get_post( $user->post_id, 'ARRAY_A' );
+						$current_post['ID'] = $user->post_id;
+						$current_post['post_status'] = 'publish';
+						$current_post['post_content'] = $member_info_public_profile->get_all_data($user->ID); 
+						wp_update_post($current_post);	
+					
+					}				
+				
+					return '';					
+				
+				}	
+			
+			}
 		
 		}
 			
@@ -787,7 +812,8 @@ class member_info_registration extends member_info_meta_boxes {
 	} // function
 
 	function login_url( $url ) {
-    	return get_bloginfo( 'siteurl' );
+    	//return get_bloginfo( 'siteurl' );
+    	return  get_permalink( get_option( 'profile_page_id' ) );
 	} // function
 	
 	function login_title( $title ){
@@ -897,21 +923,26 @@ if ( !function_exists('wp_new_user_notification') ) {
             return;  
             
 		$message = apply_filters( 'new_member_email_head', $message, $user->ID ); 
+		
+		$message_setting = get_option('member_email_new_message');
+		
+		$message_setting = str_replace('%username%', $user_login, $message_setting) ;
+		
+		$message_setting = str_replace('%user_email%', $user_email, $message_setting) ;
+		
+		$message_setting = str_replace('%password%', $plaintext_pass, $message_setting) ;
+		
+		$message_setting = str_replace('%login_url%', wp_login_url(), $message_setting) ;
+		
+		$message_setting = str_replace('%admin_email%', get_option('admin_email'), $message_setting) ;
    		
-        $message  .= __('Hey,') . "\r\n\r\n";  
-        $message .= sprintf(__("Welcome to %s! Here's how to log in:"), get_option('blogname')) . "\r\n\r\n"; 
-        $message .= wp_login_url() . "\r\n"; 
-        $message .= sprintf(__('Username: %s'), $user_login) . "\r\n"; 
-        $message .= sprintf(__('Password: %s'), $plaintext_pass) . "\r\n\r\n"; 
+        $message .= $message_setting;
         
         $message = apply_filters( 'new_member_email_content', $message, $user->ID ); 
-        
-        $message .= sprintf(__('If you have any problems, please contact me at %s.'), get_option('admin_email')) . "\r\n\r\n"; 
-        $message .= __('All the best!'); 
-        
+                
         $message = apply_filters( 'new_member_email_footer', $message, $user->ID ); 
  
-        wp_mail($user_email, sprintf(__('[%s] Your username and password'), get_option('blogname')), $message);  
+        wp_mail($user_email, get_option('member_email_new_subject'), $message);  
   
     }  
 }
