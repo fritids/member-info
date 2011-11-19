@@ -24,7 +24,7 @@ class member_info_search_functions{
 
 	    if( isset( $_GET['s'] ) && empty( $_GET['s'] ) ) {
 
-	        $query_vars['s'] = " ";
+	        $query_vars['s'] = ".";
 
 	    }
 
