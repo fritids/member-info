@@ -309,7 +309,7 @@ class member_info_meta_boxes {
 		?>
 		<input type="hidden" id="image_limit" value="<?php echo $image_limit; ?>"/>
 		<input type="hidden" id="upload_image" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
-		<input type="button" id="mi_upload_image_button" value="Upload an image" class="button" />
+		<input type="button" class="mi_upload_image_button button" value="Upload an image" class="button" />
 		<br><!-- <span class="member_info_label"> Current Image: </span> -->
 		<div id="mi_images">
 			<?php
@@ -348,7 +348,7 @@ class member_info_meta_boxes {
 			
 		?>
 		<input type="hidden" id="upload_document" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
-		<input type="button" id="mi_upload_document_button" value="Upload a document" class="button" rel="<?php echo $document_type; ?>"/>
+		<input type="button" class="mi_upload_document_button button" value="Upload a document" rel="<?php echo $document_type; ?>"/>
 		<br><!-- <span class="member_info_label"> Current document: </span> -->
 		<div id="mi_documents">
 			<?php
@@ -357,7 +357,7 @@ class member_info_meta_boxes {
 			while($i <= $document_limit -1){
 				if($documents[$i] != ''){
 					$document = explode( '=', $documents[$i] );
-					echo '<div class="single_row" title="' . $document[0] . '"><div class="mi_uploaded_doc" >' . $document[1] . '</div><img style="cursor:pointer;" onClick="deleteVideo(\'' . $document[0] . '\', \'' . $document[1] . '\');" src="' . MI_url . '/img/delete.png" class="delete_document" /></div>';
+					echo '<div class="single_row" title="' . $document[0] . '"><div class="mi_uploaded_doc" >' . $document[1] . '</div><img style="cursor:pointer;" onClick="deleteDocument(\'' . $document[0] . '\', \'' . $document[1] . '\');" src="' . MI_url . '/img/delete.png" class="delete_document" /></div>';
 				}else{
 					echo '<div class="single_row"><img class="mi_document" src="' . MI_url . '/img/file.png" /></div>';
 				}

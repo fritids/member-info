@@ -270,7 +270,9 @@ function check_required(){
 
 function deleteImage(img){
 
-	jQuery('#upload_image').val(jQuery('#upload_image').val().replace(img + '~', '').replace( '~' + img, '').replace( img, ''));
+	var value = jQuery('img[src="' + img + '"]').parent().parent().parent().find('#upload_image');
+
+	value.val(value.val().replace(img + '~', '').replace( '~' + img, '').replace( img, ''));
 
 	jQuery('img[src="' + img + '"]').parent().html('<div><img class="mi_image" src="' + settings.MI_url + '/img/profile_pic.png" /></div>')
 
@@ -278,7 +280,9 @@ function deleteImage(img){
 
 function deleteDocument(doc, name){
 
-	jQuery('#upload_document').val(jQuery('#upload_document').val().replace(doc + '=' + name + '~', '').replace( '~' + doc + '=' + name, '').replace( doc + '=' + name, ''));
+	var value = jQuery('div[title="' + doc + '"]').parent().parent().parent().find('#upload_document');
+
+	value.val(value.val().replace(doc + '=' + name + '~', '').replace( '~' + doc + '=' + name, '').replace( doc + '=' + name, ''));
 
 	jQuery('div[title="' + doc + '"]').html('<img class="mi_document" src="' + settings.MI_url + '/img/file.png" />').attr('title', '');
 
