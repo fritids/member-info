@@ -242,7 +242,7 @@ class member_info_default_fields{
 		
 		<tr>
 			<th><label for="url"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="url" id="url" value="<?php echo $current_user->url; ?>" class="regular-text code"></td>
+			<td><input class="input" type="text" name="url" id="url" value="<?php echo $current_user->user_url; ?>" class="regular-text code"></td>
 		</tr>		
 		
 		<?php

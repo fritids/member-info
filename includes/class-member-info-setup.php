@@ -63,6 +63,7 @@ class member_info_setup {
 				
 				$data = array( 'MI_url' => MI_url, 'WPURL' => get_bloginfo('url') . '/wp-admin/');
 				wp_localize_script( 'mi_upload', 'MI', $data );
+
 			}
 		}
 
