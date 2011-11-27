@@ -70,46 +70,6 @@ class member_info_meta_boxes {
 	
 	function member_info_location_inner($user){
 	
-		?>
-		<script type="text/javascript">
-		jQuery(function() {
-			jQuery('.wysiwyg').wysiwyg({
-				css: '<?php echo MI_url; ?>/js/wysiwyg/custom.css',
-				initialContent: "",
-			    controls: {
-			        strikeThrough: { visible: false },
-			        underline: { visible: false },
-			        subscript: { visible: false },
-			        superscript: { visible: false },
-			        insertHorizontalRule: { visible: false },
-			        insertImage: { visible: false },
-			        h1: { visible: false },
-			        h2: { visible: false },
-			        h3: { visible: false },
-			        decreaseFontSize: { visible: false },
-			        html: { visible: false },
-			        insertTable: { visible: false },
-			        code: { visible: false },
-			        bold: { visible: false },
-			        italic: { visible: false },
-			        justifyLeft: { visible: false },
-			        justifyCenter: { visible: false },
-			        justifyRight: { visible: false },
-			        justifyFull: { visible: false },
-			        indent: { visible: false },
-			        outdent: { visible: false },
-			        insertOrderedList: { visible: false },
-			        insertUnorderedList: { visible: false },
-			        createLink: { visible: false },
-			        redo: { visible: false },
-			        undo: { visible: false },
-			        removeFormat: { visible: false }
-			    }
-			});
-		});
-		</script>
-		<?php
-	
 		$user_info = get_userdata($user->ID);
 
 		$fields_name = explode( ',', get_option('mi_field_name') );
@@ -386,14 +346,8 @@ class member_info_meta_boxes {
 				$ii++;
 			}
 			
-			if( $user_info->$name == '~'){
-				$value = '';
-			}else{
-				$value =  $user_info->$name;
-			}
-			
 		?>
-		<input type="hidden" id="upload_document" name="<?php echo $name; ?>" value="<?php echo $value; ?>"  class="custom_field_<?php echo $name; ?>"/>
+		<input type="hidden" id="upload_document" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
 		<input type="button" class="mi_upload_document_button button" value="Upload a document" rel="<?php echo $document_type; ?>"/>
 		<br><!-- <span class="member_info_label"> Current document: </span> -->
 		<div id="mi_documents">

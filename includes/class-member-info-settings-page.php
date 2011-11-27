@@ -893,7 +893,7 @@ class member_info_settings_page {
 				<td>
 		
 					<span class="member_info_label">Message: </span>
-					<textarea class="" style="width:80%;" rows="10" name="member_email_new_message"><?php echo stripslashes( get_option('member_email_new_message') ); ?></textarea>
+					<textarea class="" style="width:80%;" rows="10" name="member_email_new_message"><?php echo get_option('member_email_new_message'); ?></textarea>
 					
 				</td>
 		
