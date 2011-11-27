@@ -59,7 +59,7 @@ class member_info_meta_boxes {
 		
        	foreach ($mi_meta as $key => $value) { 
             
-            $value = htmlentities( implode(',', (array)$value) ); 
+            $value = implode(',', (array)$value); 
                update_usermeta( $user_id, $key, $value );
                         
         }
