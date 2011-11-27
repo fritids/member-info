@@ -8,6 +8,8 @@ jQuery(document).ready(function () {
 	
 	var extra_fields = mi_options.extra_fields.split(',');
 	
+	var types = mi_options.types.split(',');
+	
 	var personal_options = 4;
 	
 	var name = 5;

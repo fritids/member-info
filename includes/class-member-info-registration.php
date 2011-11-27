@@ -105,7 +105,7 @@ class member_info_registration extends member_info_meta_boxes {
 		
 		add_shortcode( SHORTCODE_login , array( &$this, 'register_form' ) );
 						
-		add_filter('login_headerurl', array( &$this, 'login_url' )); 
+		//add_filter('login_redirect', array( &$this, 'login_url' )); 
 		
 		add_filter('login_headertitle', array( &$this, 'login_title' ));
 		
@@ -578,13 +578,9 @@ class member_info_registration extends member_info_meta_boxes {
 						
 						<?php
 						
-						$login_redirect = get_option('login_redirect'); 
+						//$login_to = apply_filters('login_redirect', $login_to );
 						
-						if($login_redirect == ''){
-							$login_to = get_bloginfo('url');
-						}else{
-							$login_to = get_page_link($login_redirect);
-						}
+						$login_to = '/wp-admin/';
 						
 						?>
 						
@@ -649,7 +645,7 @@ class member_info_registration extends member_info_meta_boxes {
 				}
 				
 			}
-			
+	
 		}
 		
 	}
@@ -791,7 +787,14 @@ class member_info_registration extends member_info_meta_boxes {
 	      	
 	      	foreach($current_user->roles as $role ){
 	      		if($role == 'basic_member'){
-	      			wp_redirect( get_bloginfo('url') );
+					$login_redirect = get_option('login_redirect'); 
+					
+					if($login_redirect == ''){
+						$login_to = get_bloginfo('url');
+					}else{
+						$login_to = get_page_link($login_redirect);
+					}
+	      			wp_redirect( $login_to );
 	      		}
 	      	}
       	

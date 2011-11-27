@@ -45,9 +45,6 @@ class member_info_settings_page {
 			'E-mail', 'A required field but the user does not have to have access to it once initially registered.', 'email'
 		),
 		array(
-			'Website', 'The user\'s personal website.', 'website'
-		),
-		array(
 			'AIM', 'The user\'s AIM account.', 'aim'
 		),
 		array(
@@ -177,10 +174,6 @@ class member_info_settings_page {
 				
 			case 'email':
 				$default_fields->email($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'website':
-				$default_fields->website($type, $field, $sanitized_field, $fields_desc, $user_id);
 				break;
 				
 			case 'aim':
@@ -893,7 +886,7 @@ class member_info_settings_page {
 				<td>
 		
 					<span class="member_info_label">Message: </span>
-					<textarea class="" style="width:80%;" rows="10" name="member_email_new_message"><?php echo get_option('member_email_new_message'); ?></textarea>
+					<textarea class="" style="width:80%;" rows="10" name="member_email_new_message"><?php echo stripslashes( get_option('member_email_new_message') ); ?></textarea>
 					
 				</td>
 		

@@ -305,3 +305,32 @@ input.button-primary:hover, button.button-primary:hover, a.button-primary:hover,
 .error a {
 	color: #c00;
 }
+
+.popupwindow{
+	width: 450px;
+	min-width: 0px;
+}
+
+#sendemailform{
+	width: 450px;
+	min-width: 0px;
+	margin: 0 auto;
+}
+
+#sendemailform input{
+
+}
+
+#sendemailform textarea, #sendemailform input {
+	width: 400px;
+}
+
+#sendemailform input#wp-submit{
+	width: 100px;
+	float: right;
+}
+
+#sendemailform h2 {
+	width: 400px;
+	margin: 0 auto;
+}

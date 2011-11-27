@@ -112,6 +112,8 @@ function codeAddress(update) {
 		    	jQuery('#lat').val(results[0].geometry.location.lat());
 		    	jQuery('#lng').val(results[0].geometry.location.lng());
 		    	
+		    	console.log(results[0].geometry.location.toString());
+		    	
 				if(results[0].address_components[1].long_name == results[0].address_components[2].long_name){
 					jQuery('#general_location').val( results[0].address_components[1].long_name );
 				}else{

@@ -127,7 +127,11 @@ class member_info_default_fields{
 		
 		<tr>
 			<th><label for="user_login"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="user_login" id="user_login" value="<?php echo $current_user->user_login; ?>" disabled="disabled" class="regular-text"> <span class="description">Usernames cannot be changed.</span></td>
+			<td>
+				<strong><?php echo $current_user->user_login; ?></strong>
+				<br>
+				<input class="input" type="hidden" name="user_login" id="user_login" value="<?php echo $current_user->user_login; ?>" disabled="disabled" class="regular-text"> <span class="description">Usernames cannot be changed.</span>
+			</td>
 		</tr>		
 
 		<?php
@@ -242,7 +246,7 @@ class member_info_default_fields{
 		
 		<tr>
 			<th><label for="url"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="url" id="url" value="<?php echo $current_user->url; ?>" class="regular-text code"></td>
+			<td><input class="input" type="text" name="url" id="url" value="<?php echo $current_user->user_url; ?>" class="regular-text code"></td>
 		</tr>		
 		
 		<?php
