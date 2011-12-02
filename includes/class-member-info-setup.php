@@ -72,6 +72,8 @@ class member_info_setup {
 				
 						wp_enqueue_script('show_hide_profile_fields', MI_url.'/js/show_hide_profile_fields.js', '', 1.0 );
 						wp_enqueue_script('wysiwyg', MI_url.'/js/wysiwyg/jquery.wysiwyg.js', '', 1.0 );
+						
+						wp_enqueue_script('city_state', MI_url.'/js/city_state.js');
 					
 					}
 				}
@@ -136,6 +138,8 @@ class member_info_setup {
 				'l10n_print_after' => 'try{convertEntities(pwsL10n);}catch(e){};'
 			);
 			wp_localize_script( 'mi-password-strength-meter', 'pwsL10n', $data );
+			
+			wp_enqueue_script('city_state', MI_url.'/js/city_state.js');
 		
 		}
 		

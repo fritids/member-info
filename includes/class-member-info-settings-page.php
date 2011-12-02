@@ -385,7 +385,12 @@ class member_info_settings_page {
 									if($fields_type[$i] == 'dob'){
 										echo "selected";
 									}
-									echo ' value="dob">Date of birth</option>																												
+									echo ' value="dob">Date of birth</option>
+									<option ';
+									if($fields_type[$i] == 'country_region'){
+										echo "selected";
+									}
+									echo ' value="country_region">Country, Region Selector</option>																													
 								</select>';
 								if($fields_type[$i] == 'image'){
 								 	echo '<span class="image_limit"><br>Limit number of images to: <input type="text" size="3" name="mi_fields_image_limit[]" value="' . $image_limit[$i] . '" /></span>';
@@ -490,6 +495,7 @@ class member_info_settings_page {
 														<option value="custom_select">Custom Select</option>\
 														<option value="custom_checkbox">Custom Checkboxes</option>\
 														<option value="dob">Date of birth</option>\
+														<option value="country_region">Country, Region Selector</option>\
 													</select>\
 												</td>\
 												<td>\

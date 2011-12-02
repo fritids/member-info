@@ -289,7 +289,19 @@ class member_info_meta_boxes {
 										</span>
 									</td>
 								</tr>';
-						break;								 																			
+						break;		
+						case 'country_region':
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label></th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>';
+										$this->country_region($sanitized_field , $user->ID);
+										echo '<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';							
+						break;							 																			
 				
 					}
 									
@@ -426,5 +438,26 @@ class member_info_meta_boxes {
 		<?php
 	
 	}	
+	
+	function country_region($name, $id=0){
+	
+		$user_info = get_userdata($id);
+		
+		?>
+				
+		<select onchange="set_city_state(this,city_state)" size="1" name="country">
+		<option value="" selected="selected">SELECT COUNTRY</option>
+		<option value=""></option>
+		<script type="text/javascript">
+		setRegions(this);
+		</script>
+		</select>
+		<select name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)"></select>		
+		
+		<input type="text" id="txtplacename" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
+		
+		<?php
+	
+	}
 
 }
