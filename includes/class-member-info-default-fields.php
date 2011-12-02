@@ -130,7 +130,7 @@ class member_info_default_fields{
 			<td>
 				<strong><?php echo $current_user->user_login; ?></strong>
 				<br>
-				<input class="input" type="hidden" name="user_login" id="user_login" value="<?php echo $current_user->user_login; ?>" disabled="disabled" class="regular-text"> <span class="description">Usernames cannot be changed.</span>
+				<input class="input" type="hidden" name="user_login" id="user_login" value="<?php echo $current_user->user_login; ?>" disabled="disabled" class="regular-text"> 
 			</td>
 		</tr>		
 

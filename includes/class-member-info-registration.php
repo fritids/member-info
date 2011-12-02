@@ -1,6 +1,6 @@
 <?php
 
-new member_info_registration;
+$member_info_registration = new member_info_registration;
 
 class member_info_registration extends member_info_meta_boxes {
 
