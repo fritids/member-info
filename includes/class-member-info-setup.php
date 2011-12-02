@@ -55,8 +55,26 @@ class member_info_setup {
 				wp_enqueue_script('media-upload');
 				wp_enqueue_script('thickbox');
 				wp_enqueue_script('mi_upload', MI_url . '/js/upload.js', array('jquery','media-upload','thickbox'));
-				wp_enqueue_script('show_hide_profile_fields', MI_url.'/js/show_hide_profile_fields.js', '', 1.0 );
-				wp_enqueue_script('wysiwyg', MI_url.'/js/wysiwyg/jquery.wysiwyg.js', '', 1.0 );
+				
+				if($pagenow == 'user-edit.php' && isset($_GET['user_id'])){
+				
+				 	$user_info = get_userdata($_GET['user_id']);
+				 	
+				 	$show_fields = false;
+				 	
+			      	foreach($user_info->wp_capabilities as $key => $val ){
+			      		if($key == 'basic_member'){
+							$show_fields = true; 
+			      		}
+			      	}
+				 	
+			      	if($show_fields){ 
+				
+						wp_enqueue_script('show_hide_profile_fields', MI_url.'/js/show_hide_profile_fields.js', '', 1.0 );
+						wp_enqueue_script('wysiwyg', MI_url.'/js/wysiwyg/jquery.wysiwyg.js', '', 1.0 );
+					
+					}
+				}
 				
 				$data = array( 'show_defaults' => get_option('show_defaults'), 'required' => get_option('required_fields'), 'extra_fields' => get_option('mi_field_name'), 'types' => get_option('mi_field_type') );
 				wp_localize_script( 'show_hide_profile_fields', 'mi_options', $data );

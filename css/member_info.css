@@ -309,6 +309,7 @@ input.button-primary:hover, button.button-primary:hover, a.button-primary:hover,
 .popupwindow{
 	width: 450px;
 	min-width: 0px;
+	margin: 0 auto;
 }
 
 #sendemailform{

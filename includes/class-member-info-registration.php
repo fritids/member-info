@@ -614,20 +614,20 @@ class member_info_registration extends member_info_meta_boxes {
 					foreach($error as $key => $val){
 						$error_message = $key;
 					}
+
 				}
 			
 			}
-	
-		
+			
 			if($_GET['action'] != 'rp' && $_GET['action'] != 'resetpass'){
 			
-				if($error_message != '' || ($_POST['pwd'] && $_POST['pwd'] == '' && $_POST['log'] && $_POST['log'] == '' ) ){
+				if($error_message != '' || ($_POST['pwd'] && $_POST['pwd'] == '' && $_POST['log'] && $_POST['log'] == '') ){
 					if($_POST['pwd'] == '' && $_POST['log'] == '' & $error_message != 'registerdisabled'){
 						if($_GET['action'] != 'lostpassword'){
 							$error_message = 'empty';
 						}
 					}
-					if($error_message != ''){
+					if($error_message != '' && $error_message != 'loggedout' && $_GET['loggedout'] != 'true'){
 						wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?error=' . $error_message . '&action=' . $_GET['action'] );	
 					}else{
 						wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?action=' . $_GET['action'] );	
@@ -783,7 +783,7 @@ class member_info_registration extends member_info_meta_boxes {
 	    
 	    $redirect = false;
 	
-		if(is_admin() && $pagenow !='media-upload.php' && $pagenow != 'async-upload.php' ){
+		if(is_admin() && $pagenow !='media-upload.php' && $pagenow != 'async-upload.php' && !isset($_GET['load']) ){
 	      	
 	      	foreach($current_user->roles as $role ){
 	      		if($role == 'basic_member'){

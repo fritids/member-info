@@ -70,227 +70,238 @@ class member_info_meta_boxes {
 	
 	function member_info_location_inner($user){
 	
-		?>
-		<script type="text/javascript">
-		jQuery(function() {
-			jQuery('.wysiwyg').wysiwyg({
-				css: '<?php echo MI_url; ?>/js/wysiwyg/custom.css',
-				initialContent: "",
-			    controls: {
-			        strikeThrough: { visible: false },
-			        underline: { visible: false },
-			        subscript: { visible: false },
-			        superscript: { visible: false },
-			        insertHorizontalRule: { visible: false },
-			        insertImage: { visible: false },
-			        h1: { visible: false },
-			        h2: { visible: false },
-			        h3: { visible: false },
-			        decreaseFontSize: { visible: false },
-			        html: { visible: false },
-			        insertTable: { visible: false },
-			        code: { visible: false },
-			        bold: { visible: false },
-			        italic: { visible: false },
-			        justifyLeft: { visible: false },
-			        justifyCenter: { visible: false },
-			        justifyRight: { visible: false },
-			        justifyFull: { visible: false },
-			        indent: { visible: false },
-			        outdent: { visible: false },
-			        insertOrderedList: { visible: false },
-			        insertUnorderedList: { visible: false },
-			        createLink: { visible: false },
-			        redo: { visible: false },
-			        undo: { visible: false },
-			        removeFormat: { visible: false }
-			    }
+	 	$user_info = get_userdata($user->ID);
+	 	
+	 	$show_fields = false;
+	 	
+      	foreach($user_info->wp_capabilities as $key => $val ){
+      		if($key == 'basic_member'){
+				$show_fields = true; 
+      		}
+      	}
+	 	
+      	if($show_fields){ ?>
+			
+			<script type="text/javascript">
+			jQuery(function() {
+				jQuery('.wysiwyg').wysiwyg({
+					css: '<?php echo MI_url; ?>/js/wysiwyg/custom.css',
+					initialContent: "",
+				    controls: {
+				        strikeThrough: { visible: false },
+				        underline: { visible: false },
+				        subscript: { visible: false },
+				        superscript: { visible: false },
+				        insertHorizontalRule: { visible: false },
+				        insertImage: { visible: false },
+				        h1: { visible: false },
+				        h2: { visible: false },
+				        h3: { visible: false },
+				        decreaseFontSize: { visible: false },
+				        html: { visible: false },
+				        insertTable: { visible: false },
+				        code: { visible: false },
+				        bold: { visible: false },
+				        italic: { visible: false },
+				        justifyLeft: { visible: false },
+				        justifyCenter: { visible: false },
+				        justifyRight: { visible: false },
+				        justifyFull: { visible: false },
+				        indent: { visible: false },
+				        outdent: { visible: false },
+				        insertOrderedList: { visible: false },
+				        insertUnorderedList: { visible: false },
+				        createLink: { visible: false },
+				        redo: { visible: false },
+				        undo: { visible: false },
+				        removeFormat: { visible: false }
+				    }
+				});
 			});
-		});
-		</script>
-		<?php
-	
-		$user_info = get_userdata($user->ID);
-
-		$fields_name = explode( ',', get_option('mi_field_name') );
-		$fields_type = explode( ',', get_option('mi_field_type') );
-		$fields_desc = explode( ',', get_option('mi_field_desc') );
-		$image_limit = explode( ',', get_option('mi_fields_image_limit') );
-		$document_limit = explode( ',', get_option('mi_fields_document_limit') );
-		$document_type = explode( ',', get_option('mi_fields_document_type') );
-		$custom_select = explode( ',', get_option('mi_custom_select_option') );
+			</script>
+			<?php
 		
-		$i = 0;
-		
-		echo '<table class="form-table">';
-		
-			foreach($fields_name as $field){
+			$fields_name = explode( ',', get_option('mi_field_name') );
+			$fields_type = explode( ',', get_option('mi_field_type') );
+			$fields_desc = explode( ',', get_option('mi_field_desc') );
+			$image_limit = explode( ',', get_option('mi_fields_image_limit') );
+			$document_limit = explode( ',', get_option('mi_fields_document_limit') );
+			$document_type = explode( ',', get_option('mi_fields_document_type') );
+			$custom_select = explode( ',', get_option('mi_custom_select_option') );
 			
-				$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) );
+			$i = 0;
+			
+			echo '<table class="form-table">';
+			
+				foreach($fields_name as $field){
 				
-				do_action( 'front_end_display_fields', $fields_type[$i], $field, $sanitized_field, $fields_desc[$i], $user->ID); 
-			
-				switch ($fields_type[$i]){
-					case 'text':
-						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label</th>
-								<a name="custom_field_' . $sanitized_field . '"></a>
-								<td>
-									<input class="input" type="text" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '" value="' . $user_info->$sanitized_field . '"/>
-									<span class="description">
-										' . $fields_desc[$i] . '
-									</span>
-								</td>
-							</tr>';
-					break;
-					case 'title':
-						echo '<tr>
-								<th><h2>' .$field. '</h2></th>
-								<td>
-										
-								</td>
-							</tr>';
-					break;
-					case 'textarea':
-						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label></th>
-								<a name="custom_field_' . $sanitized_field . '"></a>
-								<td>
-									<textarea class="input wysiwyg" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '">
-										' . $user_info->$sanitized_field . '
-									</textarea>
-									<span class="description">
-										' . $fields_desc[$i] . '
-									</span>
-								</td>
-							</tr>';							
-					break;
-					case 'address':
-						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label></th>
-								<a name="custom_field_' . $sanitized_field . '"></a>
-								<td>';
-									$this->show_map($sanitized_field, $user->ID, 'no');
-									echo '<span class="description">
-										' . $fields_desc[$i] . '
-									</span>
-								</td>
-							</tr>';							
-					break;	
-					case 'address_map':
-						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label></th>
-								<a name="custom_field_' . $sanitized_field . '"></a>
-								<td>';
-									$this->show_map($sanitized_field , $user->ID);
-									echo '<span class="description">
-										' . $fields_desc[$i] . '
-									</span>
-								</td>
-							</tr>';							
-					break;						
-					case 'image':
-						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label></th>
-								<a name="custom_field_' . $sanitized_field . '"></a>
-								<td>';
-									$this->member_image($sanitized_field, $user->ID, $image_limit[$i]);
-									echo '<span class="description">
-										' . $fields_desc[$i] . '
-									</span>
-								</td>
-							</tr>';							
-					break;	
-					case 'document':
-						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label></th>
-								<a name="custom_field_' . $sanitized_field . '"></a>
-								<td>';
-									$this->member_document($sanitized_field, $user->ID, $document_limit[$i], $document_type[$i]);
-									echo '<span class="description">
-										' . $fields_desc[$i] . '
-									</span>
-								</td>
-							</tr>';							
-					break;	
-					case 'custom_select';
-						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label></th>
-								<a name="custom_field_' . $sanitized_field . '"></a>
-								<td>';					
-									$custom_options = explode( ',', get_option('custom_select_option_' . $custom_select[$i]) );
-								 	echo '<select class="input custom_select" onChange="check_other();" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '" >';
-								 	foreach($custom_options as $option){
-								 		$timestamp = mktime() . $ii;
-								 		if($option != ''){
-								 			echo '<option';
-								 			if( ( strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $option) ) ) == $user_info->$sanitized_field ) || ( strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $option) ) ) == 'other' && !$matched ) ){
-								 				echo ' selected="selected"';
-								 				if(strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $option) ) ) != 'other'){
-								 					$matched = true;
-								 				}
-								 			}
-								 			echo ' value="' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $option) ) ) . '" >' . $option . '</option>';
-								 		}
-								 	}
-								 	echo '</select>';	
-								 	if(!$matched){
-								 		echo '<input class="input other_option" type="text" name="' . $sanitized_field . '" value="' . $user_info->$sanitized_field . '" />';
-								 	}
-									echo '<span class="description">
-										' . $fields_desc[$i] . '
-									</span>
-								</td>
-							</tr>';		
-					break;	
-					case 'custom_checkbox';
-						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label></th>
-								<a name="custom_field_' . $sanitized_field . '"></a>
-								<td>';					
-									$custom_checkboxes = explode( ',', get_option('custom_checkbox_checkboxes_' . $custom_checkbox[$i]) );
-								 	
-								 	foreach($custom_checkboxes as $checkbox){
-								 		$timestamp = mktime() . $ii;
-								 		if($checkbox != ''){
-								 			echo '<span class="checkbox">';
-								 			echo '<input type="checkbox" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '[]" ';
-								 			$checkboxes_values = explode(',', $user_info->$sanitized_field);
-								 			if(in_array(strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $checkbox) ) ), $checkboxes_values) ){
-								 				echo ' checked="checked"';
-								 			}
-								 			echo ' value="' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $checkbox) ) ) . '">' . $checkbox;
-								 			echo '</span>';
-								 		}
-								 	}
-									echo '<span class="description">
-										' . $fields_desc[$i] . '
-									</span>
-								</td>
-							</tr>';	
-					break;
-					case 'dob':
-						echo '<tr>
-								<th><label for="' .$field. '">' .$field. '</label></th>
-								<a name="custom_field_' . $sanitized_field . '"></a>
-								<td>
-									<input class="input dob" type="text" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '" value="' . $user_info->$sanitized_field . '"/>
-									<span class="description">
-										' . $fields_desc[$i] . '
-									</span>
-								</td>
-							</tr>';
-					break;								 																			
-			
+					$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) );
+					
+					do_action( 'front_end_display_fields', $fields_type[$i], $field, $sanitized_field, $fields_desc[$i], $user->ID); 
+				
+					switch ($fields_type[$i]){
+						case 'text':
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label</th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>
+										<input class="input" type="text" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '" value="' . $user_info->$sanitized_field . '"/>
+										<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';
+						break;
+						case 'title':
+							echo '<tr>
+									<th><h2>' .$field. '</h2></th>
+									<td>
+											
+									</td>
+								</tr>';
+						break;
+						case 'textarea':
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label></th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>
+										<textarea class="input wysiwyg" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '">
+											' . $user_info->$sanitized_field . '
+										</textarea>
+										<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';							
+						break;
+						case 'address':
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label></th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>';
+										$this->show_map($sanitized_field, $user->ID, 'no');
+										echo '<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';							
+						break;	
+						case 'address_map':
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label></th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>';
+										$this->show_map($sanitized_field , $user->ID);
+										echo '<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';							
+						break;						
+						case 'image':
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label></th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>';
+										$this->member_image($sanitized_field, $user->ID, $image_limit[$i]);
+										echo '<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';							
+						break;	
+						case 'document':
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label></th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>';
+										$this->member_document($sanitized_field, $user->ID, $document_limit[$i], $document_type[$i]);
+										echo '<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';							
+						break;	
+						case 'custom_select';
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label></th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>';					
+										$custom_options = explode( ',', get_option('custom_select_option_' . $custom_select[$i]) );
+									 	echo '<select class="input custom_select" onChange="check_other();" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '" >';
+									 	foreach($custom_options as $option){
+									 		$timestamp = mktime() . $ii;
+									 		if($option != ''){
+									 			echo '<option';
+									 			if( ( strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $option) ) ) == $user_info->$sanitized_field ) || ( strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $option) ) ) == 'other' && !$matched ) ){
+									 				echo ' selected="selected"';
+									 				if(strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $option) ) ) != 'other'){
+									 					$matched = true;
+									 				}
+									 			}
+									 			echo ' value="' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $option) ) ) . '" >' . $option . '</option>';
+									 		}
+									 	}
+									 	echo '</select>';	
+									 	if(!$matched){
+									 		echo '<input class="input other_option" type="text" name="' . $sanitized_field . '" value="' . $user_info->$sanitized_field . '" />';
+									 	}
+										echo '<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';		
+						break;	
+						case 'custom_checkbox';
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label></th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>';					
+										$custom_checkboxes = explode( ',', get_option('custom_checkbox_checkboxes_' . $custom_checkbox[$i]) );
+									 	
+									 	foreach($custom_checkboxes as $checkbox){
+									 		$timestamp = mktime() . $ii;
+									 		if($checkbox != ''){
+									 			echo '<span class="checkbox">';
+									 			echo '<input type="checkbox" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '[]" ';
+									 			$checkboxes_values = explode(',', $user_info->$sanitized_field);
+									 			if(in_array(strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $checkbox) ) ), $checkboxes_values) ){
+									 				echo ' checked="checked"';
+									 			}
+									 			echo ' value="' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9]", "", $checkbox) ) ) . '">' . $checkbox;
+									 			echo '</span>';
+									 		}
+									 	}
+										echo '<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';	
+						break;
+						case 'dob':
+							echo '<tr>
+									<th><label for="' .$field. '">' .$field. '</label></th>
+									<a name="custom_field_' . $sanitized_field . '"></a>
+									<td>
+										<input class="input dob" type="text" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '" value="' . $user_info->$sanitized_field . '"/>
+										<span class="description">
+											' . $fields_desc[$i] . '
+										</span>
+									</td>
+								</tr>';
+						break;								 																			
+				
+					}
+									
+					$i++;
+					
 				}
-								
-				$i++;
-				
-			}
-		
-		echo '</table>';
-		
-		//wp_nonce_field('mi_product_meta_nonce', 'mi_product_meta_nonce'); 
+			
+			echo '</table>';
+			
+			//wp_nonce_field('mi_product_meta_nonce', 'mi_product_meta_nonce'); 
+			
+		}
 		
 	} //function
 	
