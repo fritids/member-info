@@ -138,8 +138,6 @@ class member_info_setup {
 				'l10n_print_after' => 'try{convertEntities(pwsL10n);}catch(e){};'
 			);
 			wp_localize_script( 'mi-password-strength-meter', 'pwsL10n', $data );
-			
-			wp_enqueue_script('city_state', MI_url.'/js/city_state.js');
 		
 		}
 		
@@ -151,6 +149,8 @@ class member_info_setup {
 			//wp_localize_script( 'member_info_iframe_check', 'settings', $data );
 		
 		}
+		
+		wp_enqueue_script('city_state', MI_url.'/js/city_state.js');
 
 	}
 	

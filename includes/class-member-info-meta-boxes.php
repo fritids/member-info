@@ -1,6 +1,6 @@
 <?php
 
-new member_info_meta_boxes;
+$member_info_meta_boxes = new member_info_meta_boxes;
 
 class member_info_meta_boxes {
 
@@ -51,6 +51,8 @@ class member_info_meta_boxes {
 			$i++;
 			
 		} 
+		
+		//exit;
 		
 /*
 		echo '<pre>';
@@ -447,6 +449,18 @@ class member_info_meta_boxes {
 		?>
 		<input type="hidden" name="mi_country" id="mi_country" value="<?php echo $user_info->mi_country; ?>" />
 		<input type="hidden" name="mi_region" id="mi_region" value="<?php echo $user_info->mi_region; ?>" />
+		<input type="hidden" id="txtplacename" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
+		
+		<?php
+		
+		$this->get_country_region();
+	
+	}
+	
+	function get_country_region(){
+	
+		?>
+		
 		<select onchange="set_city_state(this,city_state)" size="1" name="country" id="mi_country_select">
 		<option value="">SELECT COUNTRY</option>
 		<option value=""></option>
@@ -458,7 +472,6 @@ class member_info_meta_boxes {
 		<script type="text/javascript">
 		set_country_region();
 		</script>
-		<input type="text" id="txtplacename" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
 		
 		<?php
 	

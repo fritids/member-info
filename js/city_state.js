@@ -273,8 +273,12 @@ function setRegions()
 	for (region in countries){
 		countryArr = countries[region].split('|');
 		for (var i = 0; i < countryArr.length; i++){
-			if(countryArr[i] == document.getElementById('mi_country').value){
-				selected = 'selected="selected"';
+			if(document.getElementById('mi_country')){
+				if(countryArr[i] == document.getElementById('mi_country').value){
+					selected = 'selected="selected"';
+				}else{
+					selected = '';
+				}
 			}else{
 				selected = '';
 			}
@@ -313,7 +317,7 @@ function set_city_state(oCountrySel, oCity_StateSel)
 	if (city_states[country])
 	{
 		oCity_StateSel.disabled = false;
-		oCity_StateSel.options[0] = new Option('SELECT NEAREST DIVISION','');
+		oCity_StateSel.options[0] = new Option('SELECT REGION','');
 		city_stateArr = city_states[country].split('|');
 		for (var i = 0; i < city_stateArr.length; i++)
 			oCity_StateSel.options[i+1] = new Option(city_stateArr[i],city_stateArr[i]);
@@ -331,14 +335,18 @@ function set_country_region()
 {
 	oCountrySel = document.getElementById('mi_country_select');
 	oCity_StateSel = document.getElementById('mi_region_select');
-	country = document.getElementById('mi_country').value;
+	if(document.getElementById('mi_country')){
+		country = document.getElementById('mi_country').value;
+	}else{
+		country = '';
+	}
 	if(country != ''){
 	var city_stateArr;
 	oCity_StateSel.length = 0;
 	if (city_states[country])
 	{
 		oCity_StateSel.disabled = false;
-		oCity_StateSel.options[0] = new Option('SELECT NEAREST DIVISION','');
+		oCity_StateSel.options[0] = new Option('SELECT REGION','');
 		city_stateArr = city_states[country].split('|');
 		for (var i = 0; i < city_stateArr.length; i++){
 			if(city_stateArr[i] == document.getElementById('mi_region').value){
