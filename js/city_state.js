@@ -273,7 +273,12 @@ function setRegions()
 	for (region in countries){
 		countryArr = countries[region].split('|');
 		for (var i = 0; i < countryArr.length; i++){
-			document.write('<option value="' + countryArr[i] + '">' + countryArr[i] + '</option>');
+			if(countryArr[i] == document.getElementById('mi_country').value){
+				selected = 'selected="selected"';
+			}else{
+				selected = '';
+			}
+			document.write('<option ' + selected + ' value="' + countryArr[i] + '">' + countryArr[i] + '</option>');
 		}
 	}
 }
@@ -313,14 +318,46 @@ function set_city_state(oCountrySel, oCity_StateSel)
 		for (var i = 0; i < city_stateArr.length; i++)
 			oCity_StateSel.options[i+1] = new Option(city_stateArr[i],city_stateArr[i]);
 		document.getElementById('txtplacename').value = country;
+		document.getElementById('mi_country').value = country;
 	}
 	else oCity_StateSel.disabled = true;
+	document.getElementById('txtplacename').value = country;
+	document.getElementById('mi_country').value = country;
+	document.getElementById('mi_region').value = '';
+	document.getElementById('txtplacename').value = country;
+}
+
+function set_country_region()
+{
+	oCountrySel = document.getElementById('mi_country_select');
+	oCity_StateSel = document.getElementById('mi_region_select');
+	country = document.getElementById('mi_country').value;
+	if(country != ''){
+	var city_stateArr;
+	oCity_StateSel.length = 0;
+	if (city_states[country])
+	{
+		oCity_StateSel.disabled = false;
+		oCity_StateSel.options[0] = new Option('SELECT NEAREST DIVISION','');
+		city_stateArr = city_states[country].split('|');
+		for (var i = 0; i < city_stateArr.length; i++){
+			if(city_stateArr[i] == document.getElementById('mi_region').value){
+				selected = true;
+			}else{
+				selected = false;
+			}
+			oCity_StateSel.options[i+1] = new Option(city_stateArr[i],city_stateArr[i], selected, selected);		
+		}
+	}
+	else oCity_StateSel.disabled = true;
+	}
 }
 
 function print_city_state(oCountrySel, oCity_StateSel)
 {
 	var country = oCountrySel.options[oCountrySel.selectedIndex].text;
 	var city_state = oCity_StateSel.options[oCity_StateSel.selectedIndex].text;
+	document.getElementById('mi_region').value = city_state;
 	if (city_state && city_states[country].indexOf(city_state) != -1)
 		document.getElementById('txtplacename').value = city_state + ', ' + country;
 	else document.getElementById('txtplacename').value = country;

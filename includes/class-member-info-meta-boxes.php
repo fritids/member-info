@@ -37,7 +37,8 @@ class member_info_meta_boxes {
 															
 		$mi_meta['lng'] =  $_POST['lng'] ;
 		$mi_meta['lat'] =  $_POST['lat'] ;
-		$mi_meta['general_location'] =  $_POST['general_location'] ;
+		$mi_meta['mi_country'] =  $_POST['mi_country'] ;
+		$mi_meta['mi_region'] =  $_POST['mi_region'] ;
 		$mi_meta['show_map'] =  $_POST['show_map'] ;
 		$mi_meta['map_width'] =  $_POST['map_width'] ;
 		$mi_meta['map_height'] =  $_POST['map_height'] ;
@@ -444,16 +445,19 @@ class member_info_meta_boxes {
 		$user_info = get_userdata($id);
 		
 		?>
-				
-		<select onchange="set_city_state(this,city_state)" size="1" name="country">
-		<option value="" selected="selected">SELECT COUNTRY</option>
+		<input type="hidden" name="mi_country" id="mi_country" value="<?php echo $user_info->mi_country; ?>" />
+		<input type="hidden" name="mi_region" id="mi_region" value="<?php echo $user_info->mi_region; ?>" />
+		<select onchange="set_city_state(this,city_state)" size="1" name="country" id="mi_country_select">
+		<option value="">SELECT COUNTRY</option>
 		<option value=""></option>
 		<script type="text/javascript">
 		setRegions(this);
 		</script>
 		</select>
-		<select name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)"></select>		
-		
+		<select name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)" id="mi_region_select"></select>	
+		<script type="text/javascript">
+		set_country_region();
+		</script>
 		<input type="text" id="txtplacename" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
 		
 		<?php
