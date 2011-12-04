@@ -15,7 +15,7 @@ class member_info_search_functions{
 			add_filter( 'request', array( &$this, 'fix_blank_search_string' ) );
 		
 			add_filter( 'request', array( &$this, 'advanced_search_queries' ) );
-		
+					
 		}
 			
 	}
@@ -31,15 +31,26 @@ class member_info_search_functions{
 	    return $query_vars;
 
 	} // function
+
 	
 	function advanced_search_queries($query_vars){
 	
 		if( isset( $_GET['s'] )){
 	
-			foreach($_GET as $g){
-		
-				$query_vars['s'] .= ' ' . $g;
+			foreach($_GET as $k => $g){
 			
+				if($k != 'country_region'){
+					
+					$query_vars['s'] .= ' ' . $g;
+					
+				}else{
+				
+					$term = get_term( $g, 'country_region' );
+				
+					$query_vars['country_region'] = $term->slug;
+				
+				}
+						
 			}	
 		
 		}
