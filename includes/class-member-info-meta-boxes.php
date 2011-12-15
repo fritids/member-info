@@ -31,6 +31,8 @@ class member_info_meta_boxes {
 	function member_info_save_member_data($user_id){
 		
 		if ( !current_user_can( 'edit_user', $user_id ) ) { return false; }
+		
+		do_action('pre_pre_save', $user_id);
     	
     	$fields_name = explode( ',', get_option('mi_field_name') );
 		$fields_type = explode( ',', get_option('mi_field_type') );
@@ -140,7 +142,9 @@ class member_info_meta_boxes {
 				
 					$sanitized_field = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) );
 					
-					do_action( 'front_end_display_fields', $fields_type[$i], $field, $sanitized_field, $fields_desc[$i], $user->ID); 
+					do_action( 'front_end_display_fields', $fields_type[$i], $field, $sanitized_field, $fields_desc[$i], $user->ID, $user_info); 
+					
+					$user_info = apply_filters('pre_display_user_info', $user_info);
 				
 					switch ($fields_type[$i]){
 						case 'text':
@@ -182,7 +186,7 @@ class member_info_meta_boxes {
 									<th><label for="' .$field. '">' .$field. '</label></th>
 									<a name="custom_field_' . $sanitized_field . '"></a>
 									<td>';
-										$this->show_map($sanitized_field, $user->ID, 'no');
+										$this->show_map($sanitized_field, $user->ID, 'no', $user_info);
 										echo '<span class="description">
 											' . $fields_desc[$i] . '
 										</span>
@@ -194,7 +198,7 @@ class member_info_meta_boxes {
 									<th><label for="' .$field. '">' .$field. '</label></th>
 									<a name="custom_field_' . $sanitized_field . '"></a>
 									<td>';
-										$this->show_map($sanitized_field , $user->ID);
+										$this->show_map($sanitized_field , $user->ID, $user_info);
 										echo '<span class="description">
 											' . $fields_desc[$i] . '
 										</span>
@@ -206,7 +210,7 @@ class member_info_meta_boxes {
 									<th><label for="' .$field. '">' .$field. '</label></th>
 									<a name="custom_field_' . $sanitized_field . '"></a>
 									<td>';
-										$this->member_image($sanitized_field, $user->ID, $image_limit[$i]);
+										$this->member_image($sanitized_field, $user->ID, $image_limit[$i], $user_info);
 										echo '<span class="description">
 											' . $fields_desc[$i] . '
 										</span>
@@ -218,7 +222,7 @@ class member_info_meta_boxes {
 									<th><label for="' .$field. '">' .$field. '</label></th>
 									<a name="custom_field_' . $sanitized_field . '"></a>
 									<td>';
-										$this->member_document($sanitized_field, $user->ID, $document_limit[$i], $document_type[$i]);
+										$this->member_document($sanitized_field, $user->ID, $document_limit[$i], $document_type[$i], $user_info);
 										echo '<span class="description">
 											' . $fields_desc[$i] . '
 										</span>
@@ -298,7 +302,7 @@ class member_info_meta_boxes {
 									<th><label for="' .$field. '">' .$field. '</label></th>
 									<a name="custom_field_' . $sanitized_field . '"></a>
 									<td>';
-										$this->country_region($sanitized_field , $user->ID);
+										$this->country_region($sanitized_field , $user->ID, $user_info);
 										echo '<span class="description">
 											' . $fields_desc[$i] . '
 										</span>
@@ -320,10 +324,8 @@ class member_info_meta_boxes {
 		
 	} //function
 	
-	function show_map($name, $id=0, $show_map = 'yes'){
-	
-		$user_info = get_userdata($id);
-		
+	function show_map($name, $id=0, $show_map = 'yes', $user_info){
+			
 		?>
 	
 		<input type="text" class="input" name="mi_location" id="member_info_location" value="<?php echo $user_info->mi_location; ?>" />
@@ -368,10 +370,8 @@ class member_info_meta_boxes {
 	
 	} // function
 	
-	function member_image($name, $id, $image_limit){
-	
-		$user_info = get_userdata($id);
-	
+	function member_image($name, $id, $image_limit, $user_info){
+		
 		?>
 		<input type="hidden" id="image_limit" value="<?php echo $image_limit; ?>"/>
 		<input type="hidden" id="upload_image" name="<?php echo $name; ?>" value="<?php echo $user_info->$name; ?>"  class="custom_field_<?php echo $name; ?>"/>
@@ -396,10 +396,8 @@ class member_info_meta_boxes {
 	
 	}
 	
-	function member_document($name, $id, $document_limit, $document_type){
-	
-		$user_info = get_userdata($id);
-	
+	function member_document($name, $id, $document_limit, $document_type, $user_info){
+		
 		?>
 		<input type="hidden" id="document_limit" value="<?php echo $document_limit; ?>"/>
 		<input type="hidden" id="document_type" value="<?php echo $document_type; ?>"/>
@@ -442,9 +440,9 @@ class member_info_meta_boxes {
 	
 	}	
 	
-	function country_region($name, $id=0){
+	function country_region($name, $id=0, $user_info){
 	
-		$user_info = get_userdata($id);
+		//$user_info = get_userdata($id);
 		
 		?>
 		<input type="hidden" name="mi_country" id="mi_country" value="<?php echo $user_info->mi_country; ?>" />
