@@ -393,7 +393,16 @@ class member_info_settings_page {
 									echo ' value="country_region">Country, Region Selector</option>																													
 								</select>';
 								if($fields_type[$i] == 'image'){
+								
 								 	echo '<span class="image_limit"><br>Limit number of images to: <input type="text" size="3" name="mi_fields_image_limit[]" value="' . $image_limit[$i] . '" /></span>';
+								 	
+								 	$p_dir = MI_dir . '/placeholders/' . strtolower( str_replace(' ', '_', $field_name ) ) . '/';
+								 	echo '<br><span class="description">To use custom placeholder images, upload them to ' . $p_dir . '</span>';
+								 	if (!is_dir($p_dir) ) { 
+										mkdir($p_dir ); 
+									}else{
+									
+									}
 								}else{
 									echo '<span class="image_limit"><input type="hidden" name="mi_fields_image_limit[]" value="0" /></span>';
 								}
@@ -401,6 +410,15 @@ class member_info_settings_page {
 								if($fields_type[$i] == 'document'){
 								 	echo '<span class="document_limit"><br>Limit number of documents to: <input type="text" size="3" name="mi_fields_document_limit[]" value="' . $document_limit[$i] . '" /></span>
 								 	<span class="document_type"><br>Limit type of documents to (separate with a comma with no fullstops. e.g. doc,pdf,docx ): <input type="text" size="3" name="mi_fields_document_type[]" value="'. $document_type[$i] . '"/></span>';
+								 	
+								 	$p_dir = MI_dir . '/placeholders/' . strtolower( str_replace(' ', '_', $field_name ) ) . '/';
+								 	echo '<br><span class="description">To use custom placeholder images, upload them to ' . $p_dir . '</span>';
+								 	if (!is_dir($p_dir) ) { 
+										mkdir($p_dir ); 
+									}else{
+									
+									}
+									
 								}else{
 									echo '<span class="document_limit"><input type="hidden" name="mi_fields_document_limit[]" value="0" /></span>
 									<span class="document_type"><input type="hidden" name="mi_fields_document_type[]" value="0" /></span>';
