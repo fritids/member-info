@@ -381,11 +381,39 @@ class member_info_meta_boxes {
 			<?php
 			$images = explode( '~', $user_info->$name );
 			$i = 0;
+			$fi = 0;
+			
+            $files = array();
+            $f = 0;
+            $dir = MI_dir . '/placeholders/' . strtolower( str_replace(' ', '_', $name ) ) . '/';
+	        if ($handle = opendir($dir)) {
+	            while (false !== ($file = readdir($handle))) {
+                     if(!is_dir($file)){
+                     	$files[$f] = MI_url . '/placeholders/' . strtolower( str_replace(' ', '_', $name ) ) . '/' . $file;
+                     	$f++;
+                     }else{
+                     	$files[0] = MI_url . '/img/profile_pic.png';
+                     }
+	            }			       
+			
+			}
+			
 			while($i <= $image_limit -1){
+			
+				if (!array_key_exists($fi, $files)){
+		      		$fi = 0;
+		        }
+			
 				if($images[$i] != ''){
 					echo '<div><img class="mi_uploaded_img" src="' . $images[$i] . '" /><br><img style="cursor:pointer;" onClick="deleteImage(\'' . $images[$i] . '\');" src="' . MI_url . '/img/delete.png" class="delete_image" /></div>';
+					echo '<input type="hidden" title="' . $images[$i] . '" value="' . $files[$fi] . '" />';
+					$fi++;
 				}else{
-					echo '<div><img class="mi_image" src="' . MI_url . '/img/profile_pic.png" /></div>';
+
+					echo '<div><img class="mi_image" src="' . $files[$fi] . '" /></div>';
+				
+					$fi++;
+				
 				}
 				$i++;
 			}
@@ -424,12 +452,40 @@ class member_info_meta_boxes {
 			<?php
 			$documents = explode( '~', $user_info->$name );
 			$i = 0;
+			$fi = 0;
+			
+            $files = array();
+            $f = 0;
+            $dir = MI_dir . '/placeholders/' . strtolower( str_replace(' ', '_', $name ) ) . '/';
+	        if ($handle = opendir($dir)) {
+	            while (false !== ($file = readdir($handle))) {
+                     if(!is_dir($file)){
+                     	$files[$f] = MI_url . '/placeholders/' . strtolower( str_replace(' ', '_', $name ) ) . '/' . $file;
+                     	$f++;
+                     }else{
+                     	$files[0] = MI_url . '/img/file.png';
+                     }
+	            }			       
+			
+			}
+			
 			while($i <= $document_limit -1){
+			
+				if (!array_key_exists($fi, $files)){
+		        	$fi = 0;
+		        }
+			
 				if($documents[$i] != ''){
 					$document = explode( '=', $documents[$i] );
 					echo '<div class="single_row" title="' . $document[0] . '"><div class="mi_uploaded_doc" >' . $document[1] . '</div><img style="cursor:pointer;" onClick="deleteDocument(\'' . $document[0] . '\', \'' . $document[1] . '\');" src="' . MI_url . '/img/delete.png" class="delete_document" /></div>';
+					echo '<input type="hidden" title="' . $document[0] . '" value="' . $files[$fi] . '" />';
+					$fi++;
 				}else{
-					echo '<div class="single_row"><img class="mi_document" src="' . MI_url . '/img/file.png" /></div>';
+
+					echo '<div class="single_row"><img class="mi_document" src="' . $files[$fi] . '" /></div>';
+				
+					$fi++;
+				
 				}
 				$i++;
 			}

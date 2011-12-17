@@ -399,7 +399,9 @@ class member_info_settings_page {
 								 	$p_dir = MI_dir . '/placeholders/' . strtolower( str_replace(' ', '_', $field_name ) ) . '/';
 								 	echo '<br><span class="description">To use custom placeholder images, upload them to ' . $p_dir . '</span>';
 								 	if (!is_dir($p_dir) ) { 
-										mkdir($p_dir ); 
+								 		$oldmask = umask(0);
+										mkdir($p_dir, 0777, TRUE );
+										umask($oldmask); 
 									}else{
 									
 									}
@@ -414,7 +416,9 @@ class member_info_settings_page {
 								 	$p_dir = MI_dir . '/placeholders/' . strtolower( str_replace(' ', '_', $field_name ) ) . '/';
 								 	echo '<br><span class="description">To use custom placeholder images, upload them to ' . $p_dir . '</span>';
 								 	if (!is_dir($p_dir) ) { 
-										mkdir($p_dir ); 
+										$oldmask = umask(0);
+										mkdir($p_dir, 0777, TRUE );
+										umask($oldmask);  
 									}else{
 									
 									}
