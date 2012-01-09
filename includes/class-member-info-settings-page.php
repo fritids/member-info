@@ -45,9 +45,6 @@ class member_info_settings_page {
 			'E-mail', 'A required field but the user does not have to have access to it once initially registered.', 'email'
 		),
 		array(
-			'Website', 'The user\'s personal website.', 'website'
-		),
-		array(
 			'AIM', 'The user\'s AIM account.', 'aim'
 		),
 		array(
@@ -177,10 +174,6 @@ class member_info_settings_page {
 				
 			case 'email':
 				$default_fields->email($type, $field, $sanitized_field, $fields_desc, $user_id);
-				break;
-				
-			case 'website':
-				$default_fields->website($type, $field, $sanitized_field, $fields_desc, $user_id);
 				break;
 				
 			case 'aim':
@@ -392,10 +385,26 @@ class member_info_settings_page {
 									if($fields_type[$i] == 'dob'){
 										echo "selected";
 									}
-									echo ' value="dob">Date of birth</option>																												
+									echo ' value="dob">Date of birth</option>
+									<option ';
+									if($fields_type[$i] == 'country_region'){
+										echo "selected";
+									}
+									echo ' value="country_region">Country, Region Selector</option>																													
 								</select>';
 								if($fields_type[$i] == 'image'){
+								
 								 	echo '<span class="image_limit"><br>Limit number of images to: <input type="text" size="3" name="mi_fields_image_limit[]" value="' . $image_limit[$i] . '" /></span>';
+								 	
+								 	$p_dir = MI_dir . '/placeholders/' . strtolower( str_replace(' ', '_', $field_name ) ) . '/';
+								 	echo '<br><span class="description">To use custom placeholder images, upload them to ' . $p_dir . '</span>';
+								 	if (!is_dir($p_dir) ) { 
+								 		$oldmask = umask(0);
+										mkdir($p_dir, 0777, TRUE );
+										umask($oldmask); 
+									}else{
+									
+									}
 								}else{
 									echo '<span class="image_limit"><input type="hidden" name="mi_fields_image_limit[]" value="0" /></span>';
 								}
@@ -403,6 +412,17 @@ class member_info_settings_page {
 								if($fields_type[$i] == 'document'){
 								 	echo '<span class="document_limit"><br>Limit number of documents to: <input type="text" size="3" name="mi_fields_document_limit[]" value="' . $document_limit[$i] . '" /></span>
 								 	<span class="document_type"><br>Limit type of documents to (separate with a comma with no fullstops. e.g. doc,pdf,docx ): <input type="text" size="3" name="mi_fields_document_type[]" value="'. $document_type[$i] . '"/></span>';
+								 	
+								 	$p_dir = MI_dir . '/placeholders/' . strtolower( str_replace(' ', '_', $field_name ) ) . '/';
+								 	echo '<br><span class="description">To use custom placeholder images, upload them to ' . $p_dir . '</span>';
+								 	if (!is_dir($p_dir) ) { 
+										$oldmask = umask(0);
+										mkdir($p_dir, 0777, TRUE );
+										umask($oldmask);  
+									}else{
+									
+									}
+									
 								}else{
 									echo '<span class="document_limit"><input type="hidden" name="mi_fields_document_limit[]" value="0" /></span>
 									<span class="document_type"><input type="hidden" name="mi_fields_document_type[]" value="0" /></span>';
@@ -497,6 +517,7 @@ class member_info_settings_page {
 														<option value="custom_select">Custom Select</option>\
 														<option value="custom_checkbox">Custom Checkboxes</option>\
 														<option value="dob">Date of birth</option>\
+														<option value="country_region">Country, Region Selector</option>\
 													</select>\
 												</td>\
 												<td>\

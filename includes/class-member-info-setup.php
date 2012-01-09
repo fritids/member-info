@@ -55,10 +55,30 @@ class member_info_setup {
 				wp_enqueue_script('media-upload');
 				wp_enqueue_script('thickbox');
 				wp_enqueue_script('mi_upload', MI_url . '/js/upload.js', array('jquery','media-upload','thickbox'));
-				wp_enqueue_script('show_hide_profile_fields', MI_url.'/js/show_hide_profile_fields.js', '', 1.0 );
-				wp_enqueue_script('wysiwyg', MI_url.'/js/wysiwyg/jquery.wysiwyg.js', '', 1.0 );
 				
-				$data = array( 'show_defaults' => get_option('show_defaults'), 'required' => get_option('required_fields'), 'extra_fields' => get_option('mi_field_name') );
+				if($pagenow == 'user-edit.php' && isset($_GET['user_id'])){
+				
+				 	$user_info = get_userdata($_GET['user_id']);
+				 	
+				 	$show_fields = false;
+				 	
+			      	foreach($user_info->wp_capabilities as $key => $val ){
+			      		if($key == 'basic_member'){
+							$show_fields = true; 
+			      		}
+			      	}
+				 	
+			      	if($show_fields){ 
+				
+						wp_enqueue_script('show_hide_profile_fields', MI_url.'/js/show_hide_profile_fields.js', '', 1.0 );
+						wp_enqueue_script('wysiwyg', MI_url.'/js/wysiwyg/jquery.wysiwyg.js', '', 1.0 );
+						
+						wp_enqueue_script('city_state', MI_url.'/js/city_state.js');
+					
+					}
+				}
+				
+				$data = array( 'show_defaults' => get_option('show_defaults'), 'required' => get_option('required_fields'), 'extra_fields' => get_option('mi_field_name'), 'types' => get_option('mi_field_type') );
 				wp_localize_script( 'show_hide_profile_fields', 'mi_options', $data );
 				
 				$data = array( 'MI_url' => MI_url, 'WPURL' => get_bloginfo('url') . '/wp-admin/');
@@ -123,12 +143,14 @@ class member_info_setup {
 		
 		if(!is_page(get_option('login_page_id') && !is_page(get_option('register_page_id')))){
 		
-			wp_enqueue_script('member_info_iframe_check', MI_url.'/js/iframe_check.js', '', 1.0 );
+			//wp_enqueue_script('member_info_iframe_check', MI_url.'/js/iframe_check.js', '', 1.0 );
 		
-			$data = array( 'MI_url' => MI_url, 'account' => get_permalink(get_option('profile_page_id')), 'home' => get_bloginfo('url') );
-			wp_localize_script( 'member_info_iframe_check', 'settings', $data );
+			//$data = array( 'MI_url' => MI_url, 'account' => get_permalink(get_option('profile_page_id')), 'home' => get_bloginfo('url') );
+			//wp_localize_script( 'member_info_iframe_check', 'settings', $data );
 		
 		}
+		
+		wp_enqueue_script('city_state', MI_url.'/js/city_state.js');
 
 	}
 	

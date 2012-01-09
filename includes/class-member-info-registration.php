@@ -1,6 +1,6 @@
 <?php
 
-new member_info_registration;
+$member_info_registration = new member_info_registration;
 
 class member_info_registration extends member_info_meta_boxes {
 
@@ -348,8 +348,8 @@ class member_info_registration extends member_info_meta_boxes {
 							$user_pass = wp_generate_password();
 						}
 						$userdata = array(
-							'user_login' => esc_attr( $_POST['username'] ),
-							'user_email' => esc_attr( $_POST['email'] ),
+							'user_login' => esc_attr( $_POST['custom_field_username'] ),
+							'user_email' => esc_attr( $_POST['custom_field_email'] ),
 							'role' =>'basic_member',
 						);
 						
@@ -383,6 +383,12 @@ class member_info_registration extends member_info_meta_boxes {
 								if(in_array('custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), $required_fields) && in_array('custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) ), $reg_fields)){
 					 			
 						 			$post_name = 'custom_field_' . strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) );
+						 			
+						 			if($post_name == ''){
+						 			
+						 				$post_name = strtolower( str_replace(' ', '_', ereg_replace("[^A-Za-z0-9 ]", "", $field) ) );
+						 			
+						 			}
 						 			
 						 			//echo $post_name . ' = ' . $_POST[$post_name] . '<br>';
 						 					 			
@@ -571,9 +577,8 @@ class member_info_registration extends member_info_meta_boxes {
 					
 					<?php do_action('login_form'); ?>
 					
-					<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90"> Remember Me</label></p>
-					<p class="submit">
-						<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="100">
+					<p class="submit right">
+						<input type="submit" name="wp-submit" id="wp-submit" class="button-primary bump_left" value="Log In" tabindex="100">
 						<input name="action" type="hidden" id="action" value="login" />
 						
 						<?php
@@ -586,8 +591,9 @@ class member_info_registration extends member_info_meta_boxes {
 						
 						<input type="hidden" name="redirect_to" value="<?php echo $login_to; ?>" />
 					</p>
+					<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90"> Remember Me</label></p>
 					<p>
-						<a href="<?php echo get_permalink(get_option('login_page_id')); ?>?action=lostpassword">Forgotten password?</a>
+						<a href="/wp-login.php?action=lostpassword">Forgotten password?</a>
 					</p>				
 				</form>	
 				
@@ -614,34 +620,38 @@ class member_info_registration extends member_info_meta_boxes {
 					foreach($error as $key => $val){
 						$error_message = $key;
 					}
+
 				}
 			
 			}
-	
-		
-			if($_GET['action'] != 'rp' && $_GET['action'] != 'resetpass'){
 			
-				if($error_message != '' || ($_POST['pwd'] && $_POST['pwd'] == '' && $_POST['log'] && $_POST['log'] == '' ) ){
-					if($_POST['pwd'] == '' && $_POST['log'] == '' & $error_message != 'registerdisabled'){
-						if($_GET['action'] != 'lostpassword'){
-							$error_message = 'empty';
+			if($_GET['action'] != 'rp'){
+			
+				if( $_GET['action'] != 'resetpass'){
+			
+					if($error_message != '' || ($_POST['pwd'] && $_POST['pwd'] == '' && $_POST['log'] && $_POST['log'] == '') ){
+						if($_POST['pwd'] == '' && $_POST['log'] == '' && $error_message != 'registerdisabled'){
+							if($_GET['action'] != 'lostpassword'){
+								$error_message = 'empty';
+							}
 						}
-					}
-					if($error_message != ''){
-						wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?error=' . $error_message . '&action=' . $_GET['action'] );	
-					}else{
-						wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?action=' . $_GET['action'] );	
-					}
-				}else{
-					if($_GET['action'] == 'register' && get_option('register_page_id') != ''){
-						wp_redirect( get_permalink( get_option( 'register_page_id' ) ) );
-					}else{
-						if($_GET['action'] != ''){
-							wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?action=' . $_GET['action'] );	
+						if($error_message != '' && $error_message != 'loggedout' && $_GET['loggedout'] != 'true'){
+							wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?error=' . $error_message . '&action=' . $_GET['action'] );	
 						}else{
-							wp_redirect( get_permalink( get_option( 'login_page_id' ) ) );
+							wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?action=' . $_GET['action'] );	
+						}
+					}else{
+						if($_GET['action'] == 'register' && get_option('register_page_id') != ''){
+							wp_redirect( get_permalink( get_option( 'register_page_id' ) ) );
+						}else{
+							if($_GET['action'] != ''){
+								wp_redirect( get_permalink( get_option( 'login_page_id' ) ) . '?action=' . $_GET['action'] );	
+							}else{
+								wp_redirect( get_permalink( get_option( 'login_page_id' ) ) );
+							}
 						}
 					}
+				
 				}
 				
 			}
@@ -783,7 +793,7 @@ class member_info_registration extends member_info_meta_boxes {
 	    
 	    $redirect = false;
 	
-		if(is_admin() && $pagenow !='media-upload.php' && $pagenow != 'async-upload.php' ){
+		if(is_admin() && $pagenow !='media-upload.php' && $pagenow != 'async-upload.php' && !isset($_GET['load']) ){
 	      	
 	      	foreach($current_user->roles as $role ){
 	      		if($role == 'basic_member'){
@@ -897,8 +907,16 @@ class member_info_registration extends member_info_meta_boxes {
 	
 		$title = apply_filters('retrieve_password_title', $title);
 		$message = apply_filters('retrieve_password_message', $message, $key);
+		
+		$headers = 'From: ' . get_bloginfo('name') . ' <' . get_bloginfo('admin_email') . '>' . "\r\n";
+			
+		$headers .= "MIME-Version: 1.0\r\n";
+
+		$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";		
+		
+		echo $headers; exit;
 	
-		if ( $message && !wp_mail($user_email, $title, $message) )
+		if ( $message && !wp_mail($user_email, $title, $message, $headers) )
 			wp_die( __('The e-mail could not be sent.') . "<br />\n" . __('Possible reason: your host may have disabled the mail() function...') );
 	
 		return true;

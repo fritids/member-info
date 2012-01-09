@@ -127,7 +127,11 @@ class member_info_default_fields{
 		
 		<tr>
 			<th><label for="user_login"><?php echo $field; ?></label></th>
-			<td><input class="input" type="text" name="user_login" id="user_login" value="<?php echo $current_user->user_login; ?>" disabled="disabled" class="regular-text"> <span class="description">Usernames cannot be changed.</span></td>
+			<td>
+				<strong><?php echo $current_user->user_login; ?></strong>
+				<br>
+				<input class="input" type="hidden" name="user_login" id="user_login" value="<?php echo $current_user->user_login; ?>" disabled="disabled" class="regular-text"> 
+			</td>
 		</tr>		
 
 		<?php
@@ -427,7 +431,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 		
-		<input class="input" name="rich_editing" type="checkbox" id="rich_editing" value="false" <?php if($current_user->rich_editing == 'false'){ echo " checked=\checked\" "; }; ?>>
+		<input class="input" name="custom_field_rich_editing" type="checkbox" id="rich_editing" value="false" <?php if($current_user->rich_editing == 'false'){ echo " checked=\checked\" "; }; ?>>
 		
 		<?php
 	
@@ -439,7 +443,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 		
-		<input class="input" type="checkbox" name="comment_shortcuts" id="comment_shortcuts" value="true" <?php if($current_user->comment_shortcuts == 'true'){ echo " checked=\"checked\" "; }; ?>>
+		<input class="input" type="checkbox" name="custom_field_comment_shortcuts" id="comment_shortcuts" value="true" <?php if($current_user->comment_shortcuts == 'true'){ echo " checked=\"checked\" "; }; ?>>
 			 
 		
 		<?php
@@ -454,7 +458,7 @@ class member_info_default_fields_for_reg_form{
 			<fieldset>
 				<legend class="screen-reader-text"><span><?php echo $field; ?></span></legend>
 				<div class="color-option">
-					<input class="input" name="admin_color" id="admin_color_classic" type="radio" value="classic" class="tog" <?php if($current_user->admin_color == 'classic'){ echo " checked=\"checked\" "; }; ?>>
+					<input class="input" name="custom_field_admin_color" id="admin_color_classic" type="radio" value="classic" class="tog" <?php if($current_user->admin_color == 'classic'){ echo " checked=\"checked\" "; }; ?>>
 					<table class="color-palette">
 					<tbody> 
 						<td style="background-color: #5589aa" title="classic">&nbsp; 
@@ -467,7 +471,7 @@ class member_info_default_fields_for_reg_form{
 					 Blue</label>
 				</div>
 				<div class="color-option">
-					<input class="input" name="admin_color" id="admin_color_fresh" type="radio" value="fresh" class="tog" <?php if($current_user->admin_color == 'fresh'){ echo " checked=\"checked\" "; }; ?>>
+					<input class="input" name="custom_field_admin_color" id="admin_color_fresh" type="radio" value="fresh" class="tog" <?php if($current_user->admin_color == 'fresh'){ echo " checked=\"checked\" "; }; ?>>
 					<table class="color-palette">
 					<tbody> 
 						<td style="background-color: #7c7976" title="fresh">&nbsp; 
@@ -493,10 +497,10 @@ class member_info_default_fields_for_reg_form{
 				<fieldset>
 					<legend class="screen-reader-text"><span><?php echo $field; ?></span></legend>
 					 
-					<input class="input" name="admin_bar_front" type="checkbox" id="admin_bar_front" value="1" <?php if($current_user->show_admin_bar_front  == 'true'){ echo " checked=\"checked\" "; }; ?>>
+					<input class="input" name="custom_field_admin_bar_front" type="checkbox" id="admin_bar_front" value="1" <?php if($current_user->show_admin_bar_front  == 'true'){ echo " checked=\"checked\" "; }; ?>>
 					when viewing site</label><br>
 					 
-					<input class="input" name="admin_bar_admin" type="checkbox" id="admin_bar_admin" value="1" <?php if($current_user->show_admin_bar_admin == 'true'){ echo " checked=\"checked\" "; }; ?>>
+					<input class="input" name="custom_field_admin_bar_admin" type="checkbox" id="admin_bar_admin" value="1" <?php if($current_user->show_admin_bar_admin == 'true'){ echo " checked=\"checked\" "; }; ?>>
 					in dashboard</label>
 				</fieldset>
 	
@@ -509,7 +513,7 @@ class member_info_default_fields_for_reg_form{
 		$current_user = get_userdata($user_id);
 	
 		?>			 
-		<input class="input" type="text" name="username" id="user_login" value="<?php echo $current_user->user_login; ?>" class="regular-text">
+		<input class="input" type="text" name="custom_field_username" id="user_login" value="<?php echo $current_user->user_login; ?>" class="regular-text">
 
 		<?php
 	
@@ -521,7 +525,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 			 
-		<input class="input" type="text" name="first_name" id="first_name" value="<?php echo $current_user->first_name; ?>" class="regular-text">		
+		<input class="input" type="text" name="custom_field_first_name" id="first_name" value="<?php echo $current_user->first_name; ?>" class="regular-text">		
 		
 		<?php
 	
@@ -533,7 +537,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 				 
-		<input class="input" type="text" name="last_name" id="last_name" value="<?php echo $current_user->last_name; ?>" class="regular-text">
+		<input class="input" type="text" name="custom_field_last_name" id="last_name" value="<?php echo $current_user->last_name; ?>" class="regular-text">
 		
 		<?php
 	
@@ -545,7 +549,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 			 
-			 <input class="input" type="text" name="nickname" id="nickname" value="<?php echo $current_user->nickname; ?>" class="regular-text"> 
+			 <input class="input" type="text" name="custom_field_nickname" id="nickname" value="<?php echo $current_user->nickname; ?>" class="regular-text"> 
 		 		
 		<?php
 	
@@ -557,7 +561,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 					 
-				<select name="display_name" id="display_name">
+				<select name="custom_field_display_name" id="display_name">
 				<?php
 					$public_display = array();
 					$public_display['display_nickname']  = $current_user->nickname;
@@ -593,7 +597,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 					 
-			 <input class="input" type="text" name="email" id="email" value="<?php echo $current_user->email; ?>" class="regular-text">
+			 <input class="input" type="text" name="custom_field_email" id="email" value="<?php echo $current_user->email; ?>" class="regular-text">
 				 
 		<?php
 	
@@ -605,7 +609,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 		
-			 <input class="input" type="text" name="url" id="url" value="<?php echo $current_user->url; ?>" class="regular-text code"> 	
+			 <input class="input" type="text" name="custom_field_url" id="url" value="<?php echo $current_user->url; ?>" class="regular-text code"> 	
 		
 		<?php
 	
@@ -617,7 +621,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 		
-			 <input class="input" type="text" name="aim" id="aim" value="<?php echo $current_user->aim; ?>" class="regular-text"> 
+			 <input class="input" type="text" name="custom_field_aim" id="aim" value="<?php echo $current_user->aim; ?>" class="regular-text"> 
 		 		
 		
 		<?php
@@ -630,7 +634,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 		
-			<input class="input" type="text" name="yim" id="yim" value="<?php echo $current_user->yim; ?>" class="regular-text">
+			<input class="input" type="text" name="custom_field_yim" id="yim" value="<?php echo $current_user->yim; ?>" class="regular-text">
 		
 		<?php
 	
@@ -642,7 +646,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 			 
-			<input class="input" type="text" name="jabber" id="jabber" value="<?php echo $current_user->jabber; ?>" class="regular-text"></td>
+			<input class="input" type="text" name="custom_field_jabber" id="jabber" value="<?php echo $current_user->jabber; ?>" class="regular-text"></td>
 		
 		<?php
 	
@@ -654,7 +658,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 			 
-			<input class="input" type="text" name="twitter_url" id="twitter_url" value="<?php echo $current_user->twitter_url; ?>" class="regular-text">
+			<input class="input" type="text" name="custom_field_twitter_url" id="twitter_url" value="<?php echo $current_user->twitter_url; ?>" class="regular-text">
 		
 		<?php
 	
@@ -666,7 +670,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 					 
-			<input class="input" type="text" name="facebook_url" id="facebook_url" value="<?php echo $current_user->facebook_url; ?>" class="regular-text">
+			<input class="input" type="text" name="custom_field_facebook_url" id="facebook_url" value="<?php echo $current_user->facebook_url; ?>" class="regular-text">
 		
 		<?php
 	
@@ -678,7 +682,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 				 
-			<input class="input" type="text" name="youtube_url" id="youtube_url" value="<?php echo $current_user->youtube_url; ?>" class="regular-text">
+			<input class="input" type="text" name="custom_field_youtube_url" id="youtube_url" value="<?php echo $current_user->youtube_url; ?>" class="regular-text">
 				
 		<?php
 	
@@ -690,7 +694,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 					 
-			<input class="input" type="text" name="linkedin_url" id="linkedin_url" value="<?php echo $current_user->linkedin_url; ?>" class="regular-text">
+			<input class="input" type="text" name="custom_field_linkedin_url" id="linkedin_url" value="<?php echo $current_user->linkedin_url; ?>" class="regular-text">
 		
 		<?php
 	
@@ -702,7 +706,7 @@ class member_info_default_fields_for_reg_form{
 	
 		?>
 					 
-			<input class="input" type="text" name="soundcloud_url" id="soundcloud_url" value="<?php echo $current_user->soundcloud_url; ?>" class="regular-text">
+			<input class="input" type="text" name="custom_field_soundcloud_url" id="soundcloud_url" value="<?php echo $current_user->soundcloud_url; ?>" class="regular-text">
 		
 		<?php
 	
@@ -713,7 +717,7 @@ class member_info_default_fields_for_reg_form{
 		$current_user = get_userdata($user_id);
 	
 		?>			 
-				<textarea name="description" class="wysiwyg" id="description" rows="5" cols="30"><?php echo stripslashes( $current_user->description ) ; ?></textarea>
+				<textarea name="custom_field_description" class="wysiwyg" id="description" rows="5" cols="30"><?php echo stripslashes( $current_user->description ) ; ?></textarea>
 		
 		<?php
 	
@@ -725,8 +729,8 @@ class member_info_default_fields_for_reg_form{
 		
 		?>
 			 
-			<input class="input" type="password" name="pass1" id="pass1" size="16" value="" autocomplete="off">  <br>
-				<input class="input" type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off">  <br>
+			<input class="input" type="password" name="custom_field_pass1" id="pass1" size="16" value="" autocomplete="off">  <br>
+				<input class="input" type="password" name="custom_field_pass2" id="pass2" size="16" value="" autocomplete="off">  <br>
 				<div id="pass-strength-result" style="display: block; ">Strength indicator</div>
 				<p class="description indicator-hint">Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).</p>
 		

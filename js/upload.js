@@ -52,7 +52,9 @@ jQuery(document).ready(function() {
 			
 			var value = jQuery(this).parent().find('#upload_document');
 			
-			var remove = jQuery(this).parent().find('#mi_document div:first');
+			var remove = jQuery('#mi_documents div:first');
+			
+			var delete_src = jQuery('#mi_documents div:first img').attr('src');;
 			
 			var doc_limit_val = jQuery(this).parent().find('#document_limit');
 	
@@ -65,7 +67,7 @@ jQuery(document).ready(function() {
 				}else{
 					value.val(value.val() + '~' + docurl + '=' + docname);
 				}
-				append.append('<div class="single_row"><div class="mi_uploaded_doc" >' + docname + '</div><img style="cursor:pointer;" onClick="deleteDocument(\'' +docurl + '\', \'' + docname + '\');" src="' + MI.MI_url + '/img/delete.png" class="delete_document" /></div>');
+				append.append('<div class="single_row" title="'+docurl+'"><div class="mi_uploaded_doc" >' + docname + '</div><img style="cursor:pointer;" onClick="deleteDocument(\'' +docurl + '\', \'' + docname + '\');" src="' + MI.MI_url + '/img/delete.png" class="delete_document" /></div><input type="hidden" title="'+docurl+'" value="'+delete_src+'" />');
 	 			remove.remove();
 	
 				tb_remove(); 

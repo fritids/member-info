@@ -108,17 +108,21 @@ function codeAddress(update) {
 	    	markersArray.push(marker); 
 	    	if(update == 'YES'){
 	    	
+	    		var address_components_array = results[0].address_components.reverse();
+	    	
 		    	jQuery('#member_info_location').val(results[0].formatted_address);
 		    	jQuery('#lat').val(results[0].geometry.location.lat());
 		    	jQuery('#lng').val(results[0].geometry.location.lng());
-		    	
-		    	console.log(results[0].geometry.location.toString());
-		    	
-				if(results[0].address_components[1].long_name == results[0].address_components[2].long_name){
-					jQuery('#general_location').val( results[0].address_components[1].long_name );
+		    			    	
+				if(address_components_array[0].long_name == address_components_array[1].long_name){
+					jQuery('#general_location').val( address_components_array[0].long_name);
 				}else{
-					jQuery('#general_location').val( results[0].address_components[1].long_name+', '+results[0].address_components[2].long_name );
-				}		    	
+					jQuery('#general_location').val( address_components_array[1].long_name+', '+address_components_array[0].long_name );
+				}		
+				
+				console.log(address_components_array[0].long_name+', '+address_components_array[1].long_name);	 
+				
+				results[0].address_components.reverse();   	
 		    	
 		    	jQuery('#member_info_address').html('');
 		    	for (i=0;i<results[0].address_components.length;i++){

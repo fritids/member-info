@@ -269,22 +269,26 @@ function check_required(){
 }
 
 function deleteImage(img){
+	
+	var replace = jQuery('input[title="'+img+'"]').val();
 
 	var value = jQuery('img[src="' + img + '"]').parent().parent().parent().find('#upload_image');
 
 	value.val(value.val().replace(img + '~', '').replace( '~' + img, '').replace( img, ''));
 
-	jQuery('img[src="' + img + '"]').parent().html('<div><img class="mi_image" src="' + settings.MI_url + '/img/profile_pic.png" /></div>')
+	jQuery('img[src="' + img + '"]').parent().html('<div><img class="mi_image" src="' + replace + '" /></div>')
 
 }
 
 function deleteDocument(doc, name){
 
-	var value = jQuery('div[title="' + doc + '"]').parent().parent().parent().find('#upload_document');
+	var replace = jQuery('input[title="'+doc+'"]').val();
+
+	var value = jQuery('div[title="' + doc + '"]').parent().parent().find('#upload_document');
 
 	value.val(value.val().replace(doc + '=' + name + '~', '').replace( '~' + doc + '=' + name, '').replace( doc + '=' + name, ''));
 
-	jQuery('div[title="' + doc + '"]').html('<img class="mi_document" src="' + settings.MI_url + '/img/file.png" />').attr('title', '');
+	jQuery('div[title="' + doc + '"]').html('<img class="mi_document" src="' + replace + '" />').attr('title', '');
 
 }
 
