@@ -36,6 +36,8 @@ if (!defined("SHORTCODE_login")) { define("SHORTCODE_login", 'login'); }
 
 include_once('includes/class-member-info-setup.php'); //Set up
 
+include_once('includes/Encoding.php'); //Encoding
+
 include_once('includes/class-member-info-roles-capabilities.php'); //Custom roles and capabilities
 
 include_once('includes/class-member-info-settings-page.php'); //Settings Page

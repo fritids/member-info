@@ -968,4 +968,33 @@ if ( !function_exists('wp_new_user_notification') ) {
     }  
 }
 
+if ( !class_exists('wp_mail_from') ) {
+	class wp_mail_from {
+
+		function wp_mail_from() {
+			add_filter( 'wp_mail_from', array(&$this, 'fb_mail_from') );
+			add_filter( 'wp_mail_from_name', array(&$this, 'fb_mail_from_name') );
+		}
+
+		// new name
+		function fb_mail_from_name() {
+			$name = get_bloginfo('name');
+			// alternative the name of the blog
+			// $name = get_option('blogname');
+			$name = esc_attr($name);
+			return $name;
+		}
+
+		// new email-adress
+		function fb_mail_from() {
+			$email = get_bloginfo('admin_email');
+			$email = is_email($email);
+			return $email;
+		}
+
+	}
+
+	$wp_mail_from = new wp_mail_from();
+}
+
 ?>

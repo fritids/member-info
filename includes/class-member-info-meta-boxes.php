@@ -64,14 +64,20 @@ class member_info_meta_boxes {
 		
        	foreach ($mi_meta as $key => $value) { 
             
-            $value = htmlentities( implode(',', (array)$value) ); 
-               update_usermeta( $user_id, $key, $value );
+            $value =  implode(',', $value);
+            update_usermeta( $user_id, $key, $value );
                         
         }
         //echo "Refreshing your profile...";
 	    
 	
 	} //function	
+	
+	function word_cleanup ($str){
+    	$pattern = "/<(\w+)>(\s|&nbsp;)*<\/\1>/";
+    	$str = preg_replace($pattern, '', $str);
+    	return mb_convert_encoding($str, 'HTML-ENTITIES', 'UTF-8');
+	}
 	
 	function member_info_location_inner($user){
 	
@@ -172,7 +178,7 @@ class member_info_meta_boxes {
 									<th><label for="' .$field. '">' .$field. '</label></th>
 									<a name="custom_field_' . $sanitized_field . '"></a>
 									<td>
-										<textarea class="input" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '">' . $user_info->$sanitized_field . '</textarea>
+										<textarea class="input" id="custom_field_' . $sanitized_field . '" name="' . $sanitized_field . '">' . html_entity_decode($user_info->$sanitized_field) . '</textarea>
 										<span class="description">
 											' . $fields_desc[$i] . '
 										</span>
